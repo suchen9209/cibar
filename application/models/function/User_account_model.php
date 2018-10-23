@@ -32,13 +32,12 @@ class User_account_model extends CI_Model {
             $account_pram['lasttime'] = time();
             $this->account->insert($account_pram);
 
-            $this->set_session(array('uid'=>$user_id));
+            $this->set_session(array('user_id'=>$user_id));
 
 
         }
 
         return $user_id;
-
     }
 
     public function login($type,$parm){
@@ -46,7 +45,7 @@ class User_account_model extends CI_Model {
             $user = $this->user->get_info('wxid',$parm['openid']);
             $this->user->update($user->id,array('lasttime'=>time()));
             $uid = $user->id;
-            $this->set_session(array('uid'=>$uid));
+            $this->set_session(array('user_id'=>$uid));
             return $uid;
         }
 

@@ -39,13 +39,11 @@ class Weixin extends CI_Controller {
         $return = [];
 
 
-/*        //测试
-            $res_arr['errcode'] = 0;
+/*            $res_arr['errcode'] = 0;
             $res_arr['openid'] = '22223sahfjkasdkjfhsakdhf';
-            $res_arr['unionid'] = 'SDF4343KSDJFJKHSDHFKJDSNJKFHSD';
-*/
+            $res_arr['unionid'] = 'SDF4343KSDJFJKHSDHFKJDSNJKFHSD';*/
 
-        //测试
+
         if($res_arr['errcode'] == 0 || !isset($res_arr['errcode'])){
             //注册 or 登录
             $parm['openid'] = $res_arr['openid'];

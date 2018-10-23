@@ -33,6 +33,28 @@ class User_model extends CI_Model {
     	}
     }
 
+    public function check_user($type,$parm){
+        if($type == 'wx'){
+            $this->db->select('id');
+            $this->db->where('wxid',$parm['openid']);
+            $this->db->from($this->table_name);
+            $query = $this->db->get();
+            return $query->row();
+        }
+    }
+
+    public function get_info($key,$value){
+        if($key && $value){
+            $this->db->select('*');
+            $this->db->where($key , $value);
+            $this->db->from($this->table_name);
+            $query = $this->db->get();
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+
     
 }
 ?>

@@ -13,35 +13,32 @@ class User_account_model extends CI_Model {
 
     public function register($type,$parm){
         if($type == 'wx'){
+            $insert_parm = array();
+            $insert_parm['regtime'] = time();
+            $insert_parm['lasttime'] = time();
+            $insert_parm['wxid'] = $parm['openid'];
+            $insert_parm['wxunionid'] = $parm['unionid'];
+            $user_id = $this->user->insert($insert_parm);
+
 
         }
 
+        return $user_id;
+
     }
 
-    public function insert($parm)
-    {
-        $this->db->insert($this->table_name, $parm);
-        return $this->db->insert_id();
+    public function login($type,$parm){
+        if($type == 'wx'){
+            $user = $this->user->get_info('wxid',$parm['openid']);
+
+            $this->user->update($user->id,array('lasttime'=>time()));
+            return $user->id;
+        }
+
+
+
     }
 
-    public function update($id, $parm)
-    {
-        $this->db->where('id', $id);
-        $this->db->update($this->table_name, $parm);
-        return $this->db->affected_rows();
-    }
-
-    public function get_user_info($id=0){
-    	if($id!=0){
-    		$this->db->select('username,phone,nickname,name,regtime,lasttime');
-    		$this->db->where('id', $id);
-    		$this->db->from($this->table_name);
-    		$query = $this->db->get();
-    		return $query->row();
-    	}else{
-    		return false;
-    	}
-    }
 
     
 }

@@ -2,8 +2,8 @@
 
 class Weixin extends CI_Controller {
 
-    private $app_id = 'wxe4ceea6213fa3b27'; 
-    private $app_secret = '59c5ea8cbb77d923e09e036040d1b6e6';
+    private $app_id = 'wx849138f27a347b79'; 
+    private $app_secret = '08c2edf4ea376b6ac13e4d8c4b5655eb';
     //private $callback_url = HTTP_OR_HTTPS.'www.imbatv.cn/qqlogin/weixin/callback';
 
 
@@ -38,21 +38,33 @@ class Weixin extends CI_Controller {
 
         $return = [];
 
-        $return['errcode'] = $res_arr['errcode'];
-        $return['errmsg'] = $res_arr['errmsg'];
-        if($res_arr['errcode'] == 0){
+
+/*        //测试
+            $res_arr['errcode'] = 0;
+            $res_arr['openid'] = 'sahfjkasdkjfhsakdhf';
+            $res_arr['unionid'] = 'KSDJFJKHSDHFKJDSNJKFHSD';
+
+
+        //测试*/
+        if($res_arr['errcode'] == 0 || !isset($res_arr['errcode'])){
             //注册 or 登录
             $parm['openid'] = $res_arr['openid'];
             $parm['unionid'] = $res_arr['openid'];
             
-            if($this->user->check_user()){
-                $uid = $this->user_account_model->register('wx',$parm);
-            }else{
+            if($this->user->check_user('wx',$parm)){
                 $uid = $this->user_account_model->login('wx',$parm);
+            }else{
+                $uid = $this->user_account_model->register('wx',$parm);
             }
-            $uid = 0;
-            $return['openid'] = $return['openid'];
+
+            $return['errcode'] = 0;
+            $return['errmsg'] = 'no error';
+            $return['openid'] = $res_arr['openid'];
             $return['uid'] = $uid;
+        }else{
+            $return['errcode'] = $res_arr['errcode'];
+            $return['errmsg'] = $res_arr['errmsg'];
+
         }
 
         header('Content-Type:application/json');

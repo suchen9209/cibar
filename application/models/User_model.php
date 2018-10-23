@@ -23,7 +23,7 @@ class User_model extends CI_Model {
 
     public function get_user_info($id=0){
     	if($id!=0){
-    		$this->db->select('username,phone,nickname,name,regtime,lasttime');
+    		$this->db->select('*');
     		$this->db->where('id', $id);
     		$this->db->from($this->table_name);
     		$query = $this->db->get();

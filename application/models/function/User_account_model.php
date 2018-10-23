@@ -51,6 +51,20 @@ class User_account_model extends CI_Model {
 
     }
 
+    public function get_user_info($uid){
+        $user_info = $this->user->get_user_info($uid);
+        $account_info = $this->account->get_info($uid);
+        $return_arr['uid'] = $user_info->id;
+        $return_arr['name'] = $user_info->name;
+        $return_arr['wxid'] = $user_info->wxid;
+        $return_arr['balance'] = $account_info->balance;
+
+        //会员系统保留字段
+        $return_arr['level'] = '10';
+
+        return $return_arr;
+    }
+
 
 
     

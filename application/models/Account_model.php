@@ -14,17 +14,17 @@ class Account_model extends CI_Model {
         return $this->db->insert_id();
     }
 
-    public function update($id, $parm)
+    public function update($uid, $parm)
     {
-        $this->db->where('id', $id);
+        $this->db->where('uid', $uid);
         $this->db->update($this->table_name, $parm);
         return $this->db->affected_rows();
     }
 
     public function get_info($uid=0){
-    	if($id!=0){
+    	if($uid!=0){
     		$this->db->select('*');
-    		$this->db->where('uid', $id);
+    		$this->db->where('uid', $uid);
     		$this->db->from($this->table_name);
     		$query = $this->db->get();
     		return $query->row();

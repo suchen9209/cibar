@@ -50,15 +50,15 @@ class Weixin extends CI_Controller {
             $parm['unionid'] = $res_arr['openid'];
             
             if($this->user->check_user('wx',$parm)){
-                $uid = $this->user_account_model->login('wx',$parm);
+                $3rd_session = $this->user_account_model->login('wx',$parm);
             }else{
-                $uid = $this->user_account_model->register('wx',$parm);
+                $3rd_session = $this->user_account_model->register('wx',$parm);
             }
 
             $return['errcode'] = 0;
             $return['errmsg'] = 'no error';
-            $return['openid'] = $res_arr['openid'];
-            $return['uid'] = $uid;
+            //$return['openid'] = $res_arr['openid'];
+            $return['3rd_session'] = $3rd_session;
         }else{
             $return['errcode'] = $res_arr['errcode'];
             $return['errmsg'] = $res_arr['errmsg'];

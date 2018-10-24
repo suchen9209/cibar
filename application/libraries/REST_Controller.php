@@ -370,7 +370,7 @@ abstract class REST_Controller extends CI_Controller {
      * e.g: my_rest.php is passed as 'my_rest'
      * @return void
      */
-    public function __construct($config = 'rest')
+    public function __construct($config = 'rest' ,$session_name = '')
     {
         parent::__construct();
 
@@ -402,6 +402,10 @@ abstract class REST_Controller extends CI_Controller {
 
         // Load the rest.php configuration file
         $this->load->config($config);
+        if($session_name!= ''){
+            $this->config->set_item('auth_source',$session_name); 
+        }
+        
 
         // At present the library is bundled with REST_Controller 2.5+, but will eventually be part of CodeIgniter (no citation)
         $this->load->library('format');

@@ -26,8 +26,14 @@ class App_Api_Controller extends REST_Controller
         parent::HTTP_CONFLICT=>'已存在' //409
     ];
 
-    function __construct($config='app_rest'){
-        parent::__construct($config);
+    private $session_name = '';
+
+    function __construct($config='app_rest',$session_name=''){
+        if(!$session_name){
+            $session_name = $this->input->post_get('3rd_session');
+        }        
+        parent::__construct($config,$session_name);
+        $this->session_name = $session_name;
         date_default_timezone_set("Asia/Shanghai");
     }
 
@@ -44,5 +50,9 @@ class App_Api_Controller extends REST_Controller
             'message' => $message ? $message : $this->messageMap[$code],
             'data' => $data
         ];
+    }
+
+    public function get_session_name(){
+        return $this->session_name;
     }
 }

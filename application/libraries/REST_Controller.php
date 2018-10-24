@@ -1852,8 +1852,9 @@ abstract class REST_Controller extends CI_Controller {
         $key = $this->config->item('auth_source');
 
         // If falsy, then the user isn't logged in
-        $this->load->library('session');
-        if (!$this->session->userdata($key))
+        $this->load->driver('cache');
+        //$this->load->library('session');
+        if (!$this->cache->memcached->get($key))
         {
             // Display an error response
             $this->response([

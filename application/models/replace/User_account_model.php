@@ -12,10 +12,9 @@ class User_account_model extends CI_Model {
         $this->load->model('account_model','account');
     }
 
-    private function save_info($parm){
-        $this->load->driver('cache');
+    private function set_session($parm){
         foreach ($parm as $key => $value) {
-            $this->cache->memcached->save($key, $value);
+            $_SESSION[$key] = $value;
         }
     }
 
@@ -34,7 +33,7 @@ class User_account_model extends CI_Model {
             $this->account->insert($account_pram);
 
             $session_name = makeRandomSessionName(16);
-            $this->save_info(array($session_name=>$user_id));
+            $this->set_session(array($session_name=>$user_id));
         }
 
         return $session_name;
@@ -47,7 +46,7 @@ class User_account_model extends CI_Model {
             $uid = $user->id;
             
             $session_name = makeRandomSessionName(16);
-            $this->save_info(array($session_name=>$uid));
+            $this->set_session(array($session_name=>$uid));
             return $session_name;
         }
 

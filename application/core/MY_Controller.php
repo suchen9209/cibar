@@ -47,7 +47,8 @@ class App_Api_Controller extends REST_Controller
     }
 
     public function getUserId(){
-        $uid = $_SESSION[$this->get_session_name()];
+        $this->load->driver('cache');
+        $uid = $this->cache->memcached->get($this->get_session_name());
         return $uid;
     }
 

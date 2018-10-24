@@ -362,6 +362,8 @@ abstract class REST_Controller extends CI_Controller {
     {
     }
 
+    protected $session_name = '';
+
     /**
      * Constructor for the REST API
      *
@@ -404,7 +406,12 @@ abstract class REST_Controller extends CI_Controller {
         $this->load->config($config);
         if($session_name!= ''){
             $this->config->set_item('auth_source',$session_name); 
+            
+        }else{
+            $session_name = $this->input->post_get('3rd_session');
+            $this->config->set_item('auth_source',$session_name); 
         }
+        $this->session_name = $session_name;
         
 
         // At present the library is bundled with REST_Controller 2.5+, but will eventually be part of CodeIgniter (no citation)
@@ -2104,4 +2111,7 @@ abstract class REST_Controller extends CI_Controller {
             ->num_rows() > 0;
     }
 
+    public function get_session_name(){
+        return $this->session_name;
+    }
 }

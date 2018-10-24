@@ -5,10 +5,9 @@ class Index extends App_Api_Controller {
 
 	public function __construct(){
 
-		$session_name = $this->input->post_get('3rd_session');
 		//$session_name = 'user_id';
 		
-		parent::__construct('app_rest',$session_name);
+		parent::__construct('app_rest','user_id');
 		$this->load->model('function/user_account_model','user_account');
 	}
 

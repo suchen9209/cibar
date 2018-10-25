@@ -17,9 +17,18 @@ class Index extends App_Api_Controller {
 
 		//$uid = $this->input->get('uid');
 		//get_uid
-		$user_info = $this->user_account->get_user_info($uid);
+		if($uid){
+			$user_info = $this->user_account->get_user_info($uid);
 
-		$this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
+			$this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
+		}else{
+			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '用户信息', 'nothing'), parent::HTTP_OK);
+		}
+		
+	}
+
+	public function check_user_state(){
+		$this->response($this->getResponseData(parent::HTTP_OK, '是否允许', 1), parent::HTTP_OK);
 	}
 
 	public function pay(){

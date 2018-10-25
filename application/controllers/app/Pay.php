@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pay extends Test_Api_Controller {
+class Pay extends App_Api_Controller {
 
 	public function __construct(){
 

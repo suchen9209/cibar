@@ -33,6 +33,18 @@ class Appointment_model extends CI_Model {
     	}
     }
 
+    public function get_apoint_near_date($uid=0,$time){
+        $this->db->select('id');
+        $this->db->where('starttime <=',$time);
+        $this->db->where('endtime >=',$time);
+        $this->db->where('uid',$uid);
+        $this->db->from($this->table_name);
+
+        $query = $this->db->get();
+
+        return $query->row();
+    }
+
     /*
     *
     *

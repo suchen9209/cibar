@@ -15,7 +15,7 @@ class User_account_model extends CI_Model {
     private function save_info($parm){
         $this->load->driver('cache');
         foreach ($parm as $key => $value) {
-            $this->cache->memcached->save($key, $value);
+            $this->cache->memcached->save($key, $value, 60*60*48);
         }
     }
 
@@ -66,9 +66,6 @@ class User_account_model extends CI_Model {
 
         return $return_arr;
     }
-
-
-
     
 }
 ?>

@@ -65,3 +65,10 @@ function makeRandomSessionName($len){
 
 }
 
+
+function is_timestamp($timestamp) {
+    if(strtotime(date('Y-m-d H:i:s',$timestamp)) === $timestamp) {
+        return $timestamp;
+    } else return false;
+}
+

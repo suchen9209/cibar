@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Appointment extends Test_Api_Controller {
+class Appointment extends App_Api_Controller {
 
 	public function __construct(){
 

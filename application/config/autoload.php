@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'file','my_func');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('bar_settings');
 
 /*
 | -------------------------------------------------------------------

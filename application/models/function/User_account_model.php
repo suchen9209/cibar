@@ -10,6 +10,7 @@ class User_account_model extends CI_Model {
         $this->load->database();
         $this->load->model('user_model','user');
         $this->load->model('account_model','account');
+        $this->load->model('log_pay_model','log_pay');
     }
 
     private function save_info($parm){
@@ -65,6 +66,19 @@ class User_account_model extends CI_Model {
         $return_arr['level'] = '10';
 
         return $return_arr;
+    }
+
+    public function add_balance($uid,$parm){
+        if($uid != 0 && $parm){
+            $this->db->trans_start();
+
+            $this->log_pay->insert($parm);
+            $this->account->recharge($uid,$parm['money']);
+             
+            return $this->db->trans_complete();
+        }else{
+            return false;
+        }
     }
     
 }

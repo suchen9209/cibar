@@ -13,7 +13,6 @@ class User extends CI_Controller {
 		var_dump($_SESSION);
 		var_dump(checkUserLogin());
 		$user_info = $this->user->get_user_info(1);
-		var_dump($user_info);die;
 
 		$this->load->view('welcome_message');
 	}

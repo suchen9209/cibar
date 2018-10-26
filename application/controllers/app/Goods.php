@@ -18,7 +18,12 @@ class Goods extends App_Api_Controller {
 		$list = $this->goods->get_list();
 		$type_list = $this->good_type->get_list();
 
+		foreach ($list as $key => $value) {
+			$list[$key]['quantity'] = '0';
+		}
+
 		$return_arr['good_list'] = $list;
+		array_unshift($type_list,array('id'=>'0','name'=>'全部','status'=>'1'));
 		$return_arr['type'] = $type_list;
 
 		if($list && $type_list){

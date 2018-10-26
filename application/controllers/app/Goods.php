@@ -19,7 +19,7 @@ class Goods extends App_Api_Controller {
 		$type_list = $this->good_type->get_list();
 
 		foreach ($list as $key => $value) {
-			$list[$key]['quantity'] = '0';
+			$list[$key]['quantity'] = 0;
 		}
 
 		$return_arr['good_list'] = $list;

@@ -33,11 +33,23 @@ class Appointment_model extends CI_Model {
     	}
     }
 
+    public function get_appoint_indate($uid){
+        $this->db->select('*');
+        $this->db->where('uid',$uid);
+        $this->db->where('state',$this->config->item('appointment_status')['indate']);
+        $this->db->from($this->table_name);
+
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
+
     public function get_apoint_near_date($uid=0,$time){
         $this->db->select('id');
         $this->db->where('starttime <=',$time);
         $this->db->where('endtime >=',$time);
         $this->db->where('uid',$uid);
+        $this->db->where('state',$this->config->item('appointment_status')['indate']);
         $this->db->from($this->table_name);
 
         $query = $this->db->get();

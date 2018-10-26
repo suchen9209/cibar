@@ -72,3 +72,7 @@ function is_timestamp($timestamp) {
     } else return false;
 }
 
+function member_id($id){
+    return 'V'.date('Y').str_pad($id,5,"0",STR_PAD_LEFT);
+}
+

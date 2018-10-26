@@ -11,20 +11,30 @@ class Goods extends App_Api_Controller {
 		$this->load->model('log_expense_model','log_expense');
 		$this->load->model('account_model','account');
 		$this->load->model('good_type_model','good_type');
+		$this->load->model('function/user_account_model','user_account');
 	}
 
 	public function index(){
+		$uid = $this->getUserId();
+
+		$level = $this->user_account->get_member_level($uid);
+		$discount = $this->config->item('discount_level')[$level];
 
 		$list = $this->goods->get_list();
 		$type_list = $this->good_type->get_list();
 
 		foreach ($list as $key => $value) {
 			$list[$key]['quantity'] = 0;
+			$list[$key]['discount_price'] = round($value['price'] * $discount , 2);
 		}
 
 		$return_arr['good_list'] = $list;
 		array_unshift($type_list,array('id'=>'0','name'=>'全部','status'=>'1'));
 		$return_arr['type'] = $type_list;
+
+		$return_arr['show'] = $level > 0 ? true : false;
+
+		
 
 		if($list && $type_list){
 			$this->response($this->getResponseData(parent::HTTP_OK, '商品列表', $return_arr), parent::HTTP_OK);
@@ -59,19 +69,19 @@ class Goods extends App_Api_Controller {
 					$log_parm['goodid'] = $value->id;
 
 					$this->log_expense->insert($log_parm);
-					$total_money += $value->number * $value->price;
+					//$total_money += $value->number * $value->price;
 				}
 
-				if($total_money != $list->total){//核对金额
+
+				$this->account->expense($uid,$list->total);//账户扣款
+				$result =  $this->db->trans_complete();
+
+				if($result){//核对金额
+					//后续在此增加提醒订单的接口，用于与前台通信
+					$this->response($this->getResponseData(parent::HTTP_OK, '购买成功'), parent::HTTP_OK);
+				}else{
 					$this->db->trans_rollback();
 					$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '数额不匹配，刷新页面'), parent::HTTP_OK);
-				}else{
-					$this->account->expense($uid,$total_money);//账户扣款
-					$result =  $this->db->trans_complete();
-
-					//后续在此增加提醒订单的接口，用于与前台通信
-
-					$this->response($this->getResponseData(parent::HTTP_OK, '购买成功'), parent::HTTP_OK);
 				}
 			}else{
 				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '余额不足'), parent::HTTP_OK);

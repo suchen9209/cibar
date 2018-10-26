@@ -80,6 +80,20 @@ class User_account_model extends CI_Model {
             return false;
         }
     }
+
+    public function get_member_level($uid){
+        $member_level = $this->config->item('member_level');
+        $total = $this->account->get_info($uid)->total;
+        $level = $this->sorts($member_level,$total);
+
+        return $level;
+    }
+
+    public function sorts($stage_data,$stage_num){
+        array_push($stage_data, $stage_num);
+        sort($stage_data);
+        return array_search($stage_num, $stage_data);
+    }
     
 }
 ?>

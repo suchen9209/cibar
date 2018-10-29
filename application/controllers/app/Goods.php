@@ -46,29 +46,28 @@ class Goods extends App_Api_Controller {
 
 	public function buy(){
 		$uid = $this->getUserId();
-
-		var_dump($this->input->post_get('number'));
-		var_dump($this->input->post_get('cartList'));
-		die;
 		if($uid){
-			$list_json = $this->input->post_get('list_json');
+
+			$total = $this->input->post_get('number');
+			$list_json = $this->input->post_get('cartList');
+
 			$list = json_decode($list_json);
 
 			//执行事务 
 			//分商品计入消费log
 			//扣除账户余额
 			$acc = $this->account->get_info($uid);
-			if($acc->balance > $list->total){//先判断余额是否足够
+			if($acc->balance > $total){//先判断余额是否足够
 				$this->db->trans_start();
 				$total_money = 0;
-				foreach ($list->list as $key => $value) {//计入消费记录
+				foreach ($list as $key => $value) {//计入消费记录
 					$log_parm = [];
 					$log_parm['uid'] = $uid;
 					$log_parm['starttime'] = time();
 					$log_parm['starttime'] = time();
-					$log_parm['number'] = $value->number;
-					$log_parm['price'] = $value->price;
-					$log_parm['money'] = $value->number * $value->price;
+					$log_parm['number'] = $value->quantity;
+					$log_parm['price'] = $value->discount_price;
+					$log_parm['money'] = round($value->quantity * $value->discount_price,2);
 					$log_parm['type'] = $value->type;
 					$log_parm['goodid'] = $value->id;
 
@@ -77,7 +76,7 @@ class Goods extends App_Api_Controller {
 				}
 
 
-				$this->account->expense($uid,$list->total);//账户扣款
+				$this->account->expense($uid,$total);//账户扣款
 
 				if($this->db->trans_status() === FALSE){
 					$this->db->trans_rollback();

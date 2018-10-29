@@ -12,13 +12,8 @@ class Index extends App_Api_Controller {
 
 	public function index(){
 		$uid = $this->getUserId();
-		$level = $this->user_account->get_member_level($uid);
-		$member_id = member_id($uid);
-
 		if($uid){
 			$user_info = $this->user_account->get_user_info($uid);
-			$user_info['level'] = $level;
-			$user_info['memberid'] = $member_id;
 
 			$this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
 		}else{

@@ -45,8 +45,8 @@ class Appointment extends App_Api_Controller {
 						$appoint_parm['state'] = $this->config->item('appointment_status')['indate'];
 						$appoint_parm['starttime'] = $date;
 						$appoint_parm['endtime'] = $date + 3600*6;//默认预约6小时
-						$appoint_parm['type'] = $type;//默认预约6小时
-						$appoint_parm['number'] = $number;//默认预约6小时
+						$appoint_parm['type'] = $type;
+						$appoint_parm['number'] = $number;
 
 						if($this->appointment->insert($appoint_parm)){
 							$this->response($this->getResponseData(parent::HTTP_OK, '预约成功'), parent::HTTP_OK);
@@ -64,6 +64,16 @@ class Appointment extends App_Api_Controller {
 		}else{
 			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, 'error', '登录信息失效'), parent::HTTP_OK);
 		}
+
+	}
+
+	//查看我未完成的预约
+	public function appoint(){
+
+	}
+
+	//取消预约
+	public function cancel(){
 
 	}
 

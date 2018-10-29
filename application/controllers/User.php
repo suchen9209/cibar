@@ -19,7 +19,7 @@ class User extends CI_Controller {
 
 	public function forcelogin(){
 		
-		$this->session->user_id = 1;
+		$this->session->user_id = 5;
 		var_dump($this->session);
     }
 

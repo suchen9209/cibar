@@ -21,17 +21,20 @@ class User_account_model extends CI_Model {
     }
 
     public function register($type,$parm){
+        $time = time();
         if($type == 'wx'){
             $insert_parm = array();
-            $insert_parm['regtime'] = time();
-            $insert_parm['lasttime'] = time();
+            $insert_parm['regtime'] = $time;
+            $insert_parm['lasttime'] = $time;
             $insert_parm['wxid'] = $parm['openid'];
             $insert_parm['wxunionid'] = $parm['unionid'];
             $user_id = $this->user->insert($insert_parm);
+            $username = member_id($user_id,$time);
+            $this->user->update($user_id,array('username'=>$username));
 
             $account_pram['uid'] =$user_id;
-            $account_pram['regtime'] = time();
-            $account_pram['lasttime'] = time();
+            $account_pram['regtime'] = $time;
+            $account_pram['lasttime'] = $time;
             $this->account->insert($account_pram);
 
             $session_name = makeRandomSessionName(16);
@@ -61,9 +64,11 @@ class User_account_model extends CI_Model {
         $return_arr['name'] = $user_info->name;
         $return_arr['wxid'] = $user_info->wxid;
         $return_arr['balance'] = $account_info->balance;
+        $return_arr['regtime'] = $user_info->regtime;
+        $return_arr['username'] = $user_info->username;
 
         //会员系统保留字段
-        $return_arr['level'] = '10';
+        $return_arr['level'] = $this->get_member_level($uid);
 
         return $return_arr;
     }

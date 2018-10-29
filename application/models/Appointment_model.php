@@ -16,8 +16,14 @@ class Appointment_model extends CI_Model {
 
     public function update($id, $parm)
     {
-        $this->db->where('id', $uid);
+        $this->db->where('id', $id);
         $this->db->update($this->table_name, $parm);
+        return $this->db->affected_rows();
+    }
+
+    public function delete_by_id($id) {
+        $this->db->where('id', $id);
+        $this->db->delete($this->table_name);
         return $this->db->affected_rows();
     }
 

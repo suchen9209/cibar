@@ -10,6 +10,7 @@ class Appointment extends App_Api_Controller {
 		$this->load->model('function/user_account_model','user_account');
 		$this->load->model('log_pay_model','log_pay');
 		$this->load->model('appointment_model','appointment');
+		$this->load->model('function/machine_model','machine');
 	}
 
 	public function index(){
@@ -22,14 +23,13 @@ class Appointment extends App_Api_Controller {
 				//判断此人是否预约过
 				if($this->appointment->get_apoint_near_date($uid,$date)){
 					$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '已预约过相似时间段'), parent::HTTP_OK);
-
 				}else{
 					//判断时间段是否满了
 					//对应选择的时间段和座位类型，当前的预约人数
 					$appointment_num = $this->appointment->get_appointnum_in_date_and_number($date,$type,$number);
 
 					//获取当前选择类型机器总数，后期补充,暂时写死
-					$num = 3;
+					$num = $this->machine->get_machine_number($type,$number);
 
 					if($type == $this->config->item('seat_type')['seat']){
 						$j = $number + $appointment_num;
@@ -67,6 +67,10 @@ class Appointment extends App_Api_Controller {
 
 	}
 
+	private function appoint_logic(){
+
+	}
+
 	//查看我未完成的预约
 	public function appoint(){
 
@@ -74,6 +78,21 @@ class Appointment extends App_Api_Controller {
 
 	//取消预约
 	public function cancel(){
+		$uid = $this->getUserId();
+		if($uid){
+			$appoint_id = $this->input->post_get('appoint_id');
+			if($this->appointment->update($appoint_id,array('state'=>$this->config->item('appointment_status')['cancel']))){
+				$this->response($this->getResponseData(parent::HTTP_OK, '取消成功'), parent::HTTP_OK);
+			}else{
+				$this->response($this->getResponseData(parent::HTTP_OK, '取消失败'), parent::HTTP_OK);
+			}
+		}else{
+			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, 'error', '登录信息失效'), parent::HTTP_OK);
+		}
+	}
+
+	//修改预约
+	public function change(){
 
 	}
 

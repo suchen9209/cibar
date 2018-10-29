@@ -46,6 +46,10 @@ class Goods extends App_Api_Controller {
 
 	public function buy(){
 		$uid = $this->getUserId();
+
+		var_dump($this->input->post_get('number'));
+		var_dump($this->input->post_get('cartList'));
+		die;
 		if($uid){
 			$list_json = $this->input->post_get('list_json');
 			$list = json_decode($list_json);
@@ -74,14 +78,14 @@ class Goods extends App_Api_Controller {
 
 
 				$this->account->expense($uid,$list->total);//账户扣款
-				$result =  $this->db->trans_complete();
 
-				if($result){//核对金额
+				if($this->db->trans_status() === FALSE){
+					$this->db->trans_rollback();
+					$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '购买失败'), parent::HTTP_OK);
+				}else{
+					$this->db->trans_complete();
 					//后续在此增加提醒订单的接口，用于与前台通信
 					$this->response($this->getResponseData(parent::HTTP_OK, '购买成功'), parent::HTTP_OK);
-				}else{
-					$this->db->trans_rollback();
-					$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '数额不匹配，刷新页面'), parent::HTTP_OK);
 				}
 			}else{
 				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '余额不足'), parent::HTTP_OK);

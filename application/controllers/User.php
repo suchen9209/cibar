@@ -30,7 +30,7 @@ class User extends CI_Controller {
 
     public function clean_memcache(){
         $this->load->driver('cache');
-        $this->cache->memcached->save('service', [], 60*60*48);
+        $this->cache->memcached->save('service', json_encode([]), 60*60*48);
     }
 
     public function forcelogout(){

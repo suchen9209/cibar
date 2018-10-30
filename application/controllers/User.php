@@ -28,6 +28,10 @@ class User extends CI_Controller {
 		var_dump($this->session);
     }
 
+    public function clean_memcache(){
+        $this->cache->memcached->save('service', [], 60*60*48);
+    }
+
     public function forcelogout(){
     	session_destroy();
     }

@@ -23,7 +23,6 @@ class Service extends App_Api_Controller {
 		}else{
 			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '登录信息失效，请重新登录'), parent::HTTP_OK);
 		}
-		
 	}
 
 }

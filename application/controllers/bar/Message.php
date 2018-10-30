@@ -9,8 +9,9 @@ class Message extends CI_Controller {
 
         $this->load->driver('cache');
         $service_json = $this->cache->memcached->get('service');
-        
-        echo "data: {$service_json}";
+
+        $time = date('r');
+        echo "data: The server time is: {$time} {$service_json}\n\n";
         flush();
 
 	}

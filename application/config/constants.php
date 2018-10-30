@@ -93,3 +93,6 @@ define('ADMIN_DIR','bar'); //管理后台目录名称
 define('ADMIN_PATH',$http_protocol.HTTP_HOST.'/'.ADMIN_DIR); //后台路径
 
 
+define('STYLE_PATH', $http_protocol.HTTP_HOST.'/style'); //前台样式文件路径
+
+

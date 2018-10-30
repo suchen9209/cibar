@@ -20,6 +20,11 @@ class User extends CI_Controller {
 	public function forcelogin(){
 		
 		$this->session->user_id = 5;
+        $this->load->driver('cache');
+        $json = json_encode(array(50,66));
+        $this->cache->memcached->save('service', $json, 60*60*48);
+
+        var_dump($this->cache->memcached->get('service'));
 		var_dump($this->session);
     }
 

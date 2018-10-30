@@ -18,7 +18,14 @@ class Service_function_model extends CI_Model {
         $service_json = $this->cache->memcached->get($this->$service_memcached_name);
         if($service_json){
             $service = json_decode($service_json,true);
-            $service[]= $seat_info; 
+            $key = array_search($seat_info, $service);
+            if ($key !== false){//二次呼叫移至头部
+                array_splice($service, $key, 1);
+                array_unshift($service, $seat_info);
+            }else{
+                $service[]= $seat_info; 
+            }
+            
         }else{
             $service = array($seat_info);
         }

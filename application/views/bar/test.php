@@ -13,7 +13,7 @@
 var source=new EventSource("/bar/message");
 source.onmessage=function(event){
 	$("#result").html($("#result").html()+event.data + "<br />");
-	alert(1);
+	console.log(1);
 };
 </script>
 

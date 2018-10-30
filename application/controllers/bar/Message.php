@@ -5,12 +5,11 @@ class Message extends CI_Controller {
 
 	public function index(){        
         header('Content-Type: text/event-stream');
-        header('Cache-Control: no-cache');
 
         $this->load->driver('cache');
         $first = true;
 
-        while (1) {
+        while (true) {
             $service_json_recent = $this->cache->memcached->get('service_recent');
             $service_json = $this->cache->memcached->get('service');
 
@@ -25,8 +24,6 @@ class Message extends CI_Controller {
                 //do nothing
             }
 
-
-            sleep(1);
         }
 
 	}

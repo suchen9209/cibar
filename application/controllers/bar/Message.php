@@ -11,7 +11,7 @@ class Message extends CI_Controller {
         $service_json = $this->cache->memcached->get('service');
 
         $time = date('r');
-        echo "data: {$service_json}";
+        echo "data: The server time is: {$time} {$service_json}\n\n";
         flush();
 
 	}

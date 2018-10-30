@@ -16,7 +16,7 @@ class Message extends CI_Controller {
             $service_json = $this->cache->memcached->get('service');
 
             if($service_json_recent != $service_json){//和之前的信息有区别时发送信息 或首次打开
-                $this->cache->memcached->save('service_recent',$service_json);
+                $this->cache->memcached->save('service_recent',$service_json,30);
                 echo "data: {$service_json}\n\n";
                 ob_flush();
                 flush();
@@ -36,7 +36,7 @@ class Message extends CI_Controller {
 
     public function random_service(){
         $this->load->driver('cache');
-        $this->cache->memcached->save('service',mt_rand());
+        $this->cache->memcached->save('service',mt_rand(),3600*24);
     }
 
 }

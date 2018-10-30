@@ -73,6 +73,7 @@ function is_timestamp($timestamp) {
 }
 
 function member_id($id,$time){
-    return 'V'.date('Y',$time).str_pad($id,6,"0",STR_PAD_LEFT);
+    return 'V'.date('y',$time).str_pad($id,6,"0",STR_PAD_LEFT);
 }
 
+    

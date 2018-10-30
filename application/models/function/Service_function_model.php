@@ -15,7 +15,7 @@ class Service_function_model extends CI_Model {
 
     public function call_service($uid){
         $seat_info = $this->user_seat->get_seat($uid);
-        $service_json = $this->cache->memcached->get($this->$service_memcached_name);
+        $service_json = $this->cache->memcached->get($this->service_memcached_name);
         if($service_json){
             $service = json_decode($service_json,true);
             $key = array_search($seat_info, $service);
@@ -30,24 +30,24 @@ class Service_function_model extends CI_Model {
             $service = array($seat_info);
         }
         
-        return $this->cache->memcached->save($this->$service_memcached_name,json_encode($service),3600*24);
+        return $this->cache->memcached->save($this->service_memcached_name,json_encode($service),3600*24);
     }
 
     public function remove_service($uid){
         $seat_info = $this->user_seat->get_seat($uid);
-        $service_json = $this->cache->memcached->get($this->$service_memcached_name);
+        $service_json = $this->cache->memcached->get($this->service_memcached_name);
         $service = json_decode($service_json,true);
 
         $key = array_search($seat_info, $service);
         if ($key !== false){
             array_splice($service, $key, 1);
         }
-        return $this->cache->memcached->save($this->$service_memcached_name,json_encode($service),3600*24);
+        return $this->cache->memcached->save($this->service_memcached_name,json_encode($service),3600*24);
     }
 
 
     public function get_all_service(){
-        $service_json = $this->cache->memcached->get($this->$service_memcached_name);
+        $service_json = $this->cache->memcached->get($this->service_memcached_name);
 
         return $service_json;
     }

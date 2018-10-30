@@ -12,7 +12,7 @@ class User_seat_model extends CI_Model {
 
     //通过用户id获取座位号
     public function get_seat($id){
-        return 100;
+        return rand();
     }
 
 }

@@ -52,6 +52,10 @@ class Service_function_model extends CI_Model {
         return $service_json;
     }
 
+    public function get_active_service(){
+        
+    }
+
 
 }
 ?>

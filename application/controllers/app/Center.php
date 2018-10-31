@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Center extends Test_Api_Controller {
+class Center extends App_Api_Controller {
 
 	public function __construct(){
 

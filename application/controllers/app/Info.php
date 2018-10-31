@@ -27,9 +27,9 @@ class Info extends CI_Controller {
         );
 
         $return_arr['wifi'] = array(
-            'account'   :   'IMBATV',
-            'bssid'     :   '08:9b:4b:91:32:58',
-            'password'  :   'imbaadmin'
+            'account'   =>   'IMBATV',
+            'bssid'     =>   '08:9b:4b:91:32:58',
+            'password'  =>   'imbaadmin'
         );
 
         echo json_encode($return_arr);

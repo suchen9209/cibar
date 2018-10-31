@@ -13,6 +13,22 @@ class MY_Controller extends CI_Controller
 	
 }//end MY_Controller
 
+class Admin_Controller extends CI_Controller
+{
+    public function __construct()
+    {
+
+        parent::__construct();  
+        checkAdminLogin();
+        if(!checkAdminLogin()){
+            echo '未登录';
+            die;
+        }
+    }//end __construct()
+
+    
+}//end MY_Controller
+
 require_once __MYDIR__.'/application/libraries/REST_Controller.php';
 
 class App_Api_Controller extends REST_Controller
@@ -95,4 +111,41 @@ class Test_Api_Controller extends REST2_Controller
 
 
 }
+
+
+class Admin_Api_Controller extends REST2_Controller
+{
+    protected $messageMap = [
+        parent::HTTP_OK => '数据获取成功', //200
+        parent::HTTP_CREATED => '添加成功', //201
+        parent::HTTP_BAD_REQUEST => '缺少参数或参数错误', //400
+        parent::HTTP_NOT_FOUND => '暂无数据', //404
+        parent::HTTP_UNPROCESSABLE_ENTITY=>'添加失败', //422
+        parent::HTTP_CONFLICT=>'已存在' //409
+    ];
+
+    function __construct($config='admin_rest'){
+        parent::__construct('admin_rest');
+        date_default_timezone_set("Asia/Shanghai");
+    }
+
+    /**
+     * @param $code 状态码
+     * @param string $message 提示信息 支持自定义，null表示使用messageMap
+     * @param array $data 响应数据
+     * @return array response信息
+     */
+    public function getResponseData($code , $message = '' , $data = null)
+    {
+        return [
+            'code' => $code,
+            'message' => $message ? $message : $this->messageMap[$code],
+            'data' => $data
+        ];
+    }
+
+
+
+}
+
 

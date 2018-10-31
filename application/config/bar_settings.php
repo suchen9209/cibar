@@ -12,8 +12,18 @@ $config["log_pay_type"] = array(
 
 //机器的分布类型
 $config['machine_type'] = array(
-	'sanzuo'	=>	1,//散座
-	'4ren'		=>	2,
+	1	=>	'散座',//散座
+	2	=>	'5人包厢（环型）',
+	3	=>	'5人包厢（线型）',
+	4	=>	'6人包厢',
+	5	=>	'10人包厢',
+	6	=>	'20人包厢'
+);
+
+//机器硬件状态，是否能够使用
+$config['machine_hardware_status'] = array(
+	1	=>	'正常',
+	2	=>	'损坏'
 );
 
 //预约状态

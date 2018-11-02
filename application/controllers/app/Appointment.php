@@ -47,7 +47,7 @@ class Appointment extends App_Api_Controller {
 						$appoint_parm['createtime'] = time();
 						$appoint_parm['state'] = $this->config->item('appointment_status')['indate'];
 						$appoint_parm['starttime'] = $date;
-						$appoint_parm['endtime'] = $date + 3600*$time;//默认预约6小时
+						$appoint_parm['endtime'] = $date + 3600*$time;
 						$appoint_parm['type'] = $type;
 						$appoint_parm['number'] = $number;
 

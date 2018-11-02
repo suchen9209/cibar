@@ -15,19 +15,6 @@ class Goods_model extends CI_Model {
         return $query->result_array();
     }
 
-
-    public function get_info($key,$value){
-        if($key && $value){
-            $this->db->select('*');
-            $this->db->where($key , $value);
-            $this->db->from($this->table_name);
-            $query = $this->db->get();
-            return $query->row();
-        }else{
-            return false;
-        }
-    }
-
     
 }
 ?>

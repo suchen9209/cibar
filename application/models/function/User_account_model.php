@@ -11,6 +11,7 @@ class User_account_model extends CI_Model {
         $this->load->model('user_model','user');
         $this->load->model('account_model','account');
         $this->load->model('log_pay_model','log_pay');
+        $this->load->model('active_status_model','active_status');
     }
 
     private function save_info($parm){
@@ -60,6 +61,7 @@ class User_account_model extends CI_Model {
     public function get_user_info($uid){
         $user_info = $this->user->get_user_info($uid);
         $account_info = $this->account->get_info($uid);
+        $active_status = $this->active_status->get_info_uid($uid);
         $return_arr['uid'] = $user_info->id;
         $return_arr['name'] = $user_info->name;
         $return_arr['wxid'] = $user_info->wxid;
@@ -67,6 +69,11 @@ class User_account_model extends CI_Model {
         $return_arr['balance'] = $account_info->balance;
         $return_arr['regtime'] = $user_info->regtime;
         $return_arr['username'] = $user_info->username;
+        if($active_status){
+            $return_arr['active'] = true;
+        }else{
+            $return_arr['active'] = false;
+        }
 
         //会员系统保留字段
         $return_arr['level'] = $this->get_member_level($uid);

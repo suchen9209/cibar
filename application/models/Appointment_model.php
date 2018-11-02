@@ -33,7 +33,7 @@ class Appointment_model extends CI_Model {
 
         $query = $this->db->get();
 
-        return return $query->num_rows() > 0 ? $query->result_array() : false;
+        return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
     public function get_apoint_near_date($uid=0,$time){

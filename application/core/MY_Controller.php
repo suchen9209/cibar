@@ -19,10 +19,8 @@ class Admin_Controller extends CI_Controller
     {
 
         parent::__construct();  
-        checkAdminLogin();
         if(!checkAdminLogin()){
-            echo '未登录';
-            die;
+            redirect(ADMIN_PATH.'/login_page');
         }
     }//end __construct()
 
@@ -125,6 +123,7 @@ class Admin_Api_Controller extends REST2_Controller
     ];
 
     function __construct($config='admin_rest'){
+        header('Access-Control-Allow-Origin:*');
         parent::__construct('admin_rest');
         date_default_timezone_set("Asia/Shanghai");
     }

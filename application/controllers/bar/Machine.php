@@ -1,12 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Main extends Admin_Controller {
+class Machine extends Admin_Controller {
 
     public function __construct(){
         parent::__construct();
 
         $this->load->model('machine_model','machine');
+        $this->load->model('machine_info_model','machine_info');
+        $this->load->model('active_status_model','active_status');
 
     }
 
@@ -25,8 +27,23 @@ class Main extends Admin_Controller {
         if($action == 'insert'){
             $parm = $_POST;
             unset($parm['submit']);
-            $this->machine->insert($parm);
-            redirect(MACHINE_PATH.'/main');
+
+            $this->db->trans_start();
+            $machine_id = $this->machine->insert($parm);
+
+            $info_parm = array('machine_id'=>$machine_id,'machine_info'=>'预留位置','ip'=>$parm['ip'],'mac'=>'mac地址');
+            $this->machine_info->insert($info_parm);
+
+            $active_parm = array('mid'=>$machine_id,'state'=>1);
+            $this->active_status->insert($active_parm);
+
+            if($this->db->trans_status() === FALSE){
+                $this->db->trans_rollback();   //增加失败，回滚
+            }else{
+                $this->db->trans_complete();
+            }
+
+            redirect(ADMIN_PATH.'/machine');
             exit();
         }
         
@@ -39,7 +56,7 @@ class Main extends Admin_Controller {
             $parm = $_POST;
             unset($parm['submit']);
             $this->machine->update($id,$parm);
-            redirect(MACHINE_PATH.'/main');
+            redirect(ADMIN_PATH.'/machine');
             exit();
         }
         

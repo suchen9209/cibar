@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>修改</h1>
-    <form action='<?=MACHINE_PATH?>/main/update/<?=$data->id?>?action=update' method="post">
+    <form action='<?=ADMIN_PATH?>/machine/update/<?=$data->id?>?action=update' method="post">
         <label>机器编号</label><input type="text" name="machine_name" value="<?=$data->machine_name?>" />
         <label>IP</label><input type="text" name="ip" value="<?=$data->ip?>" />
         <label>房间类型</label>
@@ -21,6 +21,7 @@
             <?php endforeach;?>
         </select>
         <label>位置</label><input type="text" name="position" value="<?=$data->position?>" />
+        <label>包厢标识</label><input type="text" name="box_id" value="<?=$data->box_id?>" />
         <input type="submit" name="submit"/>
     </form>
 

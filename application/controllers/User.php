@@ -21,6 +21,7 @@ class User extends CI_Controller {
 		
 		$this->session->user_id = 5;
         $this->session->uid = 3;
+        $this->session->admin_id = 3;
 		var_dump($this->session);
     }
 

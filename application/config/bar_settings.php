@@ -5,8 +5,28 @@
  */
 $config["log_pay_type"] = array(
 	"wx"		=>	1,
-	"bar"		=>	2,
-	"alipay"	=>	3
+	"scan"		=>	2,
+	"cash"		=>	3,
+	"pos"		=>	4,
+	"gift"		=>	5,
+	"meituan"	=>	6
+);
+
+//acitve_status表中status字段含义
+$config['active_status'] = array(
+	0	=>	'初始入库',
+	1	=>	'空闲',
+	2	=>	'正在使用'
+);
+
+//log_login中login_logout的含义
+$config['log_login'] = array(
+	'login'		=>	1,
+	'logout'	=>	2
+);
+//log_login中type的含义
+$config['log_login_type'] = array(
+	'bar'		=>	1//暂时只有吧台上下机一种
 );
 
 

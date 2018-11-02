@@ -1,25 +1,11 @@
-<?php 
+<?php
 class Appointment_model extends CI_Model {
-
-	private $table_name = 'appointment';
 
     public function __construct()
     {
-        $this->load->database();
+        parent::__construct('appointment','id');
     }
 
-    public function insert($parm)
-    {
-        $this->db->insert($this->table_name, $parm);
-        return $this->db->insert_id();
-    }
-
-    public function update($id, $parm)
-    {
-        $this->db->where('id', $id);
-        $this->db->update($this->table_name, $parm);
-        return $this->db->affected_rows();
-    }
 
     public function delete_by_id($id) {
         $this->db->where('id', $id);
@@ -33,7 +19,7 @@ class Appointment_model extends CI_Model {
     		$this->db->where('uid', $uid);
     		$this->db->from($this->table_name);
     		$query = $this->db->get();
-    		return $query->result_array();
+    		return $query->num_rows() > 0 ? $query->result_array() : false;
     	}else{
     		return false;
     	}
@@ -47,7 +33,7 @@ class Appointment_model extends CI_Model {
 
         $query = $this->db->get();
 
-        return $query->result_array();
+        return return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
     public function get_apoint_near_date($uid=0,$time){
@@ -81,7 +67,7 @@ class Appointment_model extends CI_Model {
             $query = $this->db->get();
             return $query->row()->number;
 
-        }else if($type == $this->config->item('seat_type')['box']){//包厢  
+        }else if($type == $this->config->item('seat_type')['box']){//包厢
 
             $this->db->select('count(id) number');
             $this->db->where('number',$number);
@@ -94,6 +80,6 @@ class Appointment_model extends CI_Model {
 
     }
 
-    
+
 }
 ?>

@@ -1,37 +1,9 @@
 <?php 
 class Machine_model extends CI_Model {
 
-	private $table_name = 'machine';
-
     public function __construct()
     {
-        $this->load->database();
-    }
-
-    public function insert($parm)
-    {
-        $this->db->insert($this->table_name, $parm);
-        return $this->db->insert_id();
-    }
-
-    public function update($id, $parm)
-    {
-        $this->db->where('id', $id);
-        $this->db->update($this->table_name, $parm);
-        return $this->db->affected_rows();
-    }
-
-
-    public function get_info($id=0){
-    	if($id!=0){
-    		$this->db->select('*');
-    		$this->db->where('id', $id);
-    		$this->db->from($this->table_name);
-    		$query = $this->db->get();
-    		return $query->row();
-    	}else{
-    		return false;
-    	}
+        parent::__construct('machine','id');
     }
 
     public function get_machine_list($page,$num,$option=array()){
@@ -43,7 +15,19 @@ class Machine_model extends CI_Model {
         }
         $query = $this->db->get($this->table_name);
         return $query->num_rows() > 0 ? $query->result_array() : false;
+    }
 
+    public function get_active_machine($type=0){
+        $this->db->select('*');
+        $this->db->join('active_status','active_status.mid = machine.id','left');
+        $this->db->where('active_status.state',1);
+        $this->db->where('machine.status',1);
+        if($type > 0){
+            $this->db->where('machine.type',$type);
+        }
+        $query = $this->db->get($this->table_name);
+
+        return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
     

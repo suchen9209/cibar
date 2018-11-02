@@ -1,36 +1,17 @@
 <?php 
 class Adminuser_model extends CI_Model {
 
-	private $table_name = 'adminuser';
-
     public function __construct()
     {
-        $this->load->database();
+        parent::__construct('adminuser','id');
     }
 
-    public function insert($parm)
-    {
-        $this->db->insert($this->table_name, $parm);
-        return $this->db->insert_id();
-    }
+    public function get_info_by_username($username){
+        $this->db->select('*');
+        $this->db->where('username',$username);
+        $query = $this->db->get($this->table_name);
 
-    public function update($id, $parm)
-    {
-        $this->db->where('id', $id);
-        $this->db->update($this->table_name, $parm);
-        return $this->db->affected_rows();
-    }
-
-    public function get_user_info($id=0){
-    	if($id!=0){
-    		$this->db->select('*');
-    		$this->db->where('id', $id);
-    		$this->db->from($this->table_name);
-    		$query = $this->db->get();
-    		return $query->row();
-    	}else{
-    		return false;
-    	}
+        return $query->row();
     }
 
     public function get_admin_list($page,$num,$option=array()){

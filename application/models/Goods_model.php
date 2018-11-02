@@ -1,25 +1,11 @@
 <?php 
 class Goods_model extends CI_Model {
 
-	private $table_name = 'goods';
-
     public function __construct()
     {
-        $this->load->database();
+        parent::__construct('goods','id');
     }
 
-    public function insert($parm)
-    {
-        $this->db->insert($this->table_name, $parm);
-        return $this->db->insert_id();
-    }
-
-    public function update($id, $parm)
-    {
-        $this->db->where('id', $id);
-        $this->db->update($this->table_name, $parm);
-        return $this->db->affected_rows();
-    }
 
     public function get_list($status = 1){
         $this->db->select('*');

@@ -1,17 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Main extends CI_Controller {
+class Main extends Admin_Controller {
+
+    public function __construct(){
+        parent::__construct();
+    }
 
 	public function index()
 	{
-		var_dump(checkAdminLogin());
-		echo 1;die;
-		if(!check_admin_user_login()){
-			$this->load->view('bar/login');
-			exit();
-		}
-		$this->load->view('welcome_message');
+
+        $this->load->view('bar/admin/index');
+
+		
 	}
 
 	 /**
@@ -23,8 +24,9 @@ class Main extends CI_Controller {
      */
     public function login()
     {
+        $action = $this->input->get('login');
+        if($action == 'login'){
             $user_name = $this->input->post('username');
-
             $user_pass = $this->input->post('password');
             $res = $this->sys_users->get_info_by_username($user_name);
             $salt = '0xdeadbeef';
@@ -36,7 +38,11 @@ class Main extends CI_Controller {
                     $_SESSION['role']       =   $res[0]['role'];
                 }
             }
-        redirect(ADMIN_PATH);
+            redirect(ADMIN_PATH);
+        }
+
+        $this->load->view('bar/login');
+        
     }
 
     /**

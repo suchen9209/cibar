@@ -48,6 +48,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class CI_Model {
 
+	public $table_name = '';
+    public $primary_key = '';
+
+    public function __construct($table_name,$primary_key)
+    {
+        $this->load->database();
+        $this->table_name = $table_name;
+        $this->primary_key = $primary_key;
+    }
+
 	/**
 	 * __get magic
 	 *
@@ -64,5 +74,30 @@ class CI_Model {
 		//	most likely a typo in your model code.
 		return get_instance()->$key;
 	}
+
+	public function insert($parm)
+    {
+        $this->db->insert($this->table_name, $parm);
+        return $this->db->insert_id();
+    }
+
+    public function update($id, $parm)
+    {
+        $this->db->where($this->primary_key, $id);
+        $this->db->update($this->table_name, $parm);
+        return $this->db->affected_rows();
+    }
+
+    public function get_info($id=0){
+    	if($id!=0){
+    		$this->db->select('*');
+    		$this->db->where($this->primary_key, $id);
+    		$this->db->from($this->table_name);
+    		$query = $this->db->get();
+    		return $query->row();
+    	}else{
+    		return false;
+    	}
+    }
 
 }

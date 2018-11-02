@@ -19,6 +19,7 @@ class Appointment extends App_Api_Controller {
 			$date = intval($this->input->post_get('date'));
 			$type = $this->input->post_get('type');//散座还是包厢
 			$number = $this->input->post_get('number');//人数
+			$time = intval($this->input->post_get('date'));
 			if(is_timestamp($date) && in_array($type, $this->config->item('seat_type')) && is_numeric($number)){
 				//判断此人是否预约过
 				if($this->appointment->get_apoint_near_date($uid,$date)){
@@ -44,7 +45,7 @@ class Appointment extends App_Api_Controller {
 						$appoint_parm['createtime'] = time();
 						$appoint_parm['state'] = $this->config->item('appointment_status')['indate'];
 						$appoint_parm['starttime'] = $date;
-						$appoint_parm['endtime'] = $date + 3600*6;//默认预约6小时
+						$appoint_parm['endtime'] = $date + 3600*$time;//默认预约6小时
 						$appoint_parm['type'] = $type;
 						$appoint_parm['number'] = $number;
 
@@ -55,9 +56,6 @@ class Appointment extends App_Api_Controller {
 						}
 					}			
 				}
-
-
-
 			}else{
 				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, 'error', '参数错误'), parent::HTTP_OK);
 			}

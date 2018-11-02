@@ -1,30 +1,15 @@
 <?php 
 class User_model extends CI_Model {
 
-	private $table_name = 'user';
-
     public function __construct()
     {
-        $this->load->database();
-    }
-
-    public function insert($parm)
-    {
-        $this->db->insert($this->table_name, $parm);
-        return $this->db->insert_id();
-    }
-
-    public function update($id, $parm)
-    {
-        $this->db->where('id', $id);
-        $this->db->update($this->table_name, $parm);
-        return $this->db->affected_rows();
+        parent::__construct('user','id');
     }
 
     public function get_user_info($id=0){
     	if($id!=0){
     		$this->db->select('*');
-    		$this->db->where('id', $id);
+    		$this->db->where($this->primary_key, $id);
     		$this->db->from($this->table_name);
     		$query = $this->db->get();
     		return $query->row();
@@ -43,7 +28,7 @@ class User_model extends CI_Model {
         }
     }
 
-    public function get_info($key,$value){
+    public function get_info_u($key,$value){
         if($key && $value){
             $this->db->select('*');
             $this->db->where($key , $value);

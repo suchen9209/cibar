@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>后台登录</h1>
-    <form action='<?=ADMIN_PATH?>/main/login' method="post">
+    <form action='<?=ADMIN_PATH?>/login_page?action=login' method="post">
         <input type="text" name="username" />
         <input type="password" name="password" />
         <input type="submit" name="submit"/>

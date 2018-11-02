@@ -19,7 +19,7 @@ function checkUserLogin()
 function checkAdminLogin()
 {
 	$isLogin = false;
-	if (!isset($_SESSION['uid']) || empty($_SESSION['uid']))
+	if (!isset($_SESSION[ADMIN_SESSION_NAME]) || empty($_SESSION[ADMIN_SESSION_NAME]))
     {
         $isLogin = false;
     }
@@ -74,6 +74,10 @@ function is_timestamp($timestamp) {
 
 function member_id($id,$time){
     return 'V'.date('y',$time).str_pad($id,6,"0",STR_PAD_LEFT);
+}
+
+function password_md5($pw){
+    return md5($pw.'imbatv');
 }
 
     

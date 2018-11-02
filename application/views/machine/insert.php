@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>增加新机器</h1>
-    <form action='<?=MACHINE_PATH?>/main/insert?action=insert' method="post">
+    <form action='<?=ADMIN_PATH?>/machine/insert?action=insert' method="post">
         <label>机器编号</label><input type="text" name="machine_name" />
         <label>IP</label><input type="text" name="ip" />
         <label>房间类型</label>
@@ -16,6 +16,7 @@
             <?php endforeach;?>
         </select>
         <label>位置</label><input type="text" name="position" />
+        <label>包厢标识</label><input type="text" name="box_id" />
         <input type="submit" name="submit"/>
     </form>
 

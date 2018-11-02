@@ -41,7 +41,7 @@ class Appointment extends App_Api_Controller {
 					}
 
 					if($j > $num){//满了，返回已预约，请选择其他
-						$this->response($this->getResponseData(parent::HTTP_OK, '预约失败,该类型已满'), parent::HTTP_OK);
+						$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '预约失败,该类型已满'), parent::HTTP_OK);
 					}else{//没满，录入预约记录
 						$appoint_parm['uid'] = $uid;
 						$appoint_parm['createtime'] = time();
@@ -54,7 +54,7 @@ class Appointment extends App_Api_Controller {
 						if($this->appointment->insert($appoint_parm)){
 							$this->response($this->getResponseData(parent::HTTP_OK, '预约成功'), parent::HTTP_OK);
 						}else{
-							$this->response($this->getResponseData(parent::HTTP_OK, '预约失败，请联系服务员'), parent::HTTP_OK);
+							$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '预约失败，请联系服务员'), parent::HTTP_OK);
 						}
 					}			
 				}

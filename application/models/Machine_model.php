@@ -30,6 +30,36 @@ class Machine_model extends CI_Model {
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
+    public function get_machine_number($type,$number){
+        if($type == 1){
+            $this->db->select('count(*) as num');
+            $this->db->where('machine.status',1);
+            $this->db->where('machine.type',1);
+            $query = $this->db->get($this->table_name);
+            return $query->row()->num;
+        }else{
+            $number = intval($number);
+            $sql = "SELECT COUNT(DISTINCT `box_id`) as num FROM `machine` WHERE ";
+            switch ($number) {
+                case 5:
+                    $sql.= "`type` = 2 or `type` = 3 ";
+                    break;
+                case 6:
+                    $sql.= "`type` = 4 ";
+                    break;
+                case 10:
+                    $sql.= "`type` = 5 ";
+                    break;
+                case 20:
+                    $sql.= "`type` = 6 ";
+                    break;
+            }
+
+            $query =$this->db->query($sql);
+            return $query->row()->num;
+        }
+    }
+
     
 }
 ?>

@@ -19,7 +19,7 @@ class Appointment extends App_Api_Controller {
 			$date = intval($this->input->post_get('date'));
 			$type = $this->input->post_get('type');//散座还是包厢
 			$number = $this->input->post_get('number');//人数
-			$time = intval($this->input->post_get('date'));
+			$time = intval($this->input->post_get('time'));
 			if(is_timestamp($date) && in_array($type, $this->config->item('seat_type')) && is_numeric($number)){
 				//判断此人是否预约过
 				if($this->appointment->get_apoint_near_date($uid,$date)){

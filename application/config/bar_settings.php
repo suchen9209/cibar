@@ -29,6 +29,11 @@ $config['log_login_type'] = array(
 	'bar'		=>	1//暂时只有吧台上下机一种
 );
 
+$config['order_status_status'] = array(
+	'init'	=>	0,
+	'done'	=>	1
+);
+
 
 //机器的分布类型
 $config['machine_type'] = array(

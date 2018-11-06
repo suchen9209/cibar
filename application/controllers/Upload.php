@@ -20,7 +20,7 @@ class Upload extends CI_Controller {
             is_dir($dir_base) OR mkdir($dir_base, 0777, true);
             $dir_base = "/".$date."/";
         }else{
-            $dir_base = '';
+            $dir_base = __MYDIR__.'/uploads/';
             is_dir($dir_base) OR mkdir($dir_base, 0777, true);
             $dir_base = "/".$date."/";
         }

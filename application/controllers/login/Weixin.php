@@ -2,8 +2,8 @@
 
 class Weixin extends CI_Controller {
 
-    private $app_id = 'wx849138f27a347b79'; 
-    private $app_secret = '08c2edf4ea376b6ac13e4d8c4b5655eb';
+    private $app_id = 'wx6405c0270703e4b3'; 
+    private $app_secret = '1b898cece00cf290125bd23459fb0160';
     //private $callback_url = HTTP_OR_HTTPS.'www.imbatv.cn/qqlogin/weixin/callback';
 
 

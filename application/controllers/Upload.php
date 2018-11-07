@@ -18,16 +18,16 @@ class Upload extends CI_Controller {
         }else if(HTTP_HOST == 'bar.suchot.com'){
             $dir_base = "/data/uploads/images/".$date."/";
             is_dir($dir_base) OR mkdir($dir_base, 0777, true);
-            $dir_base = "/".$date."/";
+            $show_dir_base = "/".$date."/";
         }else{
-            $dir_base = '/mnt/main_disk2/pay_uploads/'.$date."/";
+            $dir_base = __MYDIR__.'/uploads/'.$date."/";
             is_dir($dir_base) OR mkdir($dir_base, 0777, true);
-            $dir_base = "/".$date."/";
+            $show_dir_base = "/".$date."/";
         }
 
         $upload_file = $_FILES['upload_file'];
 
-        $extend=pathinfo($upload_file['name']);//获取文件后缀名
+        $extend = pathinfo($upload_file['name']);//获取文件后缀名
         
         $gb_filename = time().rand(1,100).'.'.$extend['extension'];    
 

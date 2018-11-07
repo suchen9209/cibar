@@ -8,7 +8,9 @@ class Good_type_model extends CI_Model {
 
     public function get_list($status = 1){
         $this->db->select('*');
-        $this->db->where('status',$status);
+        if($status != -1){
+            $this->db->where('status',$status);   
+        }        
         $this->db->from($this->table_name);
         $query = $this->db->get();
         return $query->result_array();

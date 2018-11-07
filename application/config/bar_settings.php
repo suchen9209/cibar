@@ -78,3 +78,8 @@ $config['discount_level'] = array(
 	6 => 0.75,
 	7 => 0.70
 );
+
+$config['status_common'] = array(
+	1	=>	'正在使用',
+	0	=>	'停用'
+);

@@ -89,9 +89,11 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define("__MYDIR__",dirname(dirname(dirname(__FILE__)))); //获取站点根目录路径
 define('HTTP_HOST',strtolower($_SERVER["HTTP_HOST"])); //网站域名
 $http_protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')) ? 'https://' : 'http://';
+define('HTTP_PROTOCOL', $http_protocol);
 define('ADMIN_DIR','bar'); //管理后台目录名称
 define('ADMIN_PATH',$http_protocol.HTTP_HOST.'/'.ADMIN_DIR); //后台路径
 define('MACHINE_PATH',$http_protocol.HTTP_HOST.'/machine'); //根目录
+define('UPLOAD_PATH',$http_protocol.HTTP_HOST.'/images'); //图片目录
 
 define('ADMIN_SESSION_NAME','admin_id');
 

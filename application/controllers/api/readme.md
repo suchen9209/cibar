@@ -1,7 +1,7 @@
-/api/appointment
+# /api/appointment
 查看所有预约
 
-/api/machine
+# /api/machine
 查看所有空闲机器，可通过type获取对应类型的空闲机器
 parm:
   1.type
@@ -15,7 +15,7 @@ parm:
       5	=>	'10人包厢',
       6	=>	'20人包厢'
 
-/api/machine/order
+# /api/machine/order
 上机
 parm:
   1.user_id
@@ -25,7 +25,7 @@ parm:
       机器ID,api/machine接口中返回
       
       
-/api/machine/down
+# /api/machine/down
 下机，及下机时显示的用户状态
 parm:
   1.user_id
@@ -34,13 +34,13 @@ parm:
       get:获取当前用户使用的机器信息
       down:下机
       
-/api/user
+# /api/user
 获取用户信息
 parm:(两个参数二选一）
   1.user_id
   2.phone
   
-/api/user/pay
+# /api/user/pay
 充值
 parm:
   1.user_id
@@ -55,18 +55,18 @@ parm:
   4.extra_number
     description:店长赠送，无则添0
     
-/api/user/get_live_user
+# /api/user/get_live_user
 获取正在上机的用户
 parm:
   1.page
 
-/api/user/get_detail_info
+# /api/user/get_detail_info
 获取用户信息
-/api/user/get_user_num
+# /api/user/get_user_num
 获取总用户数
 
 
-/api/user/get_user_list
+# /api/user/get_user_list
 获取用户列表
 parm:
   1.page

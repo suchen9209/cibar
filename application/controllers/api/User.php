@@ -118,6 +118,24 @@ class User extends Admin_Api_Controller {
 
     }
 
+    public function bind_info($type){
+
+        $uid = $this->input->get_post('user_id');
+        if($type == 'idcard'){
+            $parm['idcard'] = $this->input->get_post('idcard');
+            $parm['name'] = $this->input->get_post('name');
+        }else if($type == 'phone'){
+            $parm['phone'] = $this->input->get_post('phone');
+        }
+
+        if($this->user->update($uid,$parm)){
+            $this->response($this->getResponseData(parent::HTTP_OK, '绑定成功'), parent::HTTP_OK);
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_OK, '绑定失败'), parent::HTTP_OK);
+        }
+        
+    }
+
     public function get_log_expense(){
 
     }

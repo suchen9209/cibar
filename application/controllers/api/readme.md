@@ -73,3 +73,13 @@
   * ASC
   * DESC
   
+# /api/user/bind_info/idcard
+绑定身份证
+## 1. user_id
+## 2. idcard
+## 3. name
+
+# /api/user/bind_info/phone
+绑定手机号
+## 1. user_id
+## 2. phone

@@ -12,6 +12,7 @@ class Login extends CI_Controller {
 
     public function index()
     {
+        header("Access-Control-Allow-Origin: *");
         $user_name = $this->input->post_get('username');
         $user_pass = $this->input->post_get('password');
         if(isset($user_name) && isset($user_pass)){

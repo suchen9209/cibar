@@ -14,8 +14,8 @@ class Login extends CI_Controller {
     public function index()
     {
         
-        $user_name = $this->input->post_get('username');
-        $user_pass = $this->input->post_get('password');
+        $user_name = $this->input->get_post('username');
+        $user_pass = $this->input->get_post('password');
         if(isset($user_name) && isset($user_pass)){
             $res = $this->adminuser->get_info_by_username($user_name);
             if ($res->password === password_md5($user_pass)) {

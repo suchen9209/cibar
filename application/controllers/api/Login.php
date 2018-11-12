@@ -33,6 +33,9 @@ class Login extends CI_Controller {
             $return['status'] = 'fail';
             $return['detail'] = '参数错误';
         }
+
+        echo json_encode($return);
+        exit();
         
     }
 

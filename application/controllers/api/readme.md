@@ -47,7 +47,7 @@
   * 4: POS
   * 5: 赠送
   * 6: 美团途径
-## 4. type
+## 4. extra_number
   ### description
     店长赠送，默认为0
     

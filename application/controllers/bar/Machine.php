@@ -74,6 +74,7 @@ class Machine extends Admin_Controller {
     }
 
     public function insert_test(){
+        die;
         for ($i=1; $i <= 18; $i++) { 
             $parm['machine_name'] = 'S'.str_pad($i,3,"0",STR_PAD_LEFT);
             $parm['ip'] = '192.168.15.'.$i;

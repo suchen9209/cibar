@@ -24,9 +24,13 @@ class Login extends CI_Controller {
                 $_SESSION[ADMIN_SESSION_NAME]        =   $res->id;
                 $_SESSION['username']   =   $res->username;
                 $return['status'] = 'success';
+                $return['detail'] = '登录成功';
             }else{
                 $return['status'] = 'fail';
                 $return['detail'] = '账号或密码错误';
+                $return['password'] = $user_pass;
+                $return['password_save'] = $res->password;
+                $return['password_md5'] = password_md5($user_pass);
             }
 
         }else{

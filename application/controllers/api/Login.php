@@ -21,13 +21,13 @@ class Login extends CI_Controller {
             if ($res->password === password_md5($user_pass)) {
                 $_SESSION[ADMIN_SESSION_NAME]        =   $res->id;
                 $_SESSION['username']   =   $res->username;
-                echo '登录成功';
+                echo 1;
             }else{
-                echo '账号或密码错误';
+                echo 2;
             }
 
         }else{
-            echo '参数错误';
+            echo 3;
         }
         
     }

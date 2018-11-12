@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends CI_Controller {
 
     public function __construct(){
+        header('Access-Control-Allow-Origin:*');
         parent::__construct();
 
         $this->load->model('adminuser_model','adminuser');
@@ -12,7 +13,7 @@ class Login extends CI_Controller {
 
     public function index()
     {
-        header("Access-Control-Allow-Origin: *");
+        
         $user_name = $this->input->post_get('username');
         $user_pass = $this->input->post_get('password');
         if(isset($user_name) && isset($user_pass)){

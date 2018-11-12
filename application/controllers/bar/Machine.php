@@ -17,6 +17,9 @@ class Machine extends Admin_Controller {
         $page = $page ? $page : 1;
         $num = 20;
         $data['data'] = $this->machine->get_machine_list($page,$num);
+
+        $count = $this->machine->get_num();
+        $data['page_count'] = ceil($count/$num);
         
         $this->load->view('machine/list',$data);
     }

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Admin extends Admin_Controller {
 
     public function __construct(){
         parent::__construct();
@@ -33,6 +33,15 @@ class Admin extends CI_Controller {
         
 		$this->load->view('bar/register');
 	}
+
+    public function update()
+    {
+        $action = $this->input->get_post('action');
+        
+
+        $admin_id = $this->session->userdata(ADMIN_SESSION_NAME);
+
+    }
 
     public function login()
     {

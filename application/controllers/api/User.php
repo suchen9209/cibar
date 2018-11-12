@@ -93,5 +93,38 @@ class User extends Admin_Api_Controller {
         }   
     }
 
+    public function get_user_num(){
+        $num =  $this->user_account->get_user_num();
+        $this->response($this->getResponseData(parent::HTTP_OK, '总人数', $num), parent::HTTP_OK);
+    }
+
+    public function get_user_list(){
+        $page = $this->input->get_post('page');
+        $num = 20;
+        $order_option = $this->input->get_post('order_option');
+        $order = $this->input->get_post('order');
+        $offset = ($page-1)*$num;
+
+        $user_num =  $this->user_account->get_user_num();
+
+        if($page && in_array($order_option, ['balance','total','lasttime','regtime']) && in_array($order, ['ASC','DESC'])){
+            $list = $this->user_account->get_user_list($num,$offset=0,$order_option,$order);
+            $return_arr['list'] = $list;
+            $return_arr['page_num'] = ceil($user_num/$num);
+            $this->response($this->getResponseData(parent::HTTP_OK, '用户列表及总页数', $return_arr), parent::HTTP_OK);
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
+        }
+
+    }
+
+    public function get_log_expense(){
+
+    }
+
+    public function get_log_pay(){
+        
+    }
+
 
 }

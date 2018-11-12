@@ -11,8 +11,7 @@ class Main extends Admin_Controller {
 	{
 
         $this->load->view('bar/admin/index');
-
-		
+        		
 	}
 
 	 /**

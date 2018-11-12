@@ -34,5 +34,9 @@
     	
     </table>
 
+    <?php for($i=1;$i<=$page_count;$i++):?>
+        <a href="<?=ADMIN_PATH?>/machine?page=<?=$i?>"><?=$i?></a>
+    <?php endfor;?>
+
 </body>
 </html>

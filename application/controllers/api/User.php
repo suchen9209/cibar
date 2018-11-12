@@ -67,7 +67,7 @@ class User extends Admin_Api_Controller {
         foreach ($users as $key => $value) {
             $temp['uid'] = $value['uid'];
             $temp['username'] = $value['username'];
-            $temp['level'] = $this->user_account->get_member_level($value['uid']);
+            $temp['level'] = $this->user_account->get_member_level($value['uid'],$value['total']);
             $temp['name'] = $value['name'];
             $temp['phone']  = $value['phone'];
             $temp['idcard']  = $value['idcard'];

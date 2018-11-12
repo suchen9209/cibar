@@ -103,9 +103,11 @@ class User_account_model extends CI_Model {
         }
     }
 
-    public function get_member_level($uid){
+    public function get_member_level($uid,$total=-1){
         $member_level = $this->config->item('member_level');
-        $total = $this->account->get_info($uid)->total;
+        if($total == -1){//用于在已知总额的情况下，减少一次数据库查询
+            $total = $this->account->get_info($uid)->total; 
+        }        
         $level = $this->sorts($member_level,$total);
 
         return $level;
@@ -117,28 +119,37 @@ class User_account_model extends CI_Model {
         return array_search($stage_num, $stage_data);
     }
 
-    public function get_user_detail_info($uid=0,$offset=0,$num=20){
-        $user_info = $this->user->get_user_info($uid);
-        $account_info = $this->account->get_info($uid);
-        if($uid == 0){
-            $sql = '';
+    public function get_user_num($parm=NULL){
+        $this->db->select('count(*) num');
+        $this->db->from('user');
+        $this->db->join('account','user.id = account.uid');
+        if(isset($parm)){
+            foreach ($parm as $key => $value) {
+                $this->db->where($key,$value);
+            }  
+        }        
+        $query = $this->db->get();
+        return $query->row()->num;
+    }
+
+    public function get_user_list($num=20,$offset=0,$order_option,$order){
+
+        $this->db->select('user.*,account.balance,account.total');
+        $this->db->from('user');
+        $this->db->join('account','user.id = account.uid');
+        $this->db->limit($num,$offset);
+        $this->db->order_by($order_option,$order);
+        $query = $this->db->get();
+
+        if($query->num_rows()>0){
+            $return_arr = $query->result_array();
+            foreach ($return_arr as $key => $value) {
+                $return_arr[$key]['level'] = $this->get_member_level($value['id'],$value['total']);
+            }
+            return $return_arr;
         }else{
-
+            return false;
         }
-        $user_info = $this->user->get_user_info($uid);
-        $account_info = $this->account->get_info($uid);
-        $return_arr['uid'] = $user_info->id;
-        $return_arr['name'] = $user_info->name;
-        $return_arr['wxid'] = $user_info->wxid;
-        $return_arr['phone'] = $user_info->phone;
-        $return_arr['balance'] = $account_info->balance;
-        $return_arr['regtime'] = $user_info->regtime;
-        $return_arr['username'] = $user_info->username;
-
-        //会员系统保留字段
-        $return_arr['level'] = $this->get_member_level($uid);
-
-        return $return_arr;
     }
     
 }

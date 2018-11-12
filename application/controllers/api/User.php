@@ -103,12 +103,19 @@ class User extends Admin_Api_Controller {
         $num = 20;
         $order_option = $this->input->get_post('order_option') ? $this->input->get_post('order_option') : 'lasttime';
         $order = $this->input->get_post('order')  ? $this->input->get_post('order') : 'DESC';
+
+        if($this->input->get_post('id'))$parm['id']=$this->input->get_post('id');
+        if($this->input->get_post('phone'))$parm['phone']=$this->input->get_post('phone');
+        if($this->input->get_post('idcard'))$parm['idcard']=$this->input->get_post('idcard');
+        if($this->input->get_post('name'))$parm['name']=$this->input->get_post('name');
+        if($this->input->get_post('username'))$parm['username']=$this->input->get_post('username');
+
         $offset = ($page-1)*$num;
 
         $user_num =  $this->user_account->get_user_num();
 
         if($page && in_array($order_option, ['balance','total','lasttime','regtime']) && in_array($order, ['ASC','DESC'])){
-            $list = $this->user_account->get_user_list($num,$offset=0,$order_option,$order);
+            $list = $this->user_account->get_user_list($num,$offset=0,$order_option,$order,$parm);
             $return_arr['list'] = $list;
             $return_arr['page_num'] = ceil($user_num/$num);
             $this->response($this->getResponseData(parent::HTTP_OK, '用户列表及总页数', $return_arr), parent::HTTP_OK);

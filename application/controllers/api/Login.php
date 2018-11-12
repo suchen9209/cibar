@@ -5,6 +5,7 @@ class Login extends CI_Controller {
 
     public function __construct(){
         header('Access-Control-Allow-Origin:*');
+        header('Content-Type:application/json');
         parent::__construct();
 
         $this->load->model('adminuser_model','adminuser');
@@ -16,18 +17,21 @@ class Login extends CI_Controller {
         
         $user_name = $this->input->get_post('username');
         $user_pass = $this->input->get_post('password');
+        $return = [];
         if(isset($user_name) && isset($user_pass)){
             $res = $this->adminuser->get_info_by_username($user_name);
             if ($res->password === password_md5($user_pass)) {
                 $_SESSION[ADMIN_SESSION_NAME]        =   $res->id;
                 $_SESSION['username']   =   $res->username;
-                echo 1;
+                $return['status'] = 'success';
             }else{
-                echo 2;
+                $return['status'] = 'fail';
+                $return['detail'] = '账号或密码错误';
             }
 
         }else{
-            echo 3;
+            $return['status'] = 'fail';
+            $return['detail'] = '参数错误';
         }
         
     }

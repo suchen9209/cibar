@@ -34,6 +34,16 @@ $config['order_status_status'] = array(
 	'done'	=>	1
 );
 
+//peripheral中type的含义
+$config['peripheral_type'] = array(
+	1	=>	'鼠标',
+	2	=>	'键盘',
+	3	=>	'耳机',
+	4	=>	'鼠标垫',
+	5	=>	'麦克风',
+	6	=>	'其他'
+);
+
 
 //机器的分布类型
 $config['machine_type'] = array(

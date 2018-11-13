@@ -28,9 +28,6 @@ class Login extends CI_Controller {
             }else{
                 $return['status'] = 'fail';
                 $return['detail'] = '账号或密码错误';
-                $return['password'] = $user_pass;
-                $return['password_save'] = $res->password;
-                $return['password_md5'] = password_md5($user_pass);
             }
 
         }else{

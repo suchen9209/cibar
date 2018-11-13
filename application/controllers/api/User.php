@@ -147,8 +147,24 @@ class User extends Admin_Api_Controller {
 
     }
 
+    //获取充值记录
     public function get_log_pay(){
-        
+        $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
+        $num = $this->input->get_post('num') ? $this->input->get_post('num') : 20;
+        $uid = $this->input->get_post('uid') ? $this->input->get_post('uid') : 0;
+        $offset = $num*($page-1);
+        $this->load->model('user_model','user');
+        if($uid>0){
+            $log_num = $this->log_pay->get_num(array('uid'=>$uid));
+            $return_data['list'] = $this->log_pay->get_list($offset,$num,array('uid'=>$uid));
+        }else{
+            $log_num = $this->log_pay->get_num();
+            $return_data['list'] = $this->log_pay->get_list($offset,$num);
+
+        }
+        $return_data['page_num'] = ceil($log_num/$num);
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '充值记录', $return_data), parent::HTTP_OK);
     }
 
 

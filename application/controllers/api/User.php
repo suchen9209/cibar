@@ -143,8 +143,24 @@ class User extends Admin_Api_Controller {
         
     }
 
+    //获取消费记录
     public function get_log_expense(){
+        $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
+        $num = $this->input->get_post('num') ? $this->input->get_post('num') : 20;
+        $uid = $this->input->get_post('uid') ? $this->input->get_post('uid') : 0;
+        $offset = $num*($page-1);
+        $this->load->model('log_expense_model','log_expense');
+        if($uid>0){
+            $log_num = $this->log_expense->get_num(array('uid'=>$uid));
+            $return_data['list'] = $this->log_expense->get_list($offset,$num,array('uid'=>$uid));
+        }else{
+            $log_num = $this->log_expense->get_num();
+            $return_data['list'] = $this->log_expense->get_list($offset,$num);
 
+        }
+        $return_data['page_num'] = ceil($log_num/$num);
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '消费记录', $return_data), parent::HTTP_OK);
     }
 
     //获取充值记录
@@ -153,7 +169,7 @@ class User extends Admin_Api_Controller {
         $num = $this->input->get_post('num') ? $this->input->get_post('num') : 20;
         $uid = $this->input->get_post('uid') ? $this->input->get_post('uid') : 0;
         $offset = $num*($page-1);
-        $this->load->model('user_model','user');
+        $this->load->model('log_pay_model','log_pay');
         if($uid>0){
             $log_num = $this->log_pay->get_num(array('uid'=>$uid));
             $return_data['list'] = $this->log_pay->get_list($offset,$num,array('uid'=>$uid));

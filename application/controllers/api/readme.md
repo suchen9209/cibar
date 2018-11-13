@@ -94,3 +94,9 @@
 ## 1. page
 ## 2. num
 ## 3. uid(选添)
+
+# /api/user/get_log_expense
+获取消费记录
+## 1. page
+## 2. num
+## 3. uid(选添)

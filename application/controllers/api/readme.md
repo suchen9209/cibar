@@ -84,10 +84,6 @@
 ## 1. user_id
 ## 2. phone
 
-# /api/user/bind_info/phone
-绑定手机号
-## 1. user_id
-## 2. phone
 
 # /api/user/get_log_pay
 获取充值记录

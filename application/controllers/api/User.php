@@ -72,6 +72,9 @@ class User extends Admin_Api_Controller {
             $temp['phone']  = $value['phone'];
             $temp['idcard']  = $value['idcard'];
             $temp['balance']  = $value['balance'];
+            $temp['regtime']  = $value['regtime'];
+            $temp['machine_name'] = $value['machine_name'];
+            $temp['box'] = $value['box_id'];
             $return_arr[]=$temp;
         }
         $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $return_arr), parent::HTTP_OK);

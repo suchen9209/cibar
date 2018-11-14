@@ -32,28 +32,32 @@ class Machine extends Admin_Api_Controller {
         $machine_id = $this->input->post_get('machine_id');
 
         if(isset($uid) && isset($machine_id) && $uid>0){
-            $log_parm['uid'] = $uid;
-            $log_parm['login_type'] = $this->config->item('log_login_type')['bar'];
-            $log_parm['machine_id'] = $machine_id;
-            $log_parm['time'] = time();
-            $log_parm['login_or_logout'] = $this->config->item('log_login')['login'];
 
-            $this->db->trans_start();
-            $this->log_login->insert($log_parm);
-            $active_parm['uid'] = $uid;
-            $active_parm['state'] = 2;
-            $this->active_status->update($machine_id,$active_parm);
+            if(!$this->active_status->get_info_uid($uid)){
+                $log_parm['uid'] = $uid;
+                $log_parm['login_type'] = $this->config->item('log_login_type')['bar'];
+                $log_parm['machine_id'] = $machine_id;
+                $log_parm['time'] = time();
+                $log_parm['login_or_logout'] = $this->config->item('log_login')['login'];
+
+                $this->db->trans_start();
+                $this->log_login->insert($log_parm);
+                $active_parm['uid'] = $uid;
+                $active_parm['state'] = 2;
+                $this->active_status->update($machine_id,$active_parm);
 
 
-            if($this->db->trans_status() === FALSE){
-                $this->db->trans_rollback();
-                $this->response($this->getResponseData(parent::HTTP_OK, '失败'), parent::HTTP_OK);
+                if($this->db->trans_status() === FALSE){
+                    $this->db->trans_rollback();
+                    $this->response($this->getResponseData(parent::HTTP_OK, '失败'), parent::HTTP_OK);
+                }else{
+                    $this->db->trans_complete();
+                    //发送开机指令
+                    $this->response($this->getResponseData(parent::HTTP_OK, '登记成功'), parent::HTTP_OK);
+                }  
             }else{
-                $this->db->trans_complete();
-                //发送开机指令
-                $this->response($this->getResponseData(parent::HTTP_OK, '登记成功'), parent::HTTP_OK);
+                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '该用户为上机状态，不可重复上机'), parent::HTTP_OK);
             }
-
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
         }

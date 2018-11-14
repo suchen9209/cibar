@@ -73,7 +73,20 @@ class User extends Admin_Api_Controller {
             $temp['idcard']  = $value['idcard'];
             $temp['balance']  = $value['balance'];
             $temp['regtime']  = $value['regtime'];
+            $temp['opentime'] = $value['updatetime'];
             $temp['machine_name'] = $value['machine_name'];
+            $online_seconds = time() - $value['updatetime'];
+            $temp['online_seconds'] = $online_seconds;
+
+            $half_hour_num = ceil($online_seconds / 1800);//当前已经上网的半小时数
+            $discount = $this->config->item('discount_level')[$temp['level']];//获取折扣
+            $price = rand($this->config->item('price')[$value['type']] * $discount,2);//计算单小时价格
+            $temp['cost'] = rand($half_hour_num * ($price/2) , 2);//计算当前已消费的金额
+
+            
+            $can_online_seconds = ceil($value['balance']/$price*3600);//计算当前余额可上网时长
+            $temp['remain_seconds'] = $can_online_seconds - $online_seconds;//计算剩余时长
+
             $temp['box'] = $value['box_id'];
             $return_arr[]=$temp;
         }

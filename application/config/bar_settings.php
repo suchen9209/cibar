@@ -54,6 +54,15 @@ $config['machine_type'] = array(
 	5	=>	'10人包厢',
 	6	=>	'20人包厢'
 );
+//对应机器的价格
+$config['price'] = array(
+	1	=>	'30',//散座
+	2	=>	'20',
+	3	=>	'20',
+	4	=>	'15',
+	5	=>	'15',
+	6	=>	'15'
+);
 
 //机器硬件状态，是否能够使用
 $config['machine_hardware_status'] = array(
@@ -93,3 +102,5 @@ $config['status_common'] = array(
 	1	=>	'正在使用',
 	0	=>	'停用'
 );
+
+

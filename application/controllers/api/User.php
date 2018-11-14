@@ -80,8 +80,8 @@ class User extends Admin_Api_Controller {
 
             $half_hour_num = ceil($online_seconds / 1800);//当前已经上网的半小时数
             $discount = $this->config->item('discount_level')[$temp['level']];//获取折扣
-            $price = rand($this->config->item('price')[$value['type']] * $discount,2);//计算单小时价格
-            $temp['cost'] = rand($half_hour_num * ($price/2) , 2);//计算当前已消费的金额
+            $price = round($this->config->item('price')[$value['type']] * $discount,2);//计算单小时价格
+            $temp['cost'] = round($half_hour_num * ($price/2) , 2);//计算当前已消费的金额
 
             
             $can_online_seconds = ceil($value['balance']/$price*3600);//计算当前余额可上网时长

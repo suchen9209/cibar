@@ -44,6 +44,7 @@ class Machine extends Admin_Api_Controller {
                 $this->log_login->insert($log_parm);
                 $active_parm['uid'] = $uid;
                 $active_parm['state'] = 2;
+                $active_parm['updatetime'] = time();
                 $this->active_status->update($machine_id,$active_parm);
 
 
@@ -84,6 +85,7 @@ class Machine extends Admin_Api_Controller {
                 $this->log_login->insert($log_parm);
                 $active_parm['uid'] = 0;
                 $active_parm['state'] = 1;
+                $active_parm['updatetime'] = time();
                 $this->active_status->update($machine_id,$active_parm);
 
 

@@ -139,7 +139,7 @@ class User_account_model extends CI_Model {
         $this->db->join('account','user.id = account.uid','LEFT');
         $this->db->join('active_status','user.id = active_status.uid','LEFT');
         foreach ($parm as $key => $value) {
-            $this->db->where('user.'.$key,$value);
+            $this->db->where($key,$value);
         }
         $this->db->limit($num,$offset);
         $this->db->order_by($order_option,$order);

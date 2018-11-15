@@ -120,11 +120,13 @@ class User extends Admin_Api_Controller {
         $order_option = $this->input->get_post('order_option') ? $this->input->get_post('order_option') : 'lasttime';
         $order = $this->input->get_post('order')  ? $this->input->get_post('order') : 'DESC';
 
-        if($this->input->get_post('id'))$parm['id']=$this->input->get_post('id');
-        if($this->input->get_post('phone'))$parm['phone']=$this->input->get_post('phone');
-        if($this->input->get_post('idcard'))$parm['idcard']=$this->input->get_post('idcard');
-        if($this->input->get_post('name'))$parm['name']=$this->input->get_post('name');
-        if($this->input->get_post('username'))$parm['username']=$this->input->get_post('username');
+        if($this->input->get_post('id'))$parm['user.id']=$this->input->get_post('id');
+        if($this->input->get_post('phone'))$parm['user.phone']=$this->input->get_post('phone');
+        if($this->input->get_post('idcard'))$parm['user.idcard']=$this->input->get_post('idcard');
+        if($this->input->get_post('name'))$parm['user.name']=$this->input->get_post('name');
+        if($this->input->get_post('username'))$parm['user.username']=$this->input->get_post('username');
+        if($this->input->get_post('offline'))$parm['active_status.state']='is NULL';
+
 
         $offset = ($page-1)*$num;
 

@@ -57,12 +57,13 @@ class User extends Admin_Api_Controller {
 
     public function get_live_user(){
         $page = $this->input->get_post('page');
-        $num = $this->input->get_post('num');
+        $num = $this->input->get_post('limit');
         if(!isset($page)){$page=1;}
         if(!isset($num)){$num=20;}
         $offset = ($page-1)*$num;
 
         $users = $this->active_status->get_live_user($offset,$num);
+        $user_num = $this->active_status->get_live_user_num();
         $return_arr = [];
         foreach ($users as $key => $value) {
             $temp['uid'] = $value['uid'];
@@ -90,7 +91,7 @@ class User extends Admin_Api_Controller {
             $temp['box'] = $value['box_id'];
             $return_arr[]=$temp;
         }
-        $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $return_arr), parent::HTTP_OK);
+        $this->response($this->getLayuiList(0,'在线用户列表',intval($user_num),$return_arr));    
     }
 
     public function get_detail_info(){

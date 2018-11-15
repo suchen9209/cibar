@@ -146,6 +146,42 @@ class User extends Admin_Api_Controller {
 
     }
 
+    public function get_user_list_test($getnum=0){
+        $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
+        $num = $this->input->get_post('num') ? $this->input->get_post('num') : 20;
+        $order_option = $this->input->get_post('order_option') ? $this->input->get_post('order_option') : 'lasttime';
+        $order = $this->input->get_post('order')  ? $this->input->get_post('order') : 'DESC';
+
+        if($this->input->get_post('id'))$parm['user.id']=$this->input->get_post('id');
+        if($this->input->get_post('phone'))$parm['user.phone']=$this->input->get_post('phone');
+        if($this->input->get_post('idcard'))$parm['user.idcard']=$this->input->get_post('idcard');
+        if($this->input->get_post('name'))$parm['user.name']=$this->input->get_post('name');
+        if($this->input->get_post('username'))$parm['user.username']=$this->input->get_post('username');
+        if($this->input->get_post('offline'))$parm['active_status.state is NULL']=NULL;
+
+
+        $offset = ($page-1)*$num;
+
+        
+
+        if($page && in_array($order_option, ['balance','total','lasttime','regtime']) && in_array($order, ['ASC','DESC'])){
+            if($getnum == 0){
+                $list = $this->user_account->get_user_list($num,$offset,$order_option,$order,$parm);
+                header('Content-Type:application/json');
+                echo json_encode($list);
+                exit();
+                //$this->response($this->getResponseData(parent::HTTP_OK, '用户列表', $list), parent::HTTP_OK); 
+            }else{
+                $user_num =  $this->user_account->get_user_num($parm);
+                $this->response($this->getResponseData(parent::HTTP_OK, '用户总数', $user_num), parent::HTTP_OK);
+            }
+            
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
+        }
+
+    }
+
     public function bind_info($type){
 
         $uid = $this->input->get_post('user_id');

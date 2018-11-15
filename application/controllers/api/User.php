@@ -195,7 +195,7 @@ class User extends Admin_Api_Controller {
         }
         $type_name = $this->config->item('log_pay_type_cn');
         foreach ($list as $key => $value) {
-            $list[$key]['type'] = $type_name[$value['type']];
+            $list[$key]['pay_type'] = $type_name[$value['pay_type']];
         }
         $return_data['list'] = $list;
         $return_data['page_num'] = ceil($log_num/$num);

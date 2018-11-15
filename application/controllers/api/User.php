@@ -195,6 +195,7 @@ class User extends Admin_Api_Controller {
 
         }
         $return_data['page_num'] = ceil($log_num/$num);
+        $return_data['type_name'] = $this->config->item('log_pay_type_cn');
 
         $this->response($this->getResponseData(parent::HTTP_OK, '充值记录', $return_data), parent::HTTP_OK);
     }

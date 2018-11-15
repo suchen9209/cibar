@@ -148,7 +148,7 @@ class User extends Admin_Api_Controller {
 
     public function get_user_list_test($getnum=0){
         $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
-        $num = $this->input->get_post('num') ? $this->input->get_post('num') : 20;
+        $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
         $order_option = $this->input->get_post('order_option') ? $this->input->get_post('order_option') : 'lasttime';
         $order = $this->input->get_post('order')  ? $this->input->get_post('order') : 'DESC';
 

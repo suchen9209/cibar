@@ -113,7 +113,7 @@ class User extends Admin_Api_Controller {
         $this->get_user_list(1);
     }
 
-    public function get_user_list($getnum=0){
+/*    public function get_user_list($getnum=0){
         $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
         $num = $this->input->get_post('num') ? $this->input->get_post('num') : 20;
         $order_option = $this->input->get_post('order_option') ? $this->input->get_post('order_option') : 'lasttime';
@@ -144,9 +144,9 @@ class User extends Admin_Api_Controller {
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
         }
 
-    }
+    }*/
 
-    public function get_user_list_test($getnum=0){
+    public function get_user_list($getnum=0){
         $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
         $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
         $order_option = $this->input->get_post('order_option') ? $this->input->get_post('order_option') : 'lasttime';
@@ -161,8 +161,6 @@ class User extends Admin_Api_Controller {
 
 
         $offset = ($page-1)*$num;
-
-        
 
         if($page && in_array($order_option, ['balance','total','lasttime','regtime']) && in_array($order, ['ASC','DESC'])){
             $return_data['list'] = $this->user_account->get_user_list($num,$offset,$order_option,$order,$parm);

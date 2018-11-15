@@ -73,6 +73,8 @@
   ### value
   * ASC
   * DESC
+## 5.offline(选
+  * 1(有此参数则取离线用户)
   
 # /api/user/bind_info/idcard
 绑定身份证

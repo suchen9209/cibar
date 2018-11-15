@@ -8,8 +8,9 @@ class Log_expense_model extends CI_Model {
     }
 
     public function get_list($offset,$num,$parm=array()){
-    	$this->db->select('*');
+    	$this->db->select('log_expense.*,goods.name good');
         $this->db->limit($num,$offset);
+        $this->db->join('goods','goods.id = log_expense.goodid');
         foreach ($parm as $key => $value) {
         	$this->db->where($key,$value);
         }

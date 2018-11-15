@@ -133,7 +133,7 @@ class User extends Admin_Api_Controller {
 
         if($page && in_array($order_option, ['balance','total','lasttime','regtime']) && in_array($order, ['ASC','DESC'])){
             if($getnum == 0){
-                $list = $this->user_account->get_user_list($num,$offset=0,$order_option,$order,$parm);
+                $list = $this->user_account->get_user_list($num,$offset,$order_option,$order,$parm);
                 $this->response($this->getResponseData(parent::HTTP_OK, '用户列表', $list), parent::HTTP_OK); 
             }else{
                 $user_num =  $this->user_account->get_user_num($parm);

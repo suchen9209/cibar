@@ -197,6 +197,7 @@ class User extends Admin_Api_Controller {
         foreach ($list as $key => $value) {
             $list[$key]['type'] = $type_name[$value['type']];
         }
+        $return_data['list'] = $list;
         $return_data['page_num'] = ceil($log_num/$num);
         
 

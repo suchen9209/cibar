@@ -143,6 +143,16 @@ class Admin_Api_Controller extends REST2_Controller
         ];
     }
 
+    public function getLayuiList($code , $message = '' , $count = 0,  $data = null)
+    {
+        return [
+            'code' => $code,
+            'msg' => $message ? $message : $this->messageMap[$code],
+            'count' => $count,
+            'data' => $data
+        ];
+    }
+
 
 
 }

@@ -158,7 +158,7 @@ class User extends Admin_Api_Controller {
         if($this->input->get_post('idcard'))$parm['user.idcard']=$this->input->get_post('idcard');
         if($this->input->get_post('name'))$parm['user.name']=$this->input->get_post('name');
         if($this->input->get_post('username'))$parm['user.username']=$this->input->get_post('username');
-        if($this->input->get_post('offline'))$parm['active_status.state is NULL']=NULL;
+        if($this->input->get_post('offline'))$parm['active_status.state']='NULL';
 
 
         $offset = ($page-1)*$num;

@@ -188,14 +188,17 @@ class User extends Admin_Api_Controller {
         $this->load->model('log_pay_model','log_pay');
         if($uid>0){
             $log_num = $this->log_pay->get_num(array('uid'=>$uid));
-            $return_data['list'] = $this->log_pay->get_list($offset,$num,array('uid'=>$uid));
+            $list = $this->log_pay->get_list($offset,$num,array('uid'=>$uid));
         }else{
             $log_num = $this->log_pay->get_num();
-            $return_data['list'] = $this->log_pay->get_list($offset,$num);
-
+            $list = $this->log_pay->get_list($offset,$num);
+        }
+        $type_name = $this->config->item('log_pay_type_cn');
+        foreach ($list as $key => $value) {
+            $list[$key]['type'] = $type_name[$value['type']];
         }
         $return_data['page_num'] = ceil($log_num/$num);
-        $return_data['type_name'] = $this->config->item('log_pay_type_cn');
+        
 
         $this->response($this->getResponseData(parent::HTTP_OK, '充值记录', $return_data), parent::HTTP_OK);
     }

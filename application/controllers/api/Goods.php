@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Goods extends Admin_Api_Controller {
 
     public function __construct(){
-
+        parent::__construct();
         //$session_name = 'user_id';
         $this->load->model('goods_model','goods');
         $this->load->model('log_expense_model','log_expense');

@@ -167,7 +167,7 @@ class User extends Admin_Api_Controller {
         if($page && in_array($order_option, ['balance','total','lasttime','regtime']) && in_array($order, ['ASC','DESC'])){
             $return_data['list'] = $this->user_account->get_user_list($num,$offset,$order_option,$order,$parm);
             $return_data['count'] = $this->user_account->get_user_num($parm);
-            $this->response($this->getResponseData(parent::HTTP_OK, '用户列表及总数', $list), parent::HTTP_OK); 
+            $this->response($this->getResponseData(parent::HTTP_OK, '用户列表及总数', $return_data), parent::HTTP_OK); 
             
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);

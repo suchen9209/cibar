@@ -123,6 +123,7 @@ class User_account_model extends CI_Model {
         $this->db->select('count(*) num');
         $this->db->from('user');
         $this->db->join('account','user.id = account.uid');
+        $this->db->join('active_status','user.id = active_status.uid','LEFT');
         if(isset($parm)){
             foreach ($parm as $key => $value) {
                 $this->db->where($key,$value);

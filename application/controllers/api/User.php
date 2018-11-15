@@ -110,8 +110,7 @@ class User extends Admin_Api_Controller {
     }
 
     public function get_user_num(){
-        $num =  $this->user_account->get_user_num();
-        $this->response($this->getResponseData(parent::HTTP_OK, '总人数', $num), parent::HTTP_OK);
+        $this->get_user_list(1);
     }
 
     public function get_user_list($getnum=0){

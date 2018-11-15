@@ -62,13 +62,14 @@
 # /api/user/get_user_list
 获取用户列表
 ## 1. page
-## 2. order_option(选
+## 2. num
+## 3. order_option(选
   ### value
   * balance
   * total
   * lasttime
   * regtime
-## 3. order(选
+## 4. order(选
   ### value
   * ASC
   * DESC

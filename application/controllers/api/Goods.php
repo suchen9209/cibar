@@ -17,8 +17,11 @@ class Goods extends Admin_Api_Controller {
 
         $list = $this->goods->get_list();
         $type_list = $this->good_type->get_list();
-
-        $return_arr['good_list'] = $list;
+        $return_list = array();
+        foreach ($list as $key => $value) {
+            $return_list[$value['type']] []= $value;
+        }
+        $return_arr['good_list'] = $return_list;
         $return_arr['type'] = $type_list;
         
 

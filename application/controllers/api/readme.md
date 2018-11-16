@@ -62,7 +62,7 @@
 # /api/user/get_user_list
 获取用户列表
 ## 1. page
-## 2. num
+## 2. limit
 ## 3. order_option(选
   ### value
   * balance
@@ -104,3 +104,13 @@
 获取商品列表和商品类型
 ## 1. page
 ## 2. num
+
+# /api/goods/get_on_list
+获取手机上下单的未完成状态订单
+## 1. page
+## 2. limit
+
+# /api/goods/done_order
+完成订单
+## 1. order_id
+  ### 订单id，在get_on_list中取得

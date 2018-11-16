@@ -87,4 +87,35 @@ class Goods extends Admin_Api_Controller {
     }
 
 
+    public function get_on_list(){
+        $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
+        $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
+        $offset = ($page-1)*$num;
+
+        $list_option = array(
+            'order_status.status' => 0
+        );
+        $list = $this->order_status->get_list($offset,$num,$list_option);
+        foreach ($list as $key => $value) {
+            $log_ids = $value['log_ids'];
+            $logids_arr = explode(',', $log_ids);
+
+            $temp = [];
+            foreach ($logids_arr as $kl => $vl) {
+                $log_detail = $this->log_expense->get_detail($vl);
+                $temp []= array(
+                    'name'=>$log_detail->good_name,
+                    'num'=>$log_detail->number,
+                    'money'=>$log_detail->money
+                );
+            }
+            $list['detail'] = $temp;
+        }
+
+        $num = $this->order_status->get_num($list_option);
+
+        $this->response($this->getLayuiList(0,'未完成手机订单',intval($num),$list));   
+    }
+
+
 }

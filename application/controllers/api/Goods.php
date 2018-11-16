@@ -109,12 +109,25 @@ class Goods extends Admin_Api_Controller {
                     'money'=>$log_detail->money
                 );
             }
-            $list['detail'] = $temp;
+            $list[$key]['detail'] = $temp;
         }
 
         $num = $this->order_status->get_num($list_option);
 
         $this->response($this->getLayuiList(0,'未完成手机订单',intval($num),$list));   
+    }
+
+    public function done_order(){
+        $order_id = $this->input->get_post('order_id') ? $this->input->get_post('order_id') : 0;
+        if($order_id != 0){
+            if($this->order_status->update($order_id,array('status'=>$this->config->item('order_status_status')['done']))){
+                $this->response($this->getResponseData(parent::HTTP_OK, '更新成功'), parent::HTTP_OK);
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_OK, '更新失败'), parent::HTTP_OK);
+            }
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '错误订单号'), parent::HTTP_OK);
+        }
     }
 
 

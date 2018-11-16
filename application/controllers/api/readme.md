@@ -113,4 +113,3 @@
 # /api/goods/done_order
 完成订单
 ## 1. order_id
-  ### 订单id，在get_on_list中取得

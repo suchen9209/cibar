@@ -120,7 +120,7 @@
 ## 2.cartList
 
 # /api/goods/buy
-计算订单折扣
+前台订单确认购买（确认并返回成功视为订单完成）
 ## 1.user_id
 ## 2.cartList
 ## 3.total

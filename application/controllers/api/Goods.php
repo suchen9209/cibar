@@ -150,6 +150,9 @@ class Goods extends Admin_Api_Controller {
                 );
             }
             $list[$key]['detail'] = $temp;
+
+            $uid = $value['uid'];
+            $list[$key]['user_info'] = $this->user_account->get_user_info($uid);
         }
 
         $num = $this->order_status->get_num($list_option);

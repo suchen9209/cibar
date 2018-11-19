@@ -16,10 +16,11 @@ class User extends Admin_Api_Controller {
         $uid = $this->input->get_post('user_id');
         $phone = $this->input->get_post('phone');
 
-        if($uid){
+        if(is_numeric($uid)){
             $user_info = $this->user_account->get_user_info($uid);
-            $user_info['discount'] = $discount = $this->config->item('discount_level')[$user_info['level']];
-            $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
+        }else if(substr($uid,1) == 'V' && is_numeric(substr($uid,-6)) ){
+            $user = $this->user->get_info_u('username',$uid);
+            $user_info = $this->user_account->get_user_info($user->id);
         }else if($phone){
             $user = $this->user->get_info_u('phone',$phone);
             $user_info = $this->user_account->get_user_info($user->id);

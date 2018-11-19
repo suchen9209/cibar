@@ -31,7 +31,7 @@ class Message extends CI_Controller {
 	}
 
     public function html(){
-        $this->load->view('bar/test');
+        /*$this->load->view('bar/test');*/
     }
 
     public function random_service(){

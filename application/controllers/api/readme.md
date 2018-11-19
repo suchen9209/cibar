@@ -124,4 +124,9 @@
 ## 1.user_id
 ## 2.cartList
 ## 3.total
+## 4.payment
+
+
+# /api/config
+获取支付方式的类别id
   

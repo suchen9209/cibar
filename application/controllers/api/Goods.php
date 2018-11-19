@@ -61,7 +61,8 @@ class Goods extends Admin_Api_Controller {
 
         $total = $this->input->post_get('total');
         $list_json = $this->input->post_get('cartList');
-        $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
+        $uid = $this->input->get_post('user_id') ? $this->input->get_post('user_id') : 0;
+        $payment = $this->input->post_get('payment') ? $this->input->get_post('payment') : 0;
 
         if(isset($total) && isset($list_json)){
             $list = json_decode($list_json);
@@ -103,6 +104,7 @@ class Goods extends Admin_Api_Controller {
             $order_status_parm['uid'] = $uid;
             $order_status_parm['createtime'] = time();
             $order_status_parm['log_ids'] = $log_ids_str;
+            $order_status_parm['payment'] = $payment;
             $this->order_status->insert($order_status_parm);
 
             if($uid != 0){

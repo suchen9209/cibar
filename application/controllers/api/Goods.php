@@ -99,6 +99,12 @@ class Goods extends Admin_Api_Controller {
                 //$total_money += $value->number * $value->price;
             }
 
+            $log_ids_str = implode(',', $log_ids);
+            $order_status_parm['uid'] = $uid;
+            $order_status_parm['createtime'] = time();
+            $order_status_parm['log_ids'] = $log_ids_str;
+            $this->order_status->insert($order_status_parm);
+
             if($uid != 0){
                 $this->account->expense($uid,$total);//账户扣款
             }

@@ -83,6 +83,7 @@ class Goods extends App_Api_Controller {
 					$order_status_parm['uid'] = $uid;
 					$order_status_parm['createtime'] = time();
 					$order_status_parm['log_ids'] = $log_ids_str;
+					$order_status_parm['total'] = $total;
 					$this->order_status->insert($order_status_parm);
 
 					$this->account->expense($uid,$total);//账户扣款

@@ -90,7 +90,7 @@ class Goods extends Admin_Api_Controller {
                 $log_parm['starttime'] = time();
                 $log_parm['starttime'] = time();
                 $log_parm['number'] = $value->quantity;
-                $log_parm['price'] = $value->price;
+                $log_parm['price'] = $value->price * $discount;
                 $log_parm['money'] = round($value->quantity * $value->price * $discount,2);
                 $log_parm['type'] = $value->type;
                 $log_parm['goodid'] = $value->id;
@@ -105,6 +105,7 @@ class Goods extends Admin_Api_Controller {
             $order_status_parm['createtime'] = time();
             $order_status_parm['log_ids'] = $log_ids_str;
             $order_status_parm['payment'] = $payment;
+            $order_status_parm['total'] = $total;
             $this->order_status->insert($order_status_parm);
 
             if($uid != 0){

@@ -152,7 +152,14 @@ class Goods extends Admin_Api_Controller {
             $list[$key]['detail'] = $temp;
 
             $uid = $value['uid'];
-            $list[$key]['user_info'] = $this->user_account->get_user_info($uid);
+            $user_info = $this->user_account->get_user_info($uid);
+            $list[$key]['username'] = $user_info['username'];
+            $list[$key]['phone'] = $user_info['phone'];
+            $list[$key]['balance'] = $user_info['balance'];
+            $list[$key]['level'] = $user_info['level'];
+
+            //特殊处理
+            $list[$key]['aaa'] = '订单详情';
         }
 
         $num = $this->order_status->get_num($list_option);

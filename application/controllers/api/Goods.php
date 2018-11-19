@@ -11,6 +11,7 @@ class Goods extends Admin_Api_Controller {
         $this->load->model('good_type_model','good_type');
         $this->load->model('order_status_model','order_status');
         $this->load->model('function/user_account_model','user_account');
+        $this->load->model('account_model','account');
     }
 
     public function index(){
@@ -105,6 +106,7 @@ class Goods extends Admin_Api_Controller {
             $order_status_parm['createtime'] = time();
             $order_status_parm['log_ids'] = $log_ids_str;
             $order_status_parm['payment'] = $payment;
+            $order_status_parm['status'] = $this->config->item('order_status_status')['done'];
             $order_status_parm['total'] = $total;
             $this->order_status->insert($order_status_parm);
 

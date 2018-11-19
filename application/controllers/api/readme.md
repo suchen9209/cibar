@@ -113,3 +113,15 @@
 # /api/goods/done_order
 完成订单
 ## 1. order_id
+
+# /api/goods/calculate_discount
+计算订单折扣
+## 1.user_id
+## 2.cartList
+
+# /api/goods/buy
+计算订单折扣
+## 1.user_id
+## 2.cartList
+## 3.total
+  

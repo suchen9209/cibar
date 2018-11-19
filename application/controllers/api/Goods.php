@@ -59,7 +59,7 @@ class Goods extends Admin_Api_Controller {
 
     public function buy(){
 
-        $total = $this->input->post_get('number');
+        $total = $this->input->post_get('total');
         $list_json = $this->input->post_get('cartList');
         $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
 

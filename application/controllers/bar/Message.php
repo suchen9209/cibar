@@ -11,7 +11,7 @@ class Message extends CI_Controller {
 
         $this->load->driver('cache');
 
-        while (1) {
+/*        while (1) {
             $service_json_recent = $this->cache->memcached->get('service_recent');
             $service_json = $this->cache->memcached->get('service');
 
@@ -25,7 +25,7 @@ class Message extends CI_Controller {
             }
 
             sleep(1);
-        }
+        }*/
         
 
 	}

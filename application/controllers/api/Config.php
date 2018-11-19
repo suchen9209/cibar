@@ -9,7 +9,15 @@ class Config extends Admin_Api_Controller {
 
 	public function index()
 	{
+        $return_data = array();
         $type_list = $this->config->item('log_pay_type_cn');
-        $this->response($this->getResponseData(parent::HTTP_OK, '支付类型', $type_list), parent::HTTP_OK);
+        $tmp_type = array();
+        foreach ($type_list as $key => $value) {
+            $tmp['id'] = $key;
+            $tmp['value'] = $value;
+            $tmp_type []= $tmp;
+        }
+        $return_data['pay_type'] = $tmp_type;
+        $this->response($this->getResponseData(parent::HTTP_OK, '支付类型', $return_data), parent::HTTP_OK);
 	}
 }

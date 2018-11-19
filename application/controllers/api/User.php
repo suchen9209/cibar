@@ -19,7 +19,7 @@ class User extends Admin_Api_Controller {
         if(is_numeric($uid)){
             $user_info = $this->user_account->get_user_info($uid);
             $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
-        }else if(substr($uid,1) == 'V' && is_numeric(substr($uid,-6)) ){
+        }else if(substr($uid,0,1) == 'V' && is_numeric(substr($uid,-6)) ){
             $user = $this->user->get_info_u('username',$uid);
             $user_info = $this->user_account->get_user_info($user->id);
             $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);

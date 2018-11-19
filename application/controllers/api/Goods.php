@@ -33,11 +33,35 @@ class Goods extends Admin_Api_Controller {
         
     }
 
+    public function calculate_discount(){
+        $list_json = $this->input->post_get('cartList');
+        $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
+
+        $level = $this->user_account->get_member_level($uid);
+        $discount = $this->config->item('discount_level')[$level];
+
+        $list = json_decode($list_json);
+
+        $total_money = 0;
+        foreach ($list as $key => $value) {//计入消费记录
+            $tmp_number = $value->quantity;
+            $tmp_price = $value->price;
+            $tmp_discount_price = round($value->price * $discount,2);
+
+            $total_money += $tmp_number * $tmp_discount_price;
+        }
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '折扣后金额', $total_money), parent::HTTP_OK);
+
+    }
+
+
+
     public function buy(){
 
         $total = $this->input->post_get('number');
         $list_json = $this->input->post_get('cartList');
-        $uid = $this->input->get_post('uid')?$this->input->get_post('uid'):0;
+        $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
 
         if(isset($total) && isset($list_json)){
             $list = json_decode($list_json);
@@ -45,11 +69,15 @@ class Goods extends Admin_Api_Controller {
             //执行事务 
             //分商品计入消费log
             //扣除账户余额
+            $discount = 1;
             if($uid != 0){
                 $acc = $this->account->get_info($uid);
                 if($acc->balance < $total){//先判断余额是否足够
                     $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '余额不足'), parent::HTTP_OK);
                 }
+
+                $level = $this->user_account->get_member_level($uid);
+                $discount = $this->config->item('discount_level')[$level];
             }
 
             $this->db->trans_start();
@@ -61,8 +89,8 @@ class Goods extends Admin_Api_Controller {
                 $log_parm['starttime'] = time();
                 $log_parm['starttime'] = time();
                 $log_parm['number'] = $value->quantity;
-                $log_parm['price'] = $value->discount_price;
-                $log_parm['money'] = round($value->quantity * $value->discount_price,2);
+                $log_parm['price'] = $value->price;
+                $log_parm['money'] = round($value->quantity * $value->price * $discount,2);
                 $log_parm['type'] = $value->type;
                 $log_parm['goodid'] = $value->id;
 

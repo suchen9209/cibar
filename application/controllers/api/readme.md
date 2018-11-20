@@ -1,6 +1,9 @@
 # /api/appointment
 查看所有预约
 
+# /api/appointment/num
+查看预约数量，按照座位类型分类
+
 # /api/machine
 查看所有空闲机器，可通过type获取对应类型的空闲机器
 ## 1. type

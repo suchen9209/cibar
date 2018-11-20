@@ -170,7 +170,7 @@ class Goods extends Admin_Api_Controller {
     public function done_order(){
         $order_id = $this->input->get_post('order_id') ? $this->input->get_post('order_id') : 0;
         if($order_id != 0){
-            if($this->order_status->update($order_id,array('status'=>$this->config->item('order_status_status')['done']))){
+            if($this->order_status->update($order_id,array('status' => $this->config->item('order_status_status')['done'] ) ) ){
                 $this->response($this->getResponseData(parent::HTTP_OK, '更新成功'), parent::HTTP_OK);
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '更新失败'), parent::HTTP_OK);

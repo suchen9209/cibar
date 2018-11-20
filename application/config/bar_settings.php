@@ -25,7 +25,8 @@ $config['log_pay_type_cn'] = array(
 $config['active_status'] = array(
 	0	=>	'初始入库',
 	1	=>	'空闲',
-	2	=>	'正在使用'
+	2	=>	'正在使用',
+	3	=>	'预约'
 );
 
 //log_login中login_logout的含义

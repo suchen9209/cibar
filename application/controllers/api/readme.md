@@ -14,6 +14,9 @@
   * 5: 10人包厢
   * 6: 20人包厢
 
+# /api/machine/all
+查看所有机器
+
 # /api/machine/order
 上机
 ## 1. user_id

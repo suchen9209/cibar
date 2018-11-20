@@ -27,6 +27,15 @@ class Machine extends Admin_Api_Controller {
 
     }
 
+    public function all(){
+        $type = $this->input->get_post('type');
+        $data['machine_type'] =$this->config->item('machine_type');
+
+        $data['machines'] =$this->machine->get_all_machine(array('machine.status'=>1));
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '所有机器', $data), parent::HTTP_OK);
+    }
+
     public function order(){
         $uid = $this->input->get_post('user_id');
         $machine_id = $this->input->post_get('machine_id');

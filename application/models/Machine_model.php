@@ -39,6 +39,17 @@ class Machine_model extends CI_Model {
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
+    public function get_all_machine($parm=array()){
+        $this->db->select('*');
+        $this->db->join('active_status','active_status.mid = machine.id','left');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $query = $this->db->get($this->table_name);
+
+        return $query->num_rows() > 0 ? $query->result_array() : false;
+    }
+
     public function get_machine_number($type,$number){
         if($type == 1){
             $this->db->select('count(*) as num');

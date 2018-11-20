@@ -252,7 +252,7 @@ class User extends Admin_Api_Controller {
             $user_info['opentime'] = $login_info->time;
             $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
         }else{
-            this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
         }
     }
 

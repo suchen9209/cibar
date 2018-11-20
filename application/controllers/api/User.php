@@ -245,7 +245,7 @@ class User extends Admin_Api_Controller {
 
     //获取在线用户的信息
     public function get_active_user_info(){
-        $uid = $this->input->get_post('uid') ? $this->input->get_post('uid') : 0;
+        $uid = $this->input->get_post('user_id') ? $this->input->get_post('user_id') : 0;
         if($uid > 0){
             $user_info = $this->user_account->get_user_info($uid);
             $login_info = $this->log_login->get_last_login_info($uid);

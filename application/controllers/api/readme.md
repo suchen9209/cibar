@@ -106,6 +106,10 @@
 ## 2. num
 ## 3. uid(选添)
 
+# /api/user/get_active_user_info
+获取在线用户信息（包含上机时间
+## 1. user_id
+
 # /api/goods
 获取商品列表和商品类型
 ## 1. page

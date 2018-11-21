@@ -11,13 +11,33 @@ class Peripheral extends Admin_Api_Controller {
     }
 
     public function index(){
+        $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
+
         $list = $this->peripheral_num->get_list_free();
+
+        $id_arr= [];
+        if($uid != 0 ){
+            $last = $this->peripheral_last->get_last_by_uid($uid);
+            if($last){
+                $tmp = json_decode($last->pid,true);
+                $id_arr = array_column($tmp, 'id');
+            }
+        }
+        
+        $data = array();
+        foreach ($list as $key => $value) {
+            if(in_array($value['id'], $id_arr)){
+                $value['last_use'] = true;
+            }
+            $data[$value['type']] []= $value; 
+        }
+
         $type_name = $this->config->item('peripheral_type');
         $return_data['type_name'] = $type_name;
-        $return_data['data'] = array();
-        foreach ($list as $key => $value) {
-           $return_data['data'][$value['type']] []= $value; 
-        }
+
+        $return_data['data'] = $data;
+        
+        
         $this->response($this->getResponseData(parent::HTTP_OK, '空闲外设', $return_data), parent::HTTP_OK);
     }
 

@@ -250,7 +250,7 @@ class User extends Admin_Api_Controller {
             $user_info = $this->user_account->get_user_info($uid);
             $login_info = $this->log_login->get_last_login_info($uid);
             $user_info['opentime'] = $login_info->time;
-            $user_info['duration'] = $login_info->time - time();
+            $user_info['duration'] = time() - $login_info->time;
             $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);

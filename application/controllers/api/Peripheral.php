@@ -21,6 +21,13 @@ class Peripheral extends Admin_Api_Controller {
         $this->response($this->getResponseData(parent::HTTP_OK, '空闲外设', $return_data), parent::HTTP_OK);
     }
 
+    public function last(){
+        $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
+        $return = $this->peripheral_last->get_last_by_uid($uid);
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '上次使用外设', $return->pid), parent::HTTP_OK);
+    }
+
     public function out(){
         $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
         $json = $this->input->get_post('pjson');
@@ -39,7 +46,7 @@ class Peripheral extends Admin_Api_Controller {
                     'pid'   =>  $json
                 );
             if($tmp = $this->peripheral_last->get_last_by_uid($uid)){
-                $this->peripheral_last->update($tmp[0]['id'],$parm);
+                $this->peripheral_last->update($tmp->id,$parm);
             }else{
                 $this->peripheral_last->insert($parm);
             }

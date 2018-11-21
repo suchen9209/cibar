@@ -10,7 +10,7 @@ class Peripheral_last_model extends CI_Model {
     	$this->db->select('*');
         $this->db->where('uid',$uid);
         $query = $this->db->get($this->table_name);
-        return $query->num_rows() > 0 ? $query->result_array() : false;
+        return $query->num_rows() > 0 ? $query->row() : false;
     }
     
 }

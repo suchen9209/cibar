@@ -101,7 +101,7 @@ class Machine extends Admin_Api_Controller {
 
                 if($last_p = $this->peripheral_last->get_last_by_uid($uid)){
                     $pjson = $last_p[0]['pid'];
-                    $pdata = json_decode($pjson);
+                    $pdata = json_decode($pjson,true);
                     foreach ($pdata as $key => $value) {
                         $this->peripheral_num->in($value['id']);
                     }

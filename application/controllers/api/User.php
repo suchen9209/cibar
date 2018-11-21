@@ -243,13 +243,14 @@ class User extends Admin_Api_Controller {
         $this->response($this->getResponseData(parent::HTTP_OK, '充值记录', $return_data), parent::HTTP_OK);
     }
 
-    //获取在线用户的信息
+        //获取在线用户的信息
     public function get_active_user_info(){
         $uid = $this->input->get_post('user_id') ? $this->input->get_post('user_id') : 0;
         if($uid > 0){
             $user_info = $this->user_account->get_user_info($uid);
             $login_info = $this->log_login->get_last_login_info($uid);
             $user_info['opentime'] = $login_info->time;
+            $user_info['duration'] = $login_info->time - time();
             $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);

@@ -143,4 +143,12 @@
 
 # /api/peripheral
 获取空闲外设列表
+
+
+# /api/peripheral/out
+分配外设
+## 1.user_id
+## 2.pjson
+  示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
+  其中type为外设类型，id为外设id，从/api/peripheral中获得
   

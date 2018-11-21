@@ -10,6 +10,8 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('machine_info_model','machine_info');
         $this->load->model('active_status_model','active_status');
         $this->load->model('log_login_model','log_login');
+        $this->load->model('peripheral_num_model','peripheral_num');
+        $this->load->model('peripheral_last_model','peripheral_last');
 
     }
 
@@ -97,6 +99,13 @@ class Machine extends Admin_Api_Controller {
                 $active_parm['updatetime'] = time();
                 $this->active_status->update($machine_id,$active_parm);
 
+                if($last_p = $this->peripheral_last->get_last_by_uid($uid)){
+                    $pjson = $last_p[0]['pid'];
+                    $pdata = json_decode($pjson);
+                    foreach ($pdata as $key => $value) {
+                        $this->peripheral_num->in($value['id']);
+                    }
+                }
 
                 if($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();

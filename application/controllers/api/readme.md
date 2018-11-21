@@ -139,4 +139,8 @@
 
 # /api/config
 获取支付方式的类别id
+
+
+# /api/peripheral
+获取空闲外设列表
   

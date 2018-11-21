@@ -69,8 +69,16 @@ class User extends Admin_Api_Controller {
         if(!isset($num)){$num=20;}
         $offset = ($page-1)*$num;
 
-        $users = $this->active_status->get_live_user($offset,$num);
-        $user_num = $this->active_status->get_live_user_num();
+        $parm = array();
+        if($this->input->get_post('id'))$parm['user.id']=$this->input->get_post('id');
+        if($this->input->get_post('phone'))$parm['user.phone']=$this->input->get_post('phone');
+        if($this->input->get_post('idcard'))$parm['user.idcard']=$this->input->get_post('idcard');
+        if($this->input->get_post('name'))$parm['user.name']=$this->input->get_post('name');
+        if($this->input->get_post('username'))$parm['user.username']=$this->input->get_post('username');
+        if($this->input->get_post('offline'))$parm['active_status.state is NULL']=NULL;
+
+        $users = $this->active_status->get_live_user($offset,$num,$parm);
+        $user_num = $this->active_status->get_live_user_num($parm);
         $return_arr = [];
         foreach ($users as $key => $value) {
             $temp['uid'] = $value['uid'];

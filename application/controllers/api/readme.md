@@ -143,7 +143,8 @@
 
 # /api/peripheral
 获取空闲外设列表
-
+## 1.user_id
+  用于显示该用户上次使用的外设
 
 # /api/peripheral/out
 分配外设

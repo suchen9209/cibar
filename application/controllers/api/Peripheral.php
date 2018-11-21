@@ -23,9 +23,10 @@ class Peripheral extends Admin_Api_Controller {
 
     public function last(){
         $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
-        $return = $this->peripheral_last->get_last_by_uid($uid);
+        $last = $this->peripheral_last->get_last_by_uid($uid);
+        $return_data = json_decode($last->pid);
 
-        $this->response($this->getResponseData(parent::HTTP_OK, '上次使用外设', $return->pid), parent::HTTP_OK);
+        $this->response($this->getResponseData(parent::HTTP_OK, '上次使用外设', $return_data), parent::HTTP_OK);
     }
 
     public function out(){

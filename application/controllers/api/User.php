@@ -192,13 +192,13 @@ class User extends Admin_Api_Controller {
 
         $uid = $this->input->get_post('user_id');
 
-        if(isset($this->input->get_post('idcard'))){
+        if($this->input->get_post('idcard')){
             $parm['idcard'] = $this->input->get_post('idcard');  
         }
-        if(isset($this->input->get_post('name'))){
+        if($this->input->get_post('name')){
             $parm['name'] = $this->input->get_post('name');  
         }
-        if(isset($this->input->get_post('phone'))){
+        if($this->input->get_post('phone')){
             $parm['phone'] = $this->input->get_post('phone');  
         }
         if($this->user->update($uid,$parm)){

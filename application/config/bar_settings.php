@@ -53,6 +53,16 @@ $config['peripheral_type'] = array(
 	5	=>	'麦克风',
 	6	=>	'其他'
 );
+//peripheral中state的含义
+$config['peripheral_state'] = array(
+	0	=>	'空闲',
+	1	=>	'正在使用'
+);
+//peripheral中status的含义
+$config['peripheral_status'] = array(
+	1	=>	'正常',
+	2	=>	'损坏'
+);
 
 
 //机器的分布类型
@@ -66,12 +76,22 @@ $config['machine_type'] = array(
 );
 //对应机器的价格
 $config['price'] = array(
-	1	=>	'30',//散座
-	2	=>	'20',
-	3	=>	'20',
-	4	=>	'15',
-	5	=>	'15',
-	6	=>	'15'
+	1	=>	'25',//散座
+	2	=>	'30',
+	3	=>	'30',
+	4	=>	'30',
+	5	=>	'30',
+	6	=>	'30'
+);
+
+//对应包厢的价格
+$config['box_price'] = array(
+	1	=>	'25',//散座
+	2	=>	'150',
+	3	=>	'150',
+	4	=>	'180',
+	5	=>	'300',
+	6	=>	'600'
 );
 
 //机器硬件状态，是否能够使用

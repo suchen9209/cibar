@@ -15,10 +15,11 @@ class Checkin extends Admin_Api_Controller {
 
     }
 
-    public function single(){
+    public function single_info(){
         $uid = $this->input->get_post('user_id') ? $this->input->get_post('user_id') : 0;
 
         $data['machine_type'] =$this->config->item('machine_type');
+        $data['machine_price'] =$this->config->item('price');
         $data['machines'] = $this->machine->get_active_machine();  
         if($uid != 0){
             $list = $this->peripheral_num->get_list_free();
@@ -50,20 +51,43 @@ class Checkin extends Admin_Api_Controller {
 
     }
 
-    public function multi(){
+    public function multi_info(){
+        $user_id_str = $this->input->get_post('user_id_list');
+
+        $data['box_list'] = $this->machine->get_all_box(array('active_status.state'=>1));
         $type = $this->input->get_post('type');
-        $data['machine_type'] =$this->config->item('machine_type');
+        $data['box_type'] =$this->config->item('machine_type');
 
-        $data['machines'] =$this->machine->get_all_machine(array('machine.status'=>1));
+        $user_id_arr =explode(',', $user_id_str);
 
-        $this->response($this->getResponseData(parent::HTTP_OK, '所有机器', $data), parent::HTTP_OK);
+        foreach ($user_id_arr as $key => $value) {
+            $last = $this->peripheral_last->get_last_by_uid($value);
+            if($last){
+                $tmp = json_decode($last->pid,true);
+                $data['last_use'][$value] = $tmp;
+            }
+        }
+
+        $peripheral_list = $this->peripheral_num->get_list_free();
+
+        $plist = array();
+        foreach ($peripheral_list as $key => $value) {
+            $plist[$value['type']] []= $value; 
+        }
+
+        $type_name = $this->config->item('peripheral_type');
+        $data['peripheral_type_name'] = $type_name;
+        $data['peripheral_list'] = $plist;
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '包厢信息及外设情况', $data), parent::HTTP_OK);
     }
 
     public function order(){
         $uid = $this->input->get_post('user_id');
         $machine_id = $this->input->post_get('machine_id');
+        $pjson = $this->input->post_get('pjson');
 
-        if(isset($uid) && isset($machine_id) && $uid>0){
+        if(isset($uid) && isset($machine_id) && isset($pjson) && $uid>0){
 
             if(!$this->active_status->get_info_uid($uid)){
                 $log_parm['uid'] = $uid;
@@ -73,11 +97,29 @@ class Checkin extends Admin_Api_Controller {
                 $log_parm['login_or_logout'] = $this->config->item('log_login')['login'];
 
                 $this->db->trans_start();
+                //登录记录
                 $this->log_login->insert($log_parm);
                 $active_parm['uid'] = $uid;
                 $active_parm['state'] = 2;
                 $active_parm['updatetime'] = time();
+                //更新机器状态
                 $this->active_status->update($machine_id,$active_parm);
+
+                //外设出库
+                $pdata = json_decode($json,true);
+                foreach ($pdata as $key => $value) {
+                    $this->peripheral_num->out($value['id']);
+                }
+                $parm = array(
+                    'uid'   =>  $uid,
+                    'pid'   =>  $json
+                );
+                //记录最近一次的外设信息
+                if($tmp = $this->peripheral_last->get_last_by_uid($uid)){
+                    $this->peripheral_last->update($tmp->id,$parm);
+                }else{
+                    $this->peripheral_last->insert($parm);
+                }
 
 
                 if($this->db->trans_status() === FALSE){

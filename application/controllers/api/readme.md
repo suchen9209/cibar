@@ -139,12 +139,33 @@
 # /api/peripheral
 获取空闲外设列表
 ## 1.user_id
-  用于显示该用户上次使用的外设
+        用于显示该用户上次使用的外设
 
 # /api/peripheral/out
 分配外设
 ## 1.user_id
 ## 2.pjson
-  示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
-  其中type为外设类型，id为外设id，从/api/peripheral中获得
+      示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
+      其中type为外设类型，id为外设id，从/api/peripheral中获得
+
+# /api/checkin/single_info
+单人上机
+## 1.user_id
+
+# /api/checkin/multi_info
+多人上机
+## 1.user_id_list
+      要求格式：5,76,55
+      用逗号间隔的字符串
+
+# /api/checkin/single
+上机
+## 1. user_id
+      用户ID，查询用户时返回
+## 2. machine_id
+      机器ID,api/machine接口中返回
+## 3. pjson
+      示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
+      其中type为外设类型，id为外设id      
+
   

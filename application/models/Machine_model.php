@@ -39,6 +39,18 @@ class Machine_model extends CI_Model {
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
+    public function get_all_box($parm=array()){
+        $this->db->select('DISTINCT(box_id),type');
+        $this->db->join('active_status','active_status.mid = machine.id','left');
+        $this->db->where('box_id <>','散座');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $query = $this->db->get($this->table_name);
+
+        return $query->num_rows() > 0 ? $query->result_array() : false;
+    }
+
     public function get_all_machine($parm=array()){
         $this->db->select('*');
         $this->db->join('active_status','active_status.mid = machine.id','left');

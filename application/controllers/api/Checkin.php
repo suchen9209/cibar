@@ -82,7 +82,7 @@ class Checkin extends Admin_Api_Controller {
         $this->response($this->getResponseData(parent::HTTP_OK, '包厢信息及外设情况', $data), parent::HTTP_OK);
     }
 
-    public function order(){
+    public function single(){
         $uid = $this->input->get_post('user_id');
         $machine_id = $this->input->post_get('machine_id');
         $pjson = $this->input->post_get('pjson');

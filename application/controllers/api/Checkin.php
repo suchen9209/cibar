@@ -57,6 +57,7 @@ class Checkin extends Admin_Api_Controller {
         $data['box_list'] = $this->machine->get_all_box(array('active_status.state'=>1));
         $type = $this->input->get_post('type');
         $data['box_type'] =$this->config->item('machine_type');
+        $data['box_price'] =$this->config->item('box_price');
 
         $user_id_arr =explode(',', $user_id_str);
 

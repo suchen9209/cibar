@@ -82,17 +82,12 @@
 ## 5.offline(选
   * 1(有此参数则取离线用户)
   
-# /api/user/bind_info/idcard
+# /api/user/bind_info/
 绑定身份证
 ## 1. user_id
 ## 2. idcard
 ## 3. name
-
-# /api/user/bind_info/phone
-绑定手机号
-## 1. user_id
-## 2. phone
-
+## 4. phone
 
 # /api/user/get_log_pay
 获取充值记录

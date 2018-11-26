@@ -9,7 +9,10 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('machine_model','machine');
         $this->load->model('machine_info_model','machine_info');
         $this->load->model('active_status_model','active_status');
+        $this->load->model('box_status_model','box_status');
         $this->load->model('log_login_model','log_login');
+        $this->load->model('log_expense_model','log_expense');
+        $this->load->model('log_deduct_money_model','log_deduct_money');
         $this->load->model('peripheral_num_model','peripheral_num');
         $this->load->model('peripheral_last_model','peripheral_last');
 
@@ -86,19 +89,23 @@ class Machine extends Admin_Api_Controller {
             if($op == 'get'){
                 $this->response($this->getResponseData(parent::HTTP_OK, 'sucess',$machine_info), parent::HTTP_OK);
             }else if($op == 'down'){
+                $this->db->trans_start();
+
+                //记录登出信息
                 $log_parm['uid'] = $uid;
                 $log_parm['login_type'] = $this->config->item('log_login_type')['bar'];
                 $log_parm['machine_id'] = $machine_id;
                 $log_parm['time'] = time();
-                $log_parm['login_or_logout'] = $this->config->item('log_login')['logout'];
-
-                $this->db->trans_start();
+                $log_parm['login_or_logout'] = $this->config->item('log_login')['logout'];                
                 $this->log_login->insert($log_parm);
+
+                //更新机器状态
                 $active_parm['uid'] = 0;
                 $active_parm['state'] = 1;
                 $active_parm['updatetime'] = time();
                 $this->active_status->update($machine_id,$active_parm);
 
+                //更新外设库存
                 if($last_p = $this->peripheral_last->get_last_by_uid($uid)){
                     $pjson = $last_p->pid;
                     $pdata = json_decode($pjson,true);
@@ -107,6 +114,31 @@ class Machine extends Admin_Api_Controller {
                     }
                 }
 
+                //删除box_status中对应uid的记录
+                if($this->box_status->get_info_uid($uid)){
+                    $this->box_status->delete_by_uid($uid);
+                }
+                //记录本次上网log_deduct_money总值，计入log_expense表
+                $deduct_info = $this->log_deduct_money->get_total_info($uid);
+                //删除log_deduct_money中对应uid的记录
+                $this->log_deduct_money->delete_by_uid($uid);
+
+                //计入消费信息
+                $log_expense_parm = array();
+                $log_expense['uid'] = $deduct_info['whopay'];
+                $log_expense['starttime'] = strtotime($deduct_info['start_time']);
+                $log_expense['endtime'] = strtotime($deduct_info['end_time']);
+                $log_expense['number'] = round(($log_expense['endtime'] - $log_expense['starttime'])/3600 , 2);
+                $log_expense['price'] = $this->config->item('price')[$machine_info->type];
+                $log_expense['money'] = $deduct_info['total_money'];
+                $log_expense['type'] = 0;
+                $log_expense['goodid'] = 0;
+                if($deduct_info['whopay'] != $uid){
+                    $log_expense['extra'] = '请客，为'.$uid.'买单';  
+                }
+
+                $this->log_expense->insert($log_expense);      
+ 
                 if($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();
                     $this->response($this->getResponseData(parent::HTTP_OK, '失败'), parent::HTTP_OK);

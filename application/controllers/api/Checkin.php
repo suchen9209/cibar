@@ -57,8 +57,8 @@ class Checkin extends Admin_Api_Controller {
 
     public function single(){
         $uid = $this->input->get_post('user_id');
-
         $san_or_box = $this->input->get_post('san_or_box');
+        $pjson = $this->input->get_post('pjson');
 
         if(isset($uid) && isset($san_or_box) && $uid>0){
             if(!$this->active_status->get_info_uid($uid)){
@@ -69,8 +69,8 @@ class Checkin extends Admin_Api_Controller {
                     $machine_id = $this->input->post_get('machine_id');
                 }else if($san_or_box == 'box'){
                     $box_id = $this->input->post_get('box_id');
-                    $pay_type = $this->input->post_get('pay_type');
-                    $whopay = $this->input->post_get('whopay');
+                    $pay_type = $this->input->post_get('pay_type') ?  $this->input->post_get('pay_type') : 2;
+                    $whopay = $this->input->post_get('whopay') ? $this->input->post_get('whopay') : $uid;
 
                     //随机分配一台该包厢的空机器
                     $machine_list = $this->machine->get_active_machine_in_box($box_id);
@@ -84,7 +84,7 @@ class Checkin extends Admin_Api_Controller {
                     $box_status_parm['box_price'] = $box_price;
                     $box_status_parm['whopay'] = $whopay;
                     $this->box_status->insert($box_status_parm);
-                    
+
                 }
 
                 //登录记录
@@ -102,13 +102,13 @@ class Checkin extends Admin_Api_Controller {
                 $this->active_status->update($machine_id,$active_parm);
 
                 //外设出库
-                $pdata = json_decode($json,true);
+                $pdata = json_decode($pjson,true);
                 foreach ($pdata as $key => $value) {
                     $this->peripheral_num->out($value['id']);
                 }
                 $parm = array(
                     'uid'   =>  $uid,
-                    'pid'   =>  $json
+                    'pid'   =>  $pjson
                 );
                 //记录最近一次的外设信息
                 if($tmp = $this->peripheral_last->get_last_by_uid($uid)){
@@ -135,55 +135,6 @@ class Checkin extends Admin_Api_Controller {
         }
     }
 
-    public function down(){
-        $uid = $this->input->get_post('user_id');
-        $op = $this->input->get_post('op');
-
-        if(isset($uid) && $uid > 0){
-            $ac_temp = $this->active_status->get_info_uid($uid);
-            $machine_id = $ac_temp->mid;
-            $machine_info = $this->machine->get_info($machine_id);
-            if($op == 'get'){
-                $this->response($this->getResponseData(parent::HTTP_OK, 'sucess',$machine_info), parent::HTTP_OK);
-            }else if($op == 'down'){
-                $log_parm['uid'] = $uid;
-                $log_parm['login_type'] = $this->config->item('log_login_type')['bar'];
-                $log_parm['machine_id'] = $machine_id;
-                $log_parm['time'] = time();
-                $log_parm['login_or_logout'] = $this->config->item('log_login')['logout'];
-
-                $this->db->trans_start();
-                $this->log_login->insert($log_parm);
-                $active_parm['uid'] = 0;
-                $active_parm['state'] = 1;
-                $active_parm['updatetime'] = time();
-                $this->active_status->update($machine_id,$active_parm);
-
-                if($last_p = $this->peripheral_last->get_last_by_uid($uid)){
-                    $pjson = $last_p->pid;
-                    $pdata = json_decode($pjson,true);
-                    foreach ($pdata as $key => $value) {
-                        $this->peripheral_num->in($value['id']);
-                    }
-                }
-
-                if($this->db->trans_status() === FALSE){
-                    $this->db->trans_rollback();
-                    $this->response($this->getResponseData(parent::HTTP_OK, '失败'), parent::HTTP_OK);
-                }else{
-                    $this->db->trans_complete();
-                    //发送关机指令
-                    $this->response($this->getResponseData(parent::HTTP_OK, '已下机'), parent::HTTP_OK);
-                }
-
-            }else{
-                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
-            }
-        }else{
-            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
-        }
-        
-    }
 
 
 }

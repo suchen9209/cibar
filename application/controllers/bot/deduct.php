@@ -38,7 +38,7 @@ class Deduct extends Ci_Controller {
 			$this->mid = $active_status_info->mid;
 			$machine_info = $this->machine->get_info($this->mid);
 			//判断是整包上网还是散客上网
-			if($box_status = $this->box_status->get_info_uid($uid)){//整包
+			if($box_status = $this->box_status->get_info_uid($this->uid)){//整包
 				$this->type = 'box';
 				$this->box_id = $box_status->box_id;
 				$this->memcached_id = 'box_'.$this->box_id.'_total';
@@ -82,17 +82,18 @@ class Deduct extends Ci_Controller {
 			$log_parm = array();
 			$log_parm['uid'] = $this->uid;
 			$log_parm['pay_uid'] = $this->pay_uid;
-			$log_parm['time'] = time();
-			$log_parm['price'] = $this->true_price_before_discount;
+			$log_parm['time'] = date('YmdHis');
+			$log_parm['price'] = $this->price;
+			$log_parm['money'] = $this->true_price_before_discount;
 			//根据付款人的id获取折扣
 			$discount = $this->config->item('discount_level')[$this->user_account->get_member_level($this->pay_uid)];
-			$discount_price = round($this->true_price_before_discount * $discount , 2)
-			$log_parm['discount_price'] = $discount_price; 
+			$discount_price = round($this->true_price_before_discount * $discount , 2);
+			$log_parm['discount_money'] = $discount_price; 
 			$log_parm['type'] = $this->type == 'san' ? 1 : 2;
 
 			$this->log_deduct_money->insert($log_parm);
 
-			$this->account->expense($uid,$discount_price);
+			$this->account->expense($this->uid,$discount_price);
 
 			if($this->db->trans_status() === FALSE){
                 $this->db->trans_rollback();
@@ -117,17 +118,17 @@ class Deduct extends Ci_Controller {
 			}
 			if($num + $this->this_price > $this->toplimit){
 				if($num >= $this->toplimit){
-					$this->$true_price_before_discount = 0;
+					$this->true_price_before_discount = 0;
 				}else{
 					$this->cache->memcached->save($memecached_name,$num + $this->this_price,3600*7);
-					$this->$true_price_before_discount = $num + $this->this_price - $this->toplimit;
+					$this->true_price_before_discount = $num + $this->this_price - $this->toplimit;
 				}
 			}else{
 				$this->cache->memcached->save($memecached_name,$num + $this->this_price,3600*7);
-				$this->$true_price_before_discount = $this->this_price;
+				$this->true_price_before_discount = $this->this_price;
 			}
 		}else{
-			$this->$true_price_before_discount = $this->this_price;
+			$this->true_price_before_discount = $this->this_price;
 		}
 
 	}

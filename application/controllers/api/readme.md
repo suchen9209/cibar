@@ -149,23 +149,28 @@
       其中type为外设类型，id为外设id，从/api/peripheral中获得
 
 # /api/checkin/single_info
-单人上机
+上机流程前获取信息
 ## 1.user_id
 
-# /api/checkin/multi_info
-多人上机
-## 1.user_id_list
-      要求格式：5,76,55
-      用逗号间隔的字符串
-
-# /api/checkin/single
-上机
+# /api/checkin/single?san_or_box=san
+散客上机
 ## 1. user_id
       用户ID，查询用户时返回
 ## 2. machine_id
-      机器ID,api/machine接口中返回
 ## 3. pjson
       示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
-      其中type为外设类型，id为外设id      
+      其中type为外设类型，id为外设id    
 
+
+# /api/checkin/single?san_or_box=box
+整包上机
+## 1. user_id
+      用户ID，查询用户时返回
+## 2. box_id
+## 3. pay_type
+## 4. whopay
+      要求对应用户的ID
+## 5. pjson
+      示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
+      其中type为外设类型，id为外设id   
   

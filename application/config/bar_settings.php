@@ -44,6 +44,17 @@ $config['order_status_status'] = array(
 	'done'	=>	1
 );
 
+//log_deduct_money中type的含义
+$config['log_deduct_money_type'] = array(
+	'散客'		=>	1,
+	'包厢AA'	=>	2,
+	'包厢请客'	=>	3
+);
+//box_status中pay_type的含义
+$config['box_status_pay_type'] = array(
+	2	=>	'AA',
+	3	=>	'请客'
+);
 //peripheral中type的含义
 $config['peripheral_type'] = array(
 	1	=>	'鼠标',
@@ -92,6 +103,15 @@ $config['box_price'] = array(
 	4	=>	'180',
 	5	=>	'300',
 	6	=>	'600'
+);
+
+//对应包厢的通宵价格
+$config['box_overtime_price'] = array(
+	2	=>	'500',
+	3	=>	'500',
+	4	=>	'600',
+	5	=>	'1000',
+	6	=>	'2000'
 );
 
 //机器硬件状态，是否能够使用

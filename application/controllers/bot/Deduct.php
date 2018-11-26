@@ -74,7 +74,7 @@ class Deduct extends Ci_Controller {
 					$this->toplimit = 100;
 				}
 
-				$this->pay_uid = $uid;//付款人	
+				$this->pay_uid = $this->uid;//付款人	
 			}
 			//本次扣款原价
 			$this->this_price = round($this->price*($this->utime / 3600),2);

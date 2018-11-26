@@ -21,6 +21,9 @@ class Checkin extends Admin_Api_Controller {
         $data['machine_type'] =$this->config->item('machine_type');
         $data['machine_price'] =$this->config->item('price');
         $data['machines'] = $this->machine->get_active_machine();  
+        $data['box_list'] = $this->machine->get_all_box(array('active_status.state'=>1));
+        $data['box_type'] =$this->config->item('machine_type');
+        $data['box_price'] =$this->config->item('box_price');
         if($uid != 0){
             $list = $this->peripheral_num->get_list_free();
 
@@ -43,7 +46,6 @@ class Checkin extends Admin_Api_Controller {
             $type_name = $this->config->item('peripheral_type');
             $data['peripheral_type_name'] = $type_name;
             $data['peripheral_list'] = $plist;
-
         }
 
 

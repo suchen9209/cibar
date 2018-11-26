@@ -34,11 +34,13 @@ class Deduct extends Ci_Controller {
 		$this->uid = $this->input->get_post('uid')?$this->input->get_post('uid'):0;
 		$this->utime = $this->input->get_post('utime')?$this->input->get_post('utime'):15*60;
 		//判断用户是否是上机状态
-		if($active_status_info = $this->active_status->get_info_uid($this->uid)){
+		$active_status_info = $this->active_status->get_info_uid($this->uid);
+		if($active_status_info){
 			$this->mid = $active_status_info->mid;
 			$machine_info = $this->machine->get_info($this->mid);
 			//判断是整包上网还是散客上网
-			if($box_status = $this->box_status->get_info_uid($this->uid)){//整包
+			$box_status = $this->box_status->get_info_uid($this->uid);
+			if($box_status){//整包
 				$this->type = 'box';
 				$this->box_id = $box_status->box_id;
 				$this->memcached_id = 'box_'.$this->box_id.'_total';

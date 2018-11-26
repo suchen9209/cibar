@@ -35,11 +35,17 @@ class Checkin extends Admin_Api_Controller {
                 $tmp = json_decode($last->pid,true);
                 $data['last_use'] = $tmp;
                 $id_arr = array_column($tmp, 'id');
+                $is_null = false;
+            }else{
+                $is_null = true;
             }
             
             $plist = array();
             foreach ($list as $key => $value) {
                 if(in_array($value['id'], $id_arr)){
+                    $value['last_use'] = true;
+                }
+                if($is_null && !isset($plist[$value['type']])){
                     $value['last_use'] = true;
                 }
                 $plist[$value['type']] []= $value; 

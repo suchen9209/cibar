@@ -126,7 +126,7 @@ class Checkin extends Admin_Api_Controller {
 
                 if($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();
-                    $this->response($this->getResponseData(parent::HTTP_OK, '失败'), parent::HTTP_OK);
+                    $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '失败'), parent::HTTP_OK);
                 }else{
                     $this->db->trans_complete();
                     //发送开机指令，整包使用时，发送包厢开机

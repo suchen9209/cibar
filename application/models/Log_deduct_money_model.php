@@ -24,18 +24,24 @@ class Log_deduct_money_model extends CI_Model {
 
         $list = $query->result_array();
 
-        $return_data = array();
-        array_multisort(array_column($list, 'time'),$list);
+        if($list){
+            $return_data = array();
+            array_multisort(array_column($list, 'time'),$list);
 
-        $return_data['start_time'] = $list[0]['time'];
-        $return_data['end_time'] = end($list)['time'];
-        $return_data['whopay'] = $list[0]['pay_uid'];
-        $return_data['total_money'] = 0;
-        foreach ($list as $key => $value) {
-            $return_data['total_money'] += $value['discount_money'];
+            $return_data['start_time'] = $list[0]['time'];
+            $return_data['end_time'] = end($list)['time'];
+            $return_data['whopay'] = $list[0]['pay_uid'];
+            $return_data['total_money'] = 0;
+            foreach ($list as $key => $value) {
+                $return_data['total_money'] += $value['discount_money'];
+            }
+
+            return $return_data;
+        }else{
+            return false;
         }
 
-        return $return_data;
+        
     }
 
     public function delete_by_uid($uid){

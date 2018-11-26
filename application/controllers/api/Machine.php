@@ -124,20 +124,23 @@ class Machine extends Admin_Api_Controller {
                 $this->log_deduct_money->delete_by_uid($uid);
 
                 //计入消费信息
-                $log_expense_parm = array();
-                $log_expense['uid'] = $deduct_info['whopay'];
-                $log_expense['starttime'] = strtotime($deduct_info['start_time']);
-                $log_expense['endtime'] = strtotime($deduct_info['end_time']);
-                $log_expense['number'] = round(($log_expense['endtime'] - $log_expense['starttime'])/3600 , 2);
-                $log_expense['price'] = $this->config->item('price')[$machine_info->type];
-                $log_expense['money'] = $deduct_info['total_money'];
-                $log_expense['type'] = 0;
-                $log_expense['goodid'] = 0;
-                if($deduct_info['whopay'] != $uid){
-                    $log_expense['extra'] = '请客，为'.$uid.'买单';  
-                }
+                if($deduct_info){
+                    $log_expense_parm = array();
+                    $log_expense['uid'] = $deduct_info['whopay'];
+                    $log_expense['starttime'] = strtotime($deduct_info['start_time']);
+                    $log_expense['endtime'] = strtotime($deduct_info['end_time']);
+                    $log_expense['number'] = round(($log_expense['endtime'] - $log_expense['starttime'])/3600 , 2);
+                    $log_expense['price'] = $this->config->item('price')[$machine_info->type];
+                    $log_expense['money'] = $deduct_info['total_money'];
+                    $log_expense['type'] = 0;
+                    $log_expense['goodid'] = 0;
+                    if($deduct_info['whopay'] != $uid){
+                        $log_expense['extra'] = '请客，为'.$uid.'买单';  
+                    }
 
-                $this->log_expense->insert($log_expense);      
+                    $this->log_expense->insert($log_expense);    
+                }
+                      
  
                 if($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();

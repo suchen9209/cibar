@@ -148,6 +148,9 @@
       示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
       其中type为外设类型，id为外设id，从/api/peripheral中获得
 
+# /api/peripheral/get_list
+获取所有外设列表
+
 # /api/checkin/single_info
 上机流程前获取信息
 ## 1.user_id

@@ -150,6 +150,8 @@
 
 # /api/peripheral/get_list
 获取所有外设列表
+## 1. page
+## 2. limit
 
 # /api/checkin/single_info
 上机流程前获取信息

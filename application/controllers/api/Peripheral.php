@@ -85,6 +85,30 @@ class Peripheral extends Admin_Api_Controller {
 
     }
 
+    public function get_list(){
+        $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
+        $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
+
+        $offset = ($page-1)*$num;
+
+        if($page && $num){
+            $list = $this->peripheral_num->get_list($num,$offset);
+            foreach ($list as $key => $value) {
+                $list[$key]['user'] = $value['total'] - $value['count'];
+                $list[$key]['type_name'] = $this->config->item('peripheral_type')[$value['type']];
+            }
+            $count = $this->peripheral_num->get_type_num();
+            foreach ($count as $key => $value) {
+                $count[$key]['type_name'] = $this->config->item('peripheral_type')[$value['type']];
+                
+            }
+            $return_data['count'] = $this->peripheral_num->get_type_num();
+            $this->response($this->getLayuiList(0,'外设列表',$count,$list));            
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
+        }
+    }
+
 
 
 

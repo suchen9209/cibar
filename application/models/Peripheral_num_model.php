@@ -23,6 +23,12 @@ class Peripheral_num_model extends CI_Model {
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
+    public function get_count(){
+        $this->db->select('count(*) num');
+        $query = $this->db->get($this->table_name);
+        return $query->row()->num;
+    }
+
     public function get_type_num(){
         $this->db->select('SUM(total) as total,type');
         $this->db->group_by('type');

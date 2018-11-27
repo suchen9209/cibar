@@ -95,7 +95,7 @@ class Deduct extends Ci_Controller {
 
 			$this->log_deduct_money->insert($log_parm);
 
-			$this->account->expense($this->uid,$discount_price);
+			$this->account->expense($this->pay_uid,$discount_price);
 
 			if($this->db->trans_status() === FALSE){
                 $this->db->trans_rollback();

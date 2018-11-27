@@ -113,7 +113,7 @@ class Deduct extends Ci_Controller {
 	//判断是否还需要扣钱,返回应扣金额
 	private function overnignt_logic(){//type san->散客，box->整包
 		$this->load->driver('cache');
-		$today_0_time = strtotime('11:00:00');//今日0点的时间戳
+		$today_0_time = strtotime('00:00:00');//今日0点的时间戳
 		if((time() - $today_0_time) < 7*3600){//在0-7点之间
 			$num = $this->cache->memcached->get($this->memcached_id);
 			if( !$num ){

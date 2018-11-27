@@ -122,11 +122,11 @@ class Deduct extends Ci_Controller {
 				if($num >= $this->toplimit){
 					$this->true_price_before_discount = 0;
 				}else{
-					$this->cache->memcached->save($memecached_name,$num + $this->this_price,3600*7);
+					$this->cache->memcached->save($this->memcached_id,$num + $this->this_price,3600*7);
 					$this->true_price_before_discount = $num + $this->this_price - $this->toplimit;
 				}
 			}else{
-				$this->cache->memcached->save($memecached_name,$num + $this->this_price,3600*7);
+				$this->cache->memcached->save($this->memcached_id,$num + $this->this_price,3600*7);
 				$this->true_price_before_discount = $this->this_price;
 			}
 		}else{

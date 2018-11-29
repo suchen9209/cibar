@@ -51,7 +51,11 @@ class Service_function_model extends CI_Model {
         if ($key !== false){
             array_splice($service, $key, 1);
         }
-        return $this->cache->memcached->save($this->service_memcached_name,json_encode($service),3600*24);
+        if($this->cache->memcached->save($this->service_memcached_name,json_encode($service),3600*24)){
+            return $seat_info;
+        }else{
+            return false;
+        }
     }
 
 

@@ -15,6 +15,7 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('log_deduct_money_model','log_deduct_money');
         $this->load->model('peripheral_num_model','peripheral_num');
         $this->load->model('peripheral_last_model','peripheral_last');
+        $this->load->model('function/send_wokerman_model','send_wokerman');
 
     }
 

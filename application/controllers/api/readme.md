@@ -178,4 +178,11 @@
 ## 5. pjson
       示例：[{"type":1,"id":1},{"type":2,"id":3},{"type":3,"id":7},{"type":4,"id":5}]
       其中type为外设类型，id为外设id   
-  
+
+
+# /api/service
+获取当前所有的呼叫服务的mid
+
+# /api/service/cancel
+取消服务
+## 1. user_id

@@ -16,7 +16,18 @@ class Service extends Admin_Api_Controller {
         }else{
             $this->response($this->getResponseData(parent::HTTP_OK, '当前呼叫列表', []), parent::HTTP_OK);
         }
-        
+    }
 
+    public function cancel(){
+        $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
+        if($uid > 0){
+            if($this->service_function->remove_service($uid)){
+                $this->response($this->getResponseData(parent::HTTP_OK, '处理完毕'), parent::HTTP_OK);
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_OK, '请重试'), parent::HTTP_OK);
+            }            
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误'), parent::HTTP_OK);
+        }
     }
 }

@@ -9,6 +9,7 @@ class Service extends App_Api_Controller {
 		parent::__construct('app_rest');
 		$this->load->model('function/user_account_model','user_account');
 		$this->load->model('function/service_function_model','service_function');
+		$this->load->model('function/send_wokerman_model','send_wokerman');
 	}
 
 	public function index(){

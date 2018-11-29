@@ -10,9 +10,9 @@ class Service extends Admin_Api_Controller {
     }
 
     public function index(){
-        $list = $this->service_function->get_all_service();
-        if($list){
-            $this->response($this->getResponseData(parent::HTTP_OK, '当前呼叫列表', $list), parent::HTTP_OK);    
+        $list_json = $this->service_function->get_all_service();
+        if($list_json){
+            $this->response($this->getResponseData(parent::HTTP_OK, '当前呼叫列表', json_decode($list_json)), parent::HTTP_OK);    
         }else{
             $this->response($this->getResponseData(parent::HTTP_OK, '当前呼叫列表', []), parent::HTTP_OK);
         }

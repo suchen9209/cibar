@@ -134,6 +134,7 @@ class Checkin extends Admin_Api_Controller {
                     $send_parm = array();
                     $send_parm['uid'] = $uid;
                     $send_parm['mid'] = $machine_id;
+                    $send_parm['cmd'] = 'open';
                     $this->send_wokerman->send(json_encode($send_parm));
                     $this->response($this->getResponseData(parent::HTTP_OK, '登记成功'), parent::HTTP_OK);
                 }  

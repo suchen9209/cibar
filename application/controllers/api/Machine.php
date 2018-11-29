@@ -151,6 +151,7 @@ class Machine extends Admin_Api_Controller {
                     $send_parm = array();
                     $send_parm['uid'] = $uid;
                     $send_parm['mid'] = $machine_id;
+                    $send_parm['cmd'] = 'down';
                     $this->send_wokerman->send(json_encode($send_parm));
                     $this->response($this->getResponseData(parent::HTTP_OK, '已下机'), parent::HTTP_OK);
                 }

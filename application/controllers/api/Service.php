@@ -23,7 +23,7 @@ class Service extends Admin_Api_Controller {
         if($uid > 0){
             $mid = $this->service_function->remove_service($uid);
             if($mid){
-                $this->response($this->getResponseData(parent::HTTP_OK, $mid), parent::HTTP_OK);
+                $this->response($this->getResponseData(parent::HTTP_OK, '处理完毕',$mid), parent::HTTP_OK);
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '请重试'), parent::HTTP_OK);
             }            

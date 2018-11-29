@@ -13,6 +13,7 @@ class Checkin extends Admin_Api_Controller {
         $this->load->model('log_login_model','log_login');
         $this->load->model('peripheral_num_model','peripheral_num');
         $this->load->model('peripheral_last_model','peripheral_last');
+        $this->load->model('function/send_wokerman_model','send_wokerman');
 
     }
 
@@ -130,6 +131,10 @@ class Checkin extends Admin_Api_Controller {
                 }else{
                     $this->db->trans_complete();
                     //发送开机指令，整包使用时，发送包厢开机
+                    $send_parm = array();
+                    $send_parm['uid'] = $uid;
+                    $send_parm['mid'] = $machine_id;
+                    $this->send_wokerman->send(json_encode($send_parm));
                     $this->response($this->getResponseData(parent::HTTP_OK, '登记成功'), parent::HTTP_OK);
                 }  
 

@@ -148,6 +148,10 @@ class Machine extends Admin_Api_Controller {
                 }else{
                     $this->db->trans_complete();
                     //发送关机指令
+                    $send_parm = array();
+                    $send_parm['uid'] = $uid;
+                    $send_parm['mid'] = $machine_id;
+                    $this->send_wokerman->send(json_encode($send_parm));
                     $this->response($this->getResponseData(parent::HTTP_OK, '已下机'), parent::HTTP_OK);
                 }
 

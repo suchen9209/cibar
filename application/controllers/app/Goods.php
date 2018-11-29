@@ -12,7 +12,9 @@ class Goods extends App_Api_Controller {
 		$this->load->model('account_model','account');
 		$this->load->model('good_type_model','good_type');
 		$this->load->model('order_status_model','order_status');
+		$this->load->model('active_status_model','active_status');
 		$this->load->model('function/user_account_model','user_account');
+		$this->load->model('function/send_wokerman_model','send_wokerman');
 	}
 
 	public function index(){
@@ -84,7 +86,7 @@ class Goods extends App_Api_Controller {
 					$order_status_parm['createtime'] = time();
 					$order_status_parm['log_ids'] = $log_ids_str;
 					$order_status_parm['total'] = $total;
-					$this->order_status->insert($order_status_parm);
+					$order_status_id = $this->order_status->insert($order_status_parm);
 
 					$this->account->expense($uid,$total);//账户扣款
 
@@ -93,6 +95,15 @@ class Goods extends App_Api_Controller {
 						$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '购买失败'), parent::HTTP_OK);
 					}else{
 						$this->db->trans_complete();
+
+						$send_parm = array();
+
+						$user_info = $this->active_status->get_info_uid($uid);
+				        $send_parm['uid'] = $uid;
+				        $send_parm['mid'] = $user_info->mid;
+				        $send_parm['order_id'] = $order_status_id;
+				        $send_parm['cmd'] = 'new_order';
+				        $this->send_wokerman->send(json_encode($send_parm));
 						//后续在此增加提醒订单的接口，用于与前台通信
 						$this->response($this->getResponseData(parent::HTTP_OK, '购买成功'), parent::HTTP_OK);
 					}

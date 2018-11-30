@@ -31,7 +31,7 @@ class Log_expense_model extends CI_Model {
     }
 
     public function get_detail($id){
-        $this->db->select('log_expense.*,goods.name good_name');
+        $this->db->select('log_expense.*,goods.name good_name,goods.img good_img,goods.price good_price');
         $this->db->where('log_expense.id',$id);
         $this->db->join('goods','goods.id = log_expense.goodid');
         $this->db->from($this->table_name);

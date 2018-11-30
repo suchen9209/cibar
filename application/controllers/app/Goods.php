@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Goods extends App_Api_Controller {
+class Goods extends Test_Api_Controller {
 
 	public function __construct(){
 
@@ -125,6 +125,21 @@ class Goods extends App_Api_Controller {
 		$offset = ($page-1)*$limit;
 		if($uid){
 			$list = $this->order_status->get_list($offset,$limit,array('user.id'=>$uid));
+			foreach ($list as $key => $value) {
+				$log_ids = explode(',', $value['log_ids']);
+				$list[$key]['total_money'] = 0;
+				foreach ($log_ids as $k2 => $v2){
+					$tmp_detail = $this->log_expense->get_detail($v2);
+					$tmp_good = array();
+					$tmp_good['name'] = $tmp_detail->good_name;
+					$tmp_good['img'] = $tmp_detail->good_img;
+					$tmp_good['price'] = $tmp_detail->good_price;
+					$tmp_good['discount_price'] = $tmp_detail->price;
+					$tmp_good['num'] = $tmp_detail->number;
+					$list[$key]['detail'][] = $tmp_good;
+					$list[$key]['total_money'] += $tmp_detail->money;
+				}
+			}
 			$this->response($this->getResponseData(parent::HTTP_OK, '订单列表', $list), parent::HTTP_OK);
 		}else{
 			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '登录信息过期，请重新登录'), parent::HTTP_OK);

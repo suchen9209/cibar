@@ -10,6 +10,7 @@ class User extends Admin_Api_Controller {
         $this->load->model('user_model','user');
         $this->load->model('active_status_model','active_status');
         $this->load->model('log_login_model','log_login');
+        $this->load->model('box_status_model','box_status');
 
 
     }
@@ -94,16 +95,60 @@ class User extends Admin_Api_Controller {
             $online_seconds = time() - $value['updatetime'];
             $temp['online_seconds'] = $online_seconds;
 
-            $half_hour_num = ceil($online_seconds / 1800);//当前已经上网的半小时数
+/*            $half_hour_num = ceil($online_seconds / 1800);//当前已经上网的半小时数
             $discount = $this->config->item('discount_level')[$temp['level']];//获取折扣
             $price = round($this->config->item('price')[$value['type']] * $discount,2);//计算单小时价格
-            $temp['cost'] = round($half_hour_num * ($price/2) , 2);//计算当前已消费的金额
+            $temp['cost'] = round($half_hour_num * ($price/2) , 2);//计算当前已消费的金额*/
 
-            
-            $can_online_seconds = ceil($value['balance']/$price*3600);//计算当前余额可上网时长
-            $temp['remain_seconds'] = $can_online_seconds - $online_seconds;//计算剩余时长
+            $balance = $value['balance'];
+            $deduct_info = $this->log_deduct_money->get_total_info($uid);
+            if($deduct_info){
+                $temp['cost'] = $deduct_info['total_money'];
+            }else{
+                $temp['cost'] = 0;
+            }
 
+            $box_status = $this->box_status->get_info_uid($value['uid']);
+            if($box_status){//整包
+                $pay_person_info = $this->user_account->get_user_info($box_status->whopay);
+                $balance = $pay_person_info['balance'];
+                $num = $this->box_status->get_num_by_box_id($value['box_id']);
+                if($num == 0){
+                    $num = 1;
+                }
+                $discount = $this->config->item('discount_level')[$pay_person_info['level']];
+                $box_price = $this->config->item('box_price')[$value['type']];//获取包厢总价
+                $price = round($box_price * $discount / $num ,2);
+            }else{//散客
+                $balance = $value['balance'];
+                $discount = $this->config->item('discount_level')[$temp['level']];
+                $price = round($this->config->item('price')[$value['type']] * $discount,2);
+            }
+            if($deduct_info){
+                $whopay = $deduct_info['whopay'];
+                $pay_person_info = $this->user_account->get_user_info($whopay);
+                $balance = $pay_person_info['balance'];
+
+                $num = $this->box_status->get_num_by_box_id($value['box_id']);
+                if($num == 0){
+                    $num = 1;
+                }
+
+                //获取单价
+                $box_price = $this->config->item('box_price')[$value['type']];//获取包厢总价
+                $this->price = round($box_price / $num ,2);
+
+                $discount = $this->config->item('discount_level')[$pay_person_info['level']];
+                $price = round($this->config->item('price')[$value['type']] * $discount,2);
+            }else{
+
+                $balance = $value['balance'];
+                $discount = $this->config->item('discount_level')[$temp['level']];
+                $price = round($this->config->item('price')[$value['type']] * $discount,2);
+            }            
+            $temp['remain_seconds'] = ceil($balance/$price*3600);//计算当前余额可上网时长
             $temp['box'] = $value['box_id'];
+            
             $return_arr[]=$temp;
         }
         $this->response($this->getLayuiList(0,'在线用户列表',intval($user_num),$return_arr));    

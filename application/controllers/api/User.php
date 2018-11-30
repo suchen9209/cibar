@@ -101,7 +101,7 @@ class User extends Admin_Api_Controller {
             $temp['cost'] = round($half_hour_num * ($price/2) , 2);//计算当前已消费的金额*/
 
             $balance = $value['balance'];
-            $deduct_info = $this->log_deduct_money->get_total_info($uid);
+            $deduct_info = $this->log_deduct_money->get_total_info($value['uid']);
             if($deduct_info){
                 $temp['cost'] = $deduct_info['total_money'];
             }else{

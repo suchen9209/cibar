@@ -118,5 +118,18 @@ class Goods extends App_Api_Controller {
 		}
 	}
 
+	public function order_list(){
+		$uid = $this->getUserId();
+		$page = $this->input->post_get('page')?$this->input->post_get('page'):1;
+		$limit = $this->input->post_get('limit')?$this->input->post_get('limit'):5;
+		$offset = ($page-1)*$limit;
+		if($uid){
+			$list = $this->order_status->get_list($offset,$limit,array('user.id'=>$uid));
+			$this->response($this->getResponseData(parent::HTTP_OK, '订单列表', $list), parent::HTTP_OK);
+		}else{
+			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '登录信息过期，请重新登录'), parent::HTTP_OK);
+		}
+	}
+
 
 }

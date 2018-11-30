@@ -17,6 +17,7 @@ class Order_status_model extends CI_Model {
         $this->db->join('user','user.id = order_status.uid','LEFT');
         $this->db->join('active_status','active_status.uid = order_status.uid','LEFT');
         $this->db->join('machine','active_status.mid = machine.id','LEFT');
+        $this->db->order_by('order_status.createtime','DESC');
         $query = $this->db->get();
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }

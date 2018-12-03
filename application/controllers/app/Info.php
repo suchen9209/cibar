@@ -23,7 +23,11 @@ class Info extends CI_Controller {
             array(
                 'id'=>3,
                 'img'=>'https://bar.suchot.com/3.png'
-            )
+            ),
+            array(
+                'id'=>4,
+                'img'=>'https://bar.suchot.com/2.png'
+            ),
         );
 
         $return_arr['wifi'] = array(

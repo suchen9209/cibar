@@ -13,12 +13,12 @@ $config["log_pay_type"] = array(
 );
 
 $config['log_pay_type_cn'] = array(
-	1	=>	'微信',
-	2	=>	'扫码',
-	3	=>	'现金',
-	4	=>	'POS',
-	5	=>	'赠送',
-	6	=>	'美团'
+	2	=>	'前台微信支付',
+	3	=>	'扫码',
+	4	=>	'现金',
+	5	=>	'POS',
+	6	=>	'赠送',
+	7	=>	'美团'
 );
 
 //acitve_status表中status字段含义

@@ -98,9 +98,6 @@ class Weixin extends CI_Controller {
             if($this->user->update($uid,array('phone'=>$phone))){
                 $return['errcode'] = 0;
                 $return['errmsg'] = 'no error';
-                $return['uid'] = $uid;
-                $return['phone'] = $phone;
-                $return['data'] = $data_arr;
                 echo json_encode($return);
             }else{
                 $return['errcode'] = 500;

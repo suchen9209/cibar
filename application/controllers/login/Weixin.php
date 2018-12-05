@@ -21,12 +21,14 @@ class Weixin extends CI_Controller {
         require_once(CLASS_PATH.'WXBizDataCrypt.php');
         parent::__construct();
 
+        $this->load->model('user_model','user');
+        $this->load->model('function/user_account_model','user_account_model');
+
     }
 
     public function index(){
 
-        $this->load->model('user_model','user');
-        $this->load->model('function/user_account_model','user_account_model');
+        
 
         $this->code = $_GET['code'];
         $http = new URL();

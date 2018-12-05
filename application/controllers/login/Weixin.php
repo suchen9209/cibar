@@ -86,7 +86,6 @@ class Weixin extends CI_Controller {
 
         $this->load->driver('cache');
         $uid = $this->cache->memcached->get($mem_key);
-        var_dump($uid);die;
         $user_info = $this->user->get_user_info($uid);
         $sessionKey = $user_info->wxsessionkey;
 

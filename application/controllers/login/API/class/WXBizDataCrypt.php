@@ -41,7 +41,6 @@ class WXBizDataCrypt
 			return ErrorCode::$IllegalAesKey;
 		}
 		$aesKey=base64_decode($this->sessionKey);
-
         
 		if (strlen($iv) != 24) {
 			return ErrorCode::$IllegalIv;

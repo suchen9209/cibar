@@ -49,7 +49,7 @@ class User_account_model extends CI_Model {
     public function login($type,$parm){
         if($type == 'wx'){
             $user = $this->user->get_info_u('wxid',$parm['openid']);
-            $this->user->update($user->id,array('lasttime'=>time()));
+            $this->user->update($user->id,array('lasttime'=>time(),'wxsessionkey'=>$parm['wxsessionkey']));
             $uid = $user->id;
             
             $session_name = makeRandomSessionName(16);

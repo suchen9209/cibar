@@ -18,6 +18,7 @@ class Weixin extends CI_Controller {
     public function __construct(){
         define("CLASS_PATH",dirname(__FILE__)."/API/class/");
         require_once(CLASS_PATH.'URL.class.php');
+        require_once(CLASS_PATH.'WXBizDataCrypt.php');
         parent::__construct();
 
     }
@@ -72,6 +73,38 @@ class Weixin extends CI_Controller {
     
     }
 
+
+    public function bind_phone(){
+        header('Content-Type:application/json');
+        $encryptedData = $this->input->get_post('encryptedData');
+        $iv = $this->input->get_post('iv');
+        $mem_key = $this->input->get_post('3rd_session');
+
+        $this->load->driver('cache');
+        $uid = $this->cache->memcached->get($mem_key);
+        $user_info = $this->user->get_user_info($uid);
+        $sessionKey = $user_info->wxsessionkey;
+
+        $pc = new WXBizDataCrypt($this->app_id, $sessionKey);
+        $errCode = $pc->decryptData($encryptedData, $iv, $data );
+
+        if ($errCode == 0) {
+            $data_arr = json_decode($data,true);
+            $phone = $data_arr['phoneNumber'];
+            if($this->user->update($uid,array('phone',$phone))){
+                $return['errcode'] = 0;
+                $return['errmsg'] = 'no error';
+                echo json_encode($return);
+            }else{
+                $return['errcode'] = 500;
+                $return['errmsg'] = 'update err';
+                echo json_encode($return);
+            }
+        } else {
+            print($errCode . "\n");
+        }
+
+    }
 
 
 

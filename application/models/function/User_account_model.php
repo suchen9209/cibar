@@ -29,6 +29,7 @@ class User_account_model extends CI_Model {
             $insert_parm['lasttime'] = $time;
             $insert_parm['wxid'] = $parm['openid'];
             $insert_parm['wxunionid'] = $parm['unionid'];
+            $insert_parm['wxsessionkey'] = $parm['wxsessionkey'];
             $user_id = $this->user->insert($insert_parm);
             $username = member_id($user_id,$time);
             $this->user->update($user_id,array('username'=>$username));

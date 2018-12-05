@@ -48,6 +48,7 @@ class Weixin extends CI_Controller {
             //注册 or 登录
             $parm['openid'] = $res_arr['openid'];
             $parm['unionid'] = $res_arr['openid'];
+            $parm['wxsessionkey'] = $res_arr['session_key'];
             
             if($this->user->check_user('wx',$parm)){
                 $session_name = $this->user_account_model->login('wx',$parm);

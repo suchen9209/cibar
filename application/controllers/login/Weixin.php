@@ -99,11 +99,13 @@ class Weixin extends CI_Controller {
                 echo json_encode($return);
             }else{
                 $return['errcode'] = 500;
-                $return['errmsg'] = 'update err';
+                $return['errmsg'] = 'update error';
                 echo json_encode($return);
             }
         } else {
-            print($errCode . "\n");
+            $return['errcode'] = $errCode;
+            $return['errmsg'] = 'decrypt error';
+            echo json_encode($return);
         }
 
     }

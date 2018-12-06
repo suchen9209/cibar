@@ -17,11 +17,8 @@ class Wxpay extends Weixin {
     }
 
     public function index(){
-
-
         $num = $this->input->post_get('number');
         $mem_key = $this->input->get_post('3rd_session');
-
         if($num && $mem_key){
             $this->load->driver('cache');
             $uid = $this->cache->memcached->get($mem_key);
@@ -55,6 +52,8 @@ class Wxpay extends Weixin {
                 $time =time();
                 $parm['time'] = $time;
                 $parm['uid'] = $uid;
+                unset($parm['notify_url']);
+                unset($parm['openid']);
                 //计入记录，用于支付成功后验证
                 $log_id = $this->log_wx_pay->insert($parm);
 

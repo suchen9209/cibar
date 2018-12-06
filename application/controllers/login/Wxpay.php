@@ -57,18 +57,27 @@ class Wxpay extends Weixin {
                 //计入记录，用于支付成功后验证
                 $log_id = $this->log_wx_pay->insert($parm);
 
+                if($log_id){
+                    $return['appId'] = $this->app_id;                
+                    $return['nonceStr'] = makeRandomSessionName(10);
+                    $return['package'] = 'prepay_id='.$data['prepay_id'];
+                    $return['signType'] = 'MD5';
+                    $return['timeStamp'] = strval($time);
+                    $return['paySign'] = $this->array_to_str_special($return);
+                    $return['return_code'] = 'SUCCESS';
+                    $return['return_msg'] = 'OK';
 
-                $return['appId'] = $this->app_id;                
-                $return['nonceStr'] = makeRandomSessionName(10);
-                $return['package'] = 'prepay_id='.$data['prepay_id'];
-                $return['signType'] = 'MD5';
-                $return['timeStamp'] = strval($time);
-                $return['paySign'] = $this->array_to_str_special($return);
-                $return['return_code'] = 'SUCCESS';
-                $return['return_msg'] = 'OK';
+                    header('Content-Type:application/json');
+                    echo json_encode($return);    
+                }else{
+                    $return['return_code'] = 'ERROR';
+                    $return['return_msg'] = '服务器错误';
+                    header('Content-Type:application/json');
+                    echo json_encode($return); 
+                }
 
-                header('Content-Type:application/json');
-                echo json_encode($return); 
+
+                
 
             }else{
                 header('Content-Type:application/json');

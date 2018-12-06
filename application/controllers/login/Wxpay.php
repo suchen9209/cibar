@@ -98,7 +98,17 @@ class Wxpay extends Weixin {
     $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
     
     $data = json_decode(json_encode($obj), true);
-    var_dump($data);die;
+
+                $receive_sign = $data['sign'];
+            unset($data['sign']);
+            foreach ($data as $key => $value) {
+                if(!$value){
+                    unset($data[$key]);
+                }
+            }
+            $calculate_sign = $this->array_to_str_special($data);
+            var_dump($receive_sign);
+    var_dump($calculate_sign);die;
 
 
         //header('Content-Type:application/xml');
@@ -123,6 +133,7 @@ class Wxpay extends Weixin {
                 }
             }
             $calculate_sign = $this->array_to_str_special($data);
+
 
             if($calculate_sign == $receive_sign){
                 $log = $this->log_wx_pay->get_info_by_out_trade_no($data['out_trade_no']);   

@@ -95,13 +95,26 @@ class Wxpay extends Weixin {
         public function test(){
 
          $http = new URL();
-         $arr = array(
-            'appid' => '123123',
-            'wx'    =>  '234234'
-         );
 
-        $res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back',$this->array_to_str_special($arr));
-/*$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![CDATA[wx2421b1c4370ec43b]]></appid><attach><![CDATA[支付测试]]></attach><bank_type><![CDATA[CFT]]></bank_type><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[10000100]]></mch_id><nonce_str><![CDATA[5d2b6c2a8db53831f7eda20af46e531c]]></nonce_str><openid><![CDATA[oUpF8uMEb4qRXf22hE3X68TekukE]]></openid><out_trade_no><![CDATA[1409811653]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[B552ED6B279343CB493C5DD0D78AB241]]></sign><sub_mch_id><![CDATA[10000100]]></sub_mch_id><time_end><![CDATA[20140903131540]]></time_end><total_fee>1</total_fee><coupon_fee><![CDATA[10]]></coupon_fee><coupon_count><![CDATA[1]]></coupon_count><coupon_type><![CDATA[CASH]]></coupon_type><coupon_id><![CDATA[10000]]></coupon_id><coupon_fee><![CDATA[100]]></coupon_fee>  <trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1004400740201409030005092168]]></transaction_id></xml>');*/
+        //$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back',$this->array_to_str_special($arr));
+$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![CDATA[wx6405c0270703e4b3]]></appid>
+<bank_type><![CDATA[CFT]]></bank_type>
+<cash_fee><![CDATA[1]]></cash_fee>
+<device_info><![CDATA[WEB]]></device_info>
+<fee_type><![CDATA[CNY]]></fee_type>
+<is_subscribe><![CDATA[N]]></is_subscribe>
+<mch_id><![CDATA[1519885631]]></mch_id>
+<nonce_str><![CDATA[rsI_lNnQJs]]></nonce_str>
+<openid><![CDATA[oXjYN5HlTQUKaNHDUx_OjBkgX-EI]]></openid>
+<out_trade_no><![CDATA[201812061812050000583844]]></out_trade_no>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<sign><![CDATA[5E134306C9AC38EE3C4F15F34EA72C81]]></sign>
+<time_end><![CDATA[20181206181211]]></time_end>
+<total_fee>1</total_fee>
+<trade_type><![CDATA[JSAPI]]></trade_type>
+<transaction_id><![CDATA[4200000214201812066602195436]]></transaction_id>
+</xml>');
 
         //header('Content-Type:application/xml');
     }

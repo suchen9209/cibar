@@ -124,6 +124,8 @@ $res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![
         $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
         $data = json_decode(json_encode($obj), true);
 
+        var_dump($data);die;
+
         file_put_contents(dirname(__FILE__).'/1.xml',$xmldata);
         file_put_contents(dirname(__FILE__).'/1.txt',$xmldata);
         die;

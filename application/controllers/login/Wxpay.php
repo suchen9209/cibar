@@ -123,7 +123,7 @@ class Wxpay extends Weixin {
 
                     var_dump($log);
                     var_dump($data['transaction_id']);
-                    
+
                     $this->log_wx_pay->update($log->id,array('state'=>1,'transaction_id'=>$data['transaction_id']));
 
                     $log_parm['uid'] = $log->uid;
@@ -156,8 +156,8 @@ class Wxpay extends Weixin {
             $return['return_msg'] = 'error from weixin'; 
         }
 
-        header('Content-Type:application/xml');
-        echo $this->arrayToXml($return);        
+        //header('Content-Type:application/xml');
+        //echo $this->arrayToXml($return);        
     }
 
     private function arrayToXml($data){

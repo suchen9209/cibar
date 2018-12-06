@@ -97,6 +97,9 @@ class Wxpay extends Weixin {
         $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
         $data = json_decode(json_encode($obj), true);
 
+        file_put_contents('~/1.txt',$xmldata);
+        die;
+
         if($data['return_code'] == 'SUCCESS'){
 
             //验证签名，保证数据为服务器传递过来的数据

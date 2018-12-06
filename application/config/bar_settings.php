@@ -14,6 +14,7 @@ $config["log_pay_type"] = array(
 );
 
 $config['log_pay_type_cn'] = array(
+	1	=>	'小程序自充',
 	2	=>	'前台微信支付',
 	3	=>	'扫码',
 	4	=>	'现金',

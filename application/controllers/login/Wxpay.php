@@ -42,13 +42,7 @@ class Wxpay extends Weixin {
             $parm['total_fee'] = intval($num*100);
             $parm['trade_type'] = 'JSAPI';
 
-            foreach ($parm as $key => $value) {
-                $valueArr[] = "$key=$value";
-            }
-            $keyStr = implode("&",$valueArr);
-            $keyStr .= "&key=".$this->key;
-
-            $parm['sign'] = strtoupper(md5($keyStr));
+            $parm['sign'] = $this->array_to_str_special($parm);
 
             $xml_parm = $this->arrayToXml($parm);
 
@@ -70,9 +64,7 @@ class Wxpay extends Weixin {
                 $return['package'] = 'prepay_id='.$data['prepay_id'];
                 $return['signType'] = 'MD5';
                 $return['timeStamp'] = strval($time);
-
-                $paySign = strtoupper(md5(implode("&", $return)));
-                $return['paySign'] = $paySign;
+                $return['paySign'] = $this->array_to_str_special($return);
                 $return['return_code'] = 'SUCCESS';
                 $return['return_msg'] = 'OK';
 
@@ -104,15 +96,7 @@ class Wxpay extends Weixin {
             //验证签名，保证数据为服务器传递过来的数据
             $receive_sign = $data['sign'];
             unset($data['sign']);
-            ksort($data);
-
-            foreach ($data as $key => $value) {
-                $valueArr[] = "$key=$value";
-            }
-            $keyStr = implode("&",$valueArr);
-            $keyStr .= "&key=".$this->key;
-
-            $calculate_sign = strtoupper(md5($keyStr));
+            $calculate_sign = $this->array_to_str_special($data);
 
             if($calculate_sign == $receive_sign){
                 $log = $this->log_wx_pay->get_info_by_out_trade_no($data['out_trade_no']);   
@@ -141,7 +125,7 @@ class Wxpay extends Weixin {
         echo $this->arrayToXml($return);        
     }
 
-    public function arrayToXml($data){
+    private function arrayToXml($data){
         if(!is_array($data) || count($data) <= 0){
             return false;
         }
@@ -155,6 +139,19 @@ class Wxpay extends Weixin {
         }
         $xml.="</xml>";
         return $xml;
+    }
+
+    private function array_to_str_special($data){
+        ksort($data);
+
+        foreach ($data as $key => $value) {
+            $valueArr[] = "$key=$value";
+        }
+        $keyStr = implode("&",$valueArr);
+
+        $keyStr .= "&key=".$this->key;
+
+        return strtoupper(md5($keyStr));
     }
 
 }

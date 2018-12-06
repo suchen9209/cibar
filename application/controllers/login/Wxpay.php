@@ -126,13 +126,14 @@ class Wxpay extends Weixin {
 
                     $this->log_wx_pay->update($log->id,array('state'=>1,'transaction_id'=>$data['transaction_id']));
 
+                    echo $log->total_fee/100;
                     $log_parm['uid'] = $log->uid;
                     $log_parm['time'] = time();
                     $log_parm['money'] = $log->total_fee/100;
                     $log_parm['pay_type'] = $this->config->item('log_pay_type')['wx'];
                     $log_parm['operator'] = $log->uid;
-                    $this->log_pay->insert($parm);
-                    $this->account->recharge($uid,$parm['money']);
+                    $this->log_pay->insert($log_parm);
+                    $this->account->recharge($uid,$log_parm['money']);
 
                     if($this->db->trans_status() === FALSE){
                         $this->db->trans_rollback();

@@ -14,6 +14,8 @@ class Wxpay extends Weixin {
     public function __construct(){
         parent::__construct();
         $this->load->model('log_wx_pay_model','log_wx_pay');
+        $this->load->model('log_pay_model','log_pay');
+        $this->load->model('account_model','account');
     }
 
     public function index(){
@@ -109,15 +111,29 @@ class Wxpay extends Weixin {
 
             if($calculate_sign == $receive_sign){
                 $log = $this->log_wx_pay->get_info_by_out_trade_no($data['out_trade_no']);   
-                if($log && $log->total_fee == $data['total_fee'] && $data['state'] == 0){
+                if($log && $log->total_fee == $data['total_fee'] && $log->state == 0){
 
-                    if($this->log_wx_pay->update($log->id,array('state'=>1))){
-                        $return['return_code'] = 'SUCCESS';
-                        $return['return_msg'] = 'OK'; 
-                    }else{
+                    $this->db->trans_start();
+
+                    $this->log_wx_pay->update($log->id,array('state'=>1,'transaction_id'=>$data['transaction_id']);
+
+                    $log_parm['uid'] = $log->uid;
+                    $log_parm['time'] = time();
+                    $log_parm['money'] = $log->total_fee/100;
+                    $log_parm['pay_type'] = $this->config->item('log_pay_type')['wx'];
+                    $log_parm['operator'] = $log->uid;
+                    $this->log_pay->insert($parm);
+                    $this->account->recharge($uid,$parm['money']);
+
+                    if($this->db->trans_status() === FALSE){
+                        $this->db->trans_rollback();
                         $return['return_code'] = 'FAIL';
                         $return['return_msg'] = 'mysql update error'; 
-                    }
+                    }else{
+                        $this->db->trans_complete();
+                        $return['return_code'] = 'SUCCESS';
+                        $return['return_msg'] = 'OK'; 
+                    }   
                 }else{
                     $return['return_code'] = 'FAIL';
                     $return['return_msg'] = 'not same to log'; 

@@ -95,7 +95,7 @@ class Wxpay extends Weixin {
     public function back(){
         //$xmldata = file_get_contents("php://input");
 
-        $xmldata = file_get_contents(dirname(__FILE__).'/1.txt');
+        $xmldata = file_get_contents(dirname(__FILE__).'/1.xml');
 
         $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
         $data = json_decode(json_encode($obj), true);
@@ -121,7 +121,10 @@ class Wxpay extends Weixin {
 
                     $this->db->trans_start();
 
-                    var_dump($this->log_wx_pay->update($log->id,array('state'=>1,'transaction_id'=>$data['transaction_id'])));
+                    var_dump($log);
+                    var_dump($data['transaction_id']);
+                    
+                    $this->log_wx_pay->update($log->id,array('state'=>1,'transaction_id'=>$data['transaction_id']));
 
                     $log_parm['uid'] = $log->uid;
                     $log_parm['time'] = time();
@@ -153,8 +156,8 @@ class Wxpay extends Weixin {
             $return['return_msg'] = 'error from weixin'; 
         }
 
-        //header('Content-Type:application/xml');
-        //echo $this->arrayToXml($return);        
+        header('Content-Type:application/xml');
+        echo $this->arrayToXml($return);        
     }
 
     private function arrayToXml($data){

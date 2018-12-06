@@ -100,17 +100,45 @@ class Wxpay extends Weixin {
         $data = json_decode(json_encode($obj), true);
 
         if($data['return_code'] == 'SUCCESS'){
-            $log = $this->log_wx_pay->get_info_by_out_trade_no($data['out_trade_no']);
-            if($log && $log->total_fee == $data['total_fee'] && $data['state'] == 0 && $log->sign == $data['sign']){
 
+            //验证签名，保证数据为服务器传递过来的数据
+            $receive_sign = $data['sign'];
+            unset($data['sign']);
+            ksort($data);
+
+            foreach ($data as $key => $value) {
+                $valueArr[] = "$key=$value";
             }
+            $keyStr = implode("&",$valueArr);
+            $keyStr .= "&key=".$this->key;
+
+            $calculate_sign = strtoupper(md5($keyStr));
+
+            if($calculate_sign == $receive_sign){
+                $log = $this->log_wx_pay->get_info_by_out_trade_no($data['out_trade_no']);   
+                if($log && $log->total_fee == $data['total_fee'] && $data['state'] == 0){
+                    if($this->log_wx_pay->update($log->id,array('state'=>1))){
+                        $return['return_code'] = 'SUCCESS';
+                        $return['return_msg'] = 'OK'; 
+                    }else{
+                        $return['return_code'] = 'FAIL';
+                        $return['return_msg'] = 'mysql update error'; 
+                    }
+                }else{
+                    $return['return_code'] = 'FAIL';
+                    $return['return_msg'] = 'not same to log'; 
+                }
+            }else{
+                $return['return_code'] = 'FAIL';
+                $return['return_msg'] = 'sign not matching'; 
+            }
+        }else{
+            $return['return_code'] = 'FAIL';
+            $return['return_msg'] = 'error from weixin'; 
         }
 
-
-
-
-        $return['return_code'] = 'SUCCESS';
-        $return['return_msg'] = 'OK';
+        header('Content-Type:application/xml');
+        echo $this->arrayToXml($return);        
     }
 
     public function arrayToXml($data){

@@ -72,6 +72,7 @@ class Wxpay extends Weixin {
                 $paySign = md5(implode("&", $return));
                 $return['paySign'] = $paySign;
                 $return['return_code'] = 'SUCCESS';
+                $return['return_msg'] = 'OK';
 
                 header('Content-Type:application/json');
                 echo json_encode($return); 

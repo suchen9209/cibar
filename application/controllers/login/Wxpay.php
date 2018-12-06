@@ -133,7 +133,7 @@ class Wxpay extends Weixin {
                     $log_parm['pay_type'] = $this->config->item('log_pay_type')['wx'];
                     $log_parm['operator'] = $log->uid;
                     $this->log_pay->insert($log_parm);
-                    $this->account->recharge($uid,$log_parm['money']);
+                    $this->account->recharge($log->uid,$log_parm['money']);
 
                     if($this->db->trans_status() === FALSE){
                         $this->db->trans_rollback();

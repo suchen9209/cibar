@@ -153,8 +153,8 @@ class Wxpay extends Weixin {
             $return['return_msg'] = 'error from weixin'; 
         }
 
-        header('Content-Type:application/xml');
-        echo $this->arrayToXml($return);        
+        //header('Content-Type:application/xml');
+        //echo $this->arrayToXml($return);        
     }
 
     private function arrayToXml($data){

@@ -92,31 +92,12 @@ class Wxpay extends Weixin {
     
     }
 
-        public function test(){
+    public function test(){
 
-         $http = new URL();
-
-        //$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back',$this->array_to_str_special($arr));
-$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![CDATA[wx6405c0270703e4b3]]></appid>
-<bank_type><![CDATA[CFT]]></bank_type>
-<cash_fee><![CDATA[1]]></cash_fee>
-<device_info><![CDATA[WEB]]></device_info>
-<fee_type><![CDATA[CNY]]></fee_type>
-<is_subscribe><![CDATA[N]]></is_subscribe>
-<mch_id><![CDATA[1519885631]]></mch_id>
-<nonce_str><![CDATA[rsI_lNnQJs]]></nonce_str>
-<openid><![CDATA[oXjYN5HlTQUKaNHDUx_OjBkgX-EI]]></openid>
-<out_trade_no><![CDATA[201812061812050000583844]]></out_trade_no>
-<result_code><![CDATA[SUCCESS]]></result_code>
-<return_code><![CDATA[SUCCESS]]></return_code>
-<sign><![CDATA[5E134306C9AC38EE3C4F15F34EA72C81]]></sign>
-<time_end><![CDATA[20181206181211]]></time_end>
-<total_fee>1</total_fee>
-<trade_type><![CDATA[JSAPI]]></trade_type>
-<transaction_id><![CDATA[4200000214201812066602195436]]></transaction_id>
-</xml>');
-    header('Content-Type:application/xml');
-
+    $xmldata = file_get_contents(dirname(__FILE__).'/1.txt');
+    $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
+    var_dump($obj);die;
+    $data = json_decode(json_encode($obj), true);
 
 
 
@@ -125,14 +106,11 @@ $res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![
 
     public function back(){
         $xmldata = file_get_contents("php://input");
-        echo $xmldata;die;
 
         $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
         $data = json_decode(json_encode($obj), true);
 
         file_put_contents(dirname(__FILE__).'/1.xml',$xmldata);
-        file_put_contents(dirname(__FILE__).'/1.txt',$xmldata);
-        die;
 
         if($data['return_code'] == 'SUCCESS'){
 

@@ -7,12 +7,13 @@ class Wxpay extends Weixin {
 
     public $request_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 
-    public $notify_url = 'https://pay.imbatv.cn/login/wxpay';
+    public $notify_url = 'https://pay.imbatv.cn/login/wxpay/back';
 
     public $key = 'ARv2KbTTrIU6H4TAMtSGY1CNeszQwZhP';
 
     public function __construct(){
         parent::__construct();
+        $this->load->model('log_wx_pay_model','log_wx_pay');
     }
 
     public function index(){
@@ -49,52 +50,65 @@ class Wxpay extends Weixin {
 
             $parm['sign'] = strtoupper(md5($keyStr));
 
+            $xml_parm = $this->arrayToXml($parm);
 
-            $res = $http->post($this->request_url,$parm);
-            header('Content-Type:application/json');
-            echo $res;die;
-            $res_arr = json_decode($res,true);
+            $res_xml = $http->post($this->request_url,$xml_parm);
 
-            $return = [];
+            $obj = simplexml_load_string($res_xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $data = json_decode(json_encode($obj), true);
 
-            var_dump($res_arr);          
-        }else{
-            echo 'error arg';
-        }
+            if($data['return_code'] == 'SUCCESS'){
+                $time =time();
+                unset($parm['sign']);
+                $parm['time'] = $time;
+                $log_id = $this->log_wx_pay->insert($parm);
 
+                $return['appId'] = $this->app_id;                
+                $return['nonceStr'] = makeRandomSessionName(10);
+                $return['package'] = 'prepay_id='.$data['prepay_id'];
+                $return['signType'] = 'MD5';
+                $return['timeStamp'] = $time;
 
+                $paySign = md5(implode("&", $return));
+                $return['paySign'] = $paySign;
+                $return['return_code'] = 'SUCCESS';
 
-/*            $res_arr['errcode'] = 0;
-            $res_arr['openid'] = '22223sahfjkasdkjfhsakdhf';
-            $res_arr['unionid'] = 'SDF4343KSDJFJKHSDHFKJDSNJKFHSD';*/
-/*
+                header('Content-Type:application/json');
+                echo json_encode($return); 
 
-        if($res_arr['errcode'] == 0 || !isset($res_arr['errcode'])){
-            //注册 or 登录
-            $parm['openid'] = $res_arr['openid'];
-            $parm['unionid'] = $res_arr['openid'];
-            $parm['wxsessionkey'] = $res_arr['session_key'];
-            
-            if($this->user->check_user('wx',$parm)){
-                $session_name = $this->user_account_model->login('wx',$parm);
             }else{
-                $session_name = $this->user_account_model->register('wx',$parm);
+                header('Content-Type:application/json');
+                echo json_encode($data); 
             }
-
-            $return['errcode'] = 0;
-            $return['errmsg'] = 'no error';
-            //$return['openid'] = $res_arr['openid'];
-            $return['3rd_session'] = $session_name;
         }else{
-            $return['errcode'] = $res_arr['errcode'];
-            $return['errmsg'] = $res_arr['errmsg'];
+            $return['return_code'] = 'ERROR';
+            $return['return_msg'] = '参数错误';
 
+            header('Content-Type:application/json');
+
+            echo json_encode($return);
         }
-
-        header('Content-Type:application/json');
-
-        echo json_encode($return);*/
     
+    }
+
+    public function back(){
+
+    }
+
+    public function arrayToXml($data){
+        if(!is_array($data) || count($data) <= 0){
+            return false;
+        }
+        $xml = "<xml>";
+        foreach ($data as $key=>$val){
+        if (is_numeric($val)){
+            $xml.="<".$key.">".$val."</".$key.">";
+        }else{
+          $xml.="<".$key."><![CDATA[".$val."]]></".$key.">";
+        }
+        }
+        $xml.="</xml>";
+        return $xml;
     }
 
 }

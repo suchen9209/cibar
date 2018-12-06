@@ -69,7 +69,7 @@ class Wxpay extends Weixin {
                 $return['nonceStr'] = makeRandomSessionName(10);
                 $return['package'] = 'prepay_id='.$data['prepay_id'];
                 $return['signType'] = 'MD5';
-                $return['timeStamp'] = $time;
+                $return['timeStamp'] = strval($time);
 
                 $paySign = strtoupper(md5(implode("&", $return)));
                 $return['paySign'] = $paySign;

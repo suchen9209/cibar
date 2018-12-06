@@ -75,10 +75,6 @@ class Wxpay extends Weixin {
                     header('Content-Type:application/json');
                     echo json_encode($return); 
                 }
-
-
-                
-
             }else{
                 header('Content-Type:application/json');
                 echo json_encode($data); 
@@ -94,8 +90,25 @@ class Wxpay extends Weixin {
     
     }
 
+    public function test(){
+
+         $http = new URL();
+         $arr = array(
+            'appid' => '123123',
+            'wx'    =>  '234234'
+         );
+        $res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back',$this->arrayToXml($arr));
+
+        header('Content-Type:application/xml');
+        echo $res_xml;
+    }
+
     public function back(){
-        $xmldata=file_get_contents("php://input");
+        $xmldata = file_get_contents("php://input");
+        header('Content-Type:application/xml');
+        echo $xmldata;
+        die;
+
         $obj = simplexml_load_string($res_xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         $data = json_decode(json_encode($obj), true);
 
@@ -109,6 +122,7 @@ class Wxpay extends Weixin {
             if($calculate_sign == $receive_sign){
                 $log = $this->log_wx_pay->get_info_by_out_trade_no($data['out_trade_no']);   
                 if($log && $log->total_fee == $data['total_fee'] && $data['state'] == 0){
+
                     if($this->log_wx_pay->update($log->id,array('state'=>1))){
                         $return['return_code'] = 'SUCCESS';
                         $return['return_msg'] = 'OK'; 

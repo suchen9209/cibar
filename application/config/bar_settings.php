@@ -5,11 +5,12 @@
  */
 $config["log_pay_type"] = array(
 	"wx"		=>	1,
-	"scan"		=>	2,
-	"cash"		=>	3,
-	"pos"		=>	4,
-	"gift"		=>	5,
-	"meituan"	=>	6
+	"wx_f"		=>	2,
+	"scan"		=>	3,
+	"cash"		=>	4,
+	"pos"		=>	5,
+	"gift"		=>	6,
+	"meituan"	=>	7
 );
 
 $config['log_pay_type_cn'] = array(

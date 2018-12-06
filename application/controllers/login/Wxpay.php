@@ -59,9 +59,11 @@ class Wxpay extends Weixin {
 
             if($data['return_code'] == 'SUCCESS'){
                 $time =time();
-                unset($parm['sign']);
                 $parm['time'] = $time;
+                $parm['uid'] = $uid;
+                //计入记录，用于支付成功后验证
                 $log_id = $this->log_wx_pay->insert($parm);
+
 
                 $return['appId'] = $this->app_id;                
                 $return['nonceStr'] = makeRandomSessionName(10);
@@ -69,7 +71,7 @@ class Wxpay extends Weixin {
                 $return['signType'] = 'MD5';
                 $return['timeStamp'] = $time;
 
-                $paySign = md5(implode("&", $return));
+                $paySign = strtoupper(md5(implode("&", $return)));
                 $return['paySign'] = $paySign;
                 $return['return_code'] = 'SUCCESS';
                 $return['return_msg'] = 'OK';
@@ -93,7 +95,22 @@ class Wxpay extends Weixin {
     }
 
     public function back(){
+        $xmldata=file_get_contents("php://input");
+        $obj = simplexml_load_string($res_xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $data = json_decode(json_encode($obj), true);
 
+        if($data['return_code'] == 'SUCCESS'){
+            $log = $this->log_wx_pay->get_info_by_out_trade_no($data['out_trade_no']);
+            if($log && $log->total_fee == $data['total_fee'] && $data['state'] == 0 && $log->sign == $data['sign']){
+
+            }
+        }
+
+
+
+
+        $return['return_code'] = 'SUCCESS';
+        $return['return_msg'] = 'OK';
     }
 
     public function arrayToXml($data){

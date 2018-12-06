@@ -121,7 +121,7 @@ class Wxpay extends Weixin {
 
                     $this->db->trans_start();
 
-                    $this->log_wx_pay->update($log->id,array('state'=>1,'transaction_id'=>$data['transaction_id']));
+                    var_dump($this->log_wx_pay->update($log->id,array('state'=>1,'transaction_id'=>$data['transaction_id'])));
 
                     $log_parm['uid'] = $log->uid;
                     $log_parm['time'] = time();

@@ -116,6 +116,8 @@ $res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![
 <transaction_id><![CDATA[4200000214201812066602195436]]></transaction_id>
 </xml>');
 
+    echo 1;
+
         //header('Content-Type:application/xml');
     }
 

@@ -2,18 +2,18 @@
 
 class Weixin extends CI_Controller {
 
-    private $app_id = 'wx6405c0270703e4b3'; 
-    private $app_secret = '1b898cece00cf290125bd23459fb0160';
+    public $app_id = 'wx6405c0270703e4b3'; 
+    public $app_secret = '1b898cece00cf290125bd23459fb0160';
     //private $callback_url = HTTP_OR_HTTPS.'www.imbatv.cn/qqlogin/weixin/callback';
 
 
     //private $wx_code_url = '';
     //private $access_token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token';
-    private $get_id_url = "https://api.weixin.qq.com/sns/jscode2session";
+    public $get_id_url = "https://api.weixin.qq.com/sns/jscode2session";
 
     //https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID
     //private $wx_info_url = 'https://api.weixin.qq.com/sns/userinfo';
-    private $code = '';
+    public $code = '';
 
     public function __construct(){
         define("CLASS_PATH",dirname(__FILE__)."/API/class/");

@@ -94,7 +94,7 @@ class Wxpay extends Weixin {
 
     public function back(){
         $xmldata = file_get_contents("php://input");
-        $obj = simplexml_load_string($res_xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
         $data = json_decode(json_encode($obj), true);
 
         if($data['return_code'] == 'SUCCESS'){

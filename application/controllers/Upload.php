@@ -9,6 +9,7 @@ class Upload extends CI_Controller {
 
     public function index()
     {
+        header('Access-Control-Allow-Origin:*');
         header('content-type:text/html charset:utf-8');
         $date = date('ym');
         if(HTTP_HOST == 'www.esports222.com'){

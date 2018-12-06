@@ -97,7 +97,7 @@ class Wxpay extends Weixin {
          $http = new URL();
 
         //$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back',$this->array_to_str_special($arr));
-/*$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![CDATA[wx6405c0270703e4b3]]></appid>
+$res_xml = $http->post('https://pay.imbatv.cn/login/wxpay/back','<xml><appid><![CDATA[wx6405c0270703e4b3]]></appid>
 <bank_type><![CDATA[CFT]]></bank_type>
 <cash_fee><![CDATA[1]]></cash_fee>
 <device_info><![CDATA[WEB]]></device_info>
@@ -114,10 +114,9 @@ class Wxpay extends Weixin {
 <total_fee>1</total_fee>
 <trade_type><![CDATA[JSAPI]]></trade_type>
 <transaction_id><![CDATA[4200000214201812066602195436]]></transaction_id>
-</xml>');*/
-    $xmldata = file_get_contents(dirname(__FILE__).'/1.txt');
+</xml>');
     header('Content-Type:application/xml');
-    echo $xmldata;
+
 
 
 
@@ -126,9 +125,9 @@ class Wxpay extends Weixin {
 
     public function back(){
         $xmldata = file_get_contents("php://input");
-        var_dump($xmldata);
+        echo $xmldata;die;
+
         $obj = simplexml_load_string($xmldata, 'SimpleXMLElement', LIBXML_NOCDATA);
-        var_dump($obj);
         $data = json_decode(json_encode($obj), true);
 
         file_put_contents(dirname(__FILE__).'/1.xml',$xmldata);

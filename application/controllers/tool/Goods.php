@@ -34,6 +34,17 @@ class Goods extends Admin_Api_Controller {
         $this->response($return_arr);     
     }
 
+    public function good_info($id){
+        $type = $this->good_type->get_list(-1);
+        $type_list = array_column($type, 'name' ,'id');
+
+        $data['type_list'] = $type_list;
+        $data['status_list'] = $this->config->item('status_common');
+        
+        $data['data'] = $this->goods->get_info($id);
+        $this->response($this->getResponseData(parent::HTTP_OK, '商品信息',$data), parent::HTTP_OK);
+    }
+
     public function config_info(){
         //商品种类
         $type = $this->good_type->get_list(-1);
@@ -61,8 +72,7 @@ class Goods extends Admin_Api_Controller {
 	}
 
     public function update($id){
-        $action = $this->input->get('action');
-        if($action == 'update'){
+        if($_POST['name'] && $_POST['img'] && $_POST['type'] && $_POST['price'] && $_POST['status']){
             $parm = $_POST;
             unset($parm['submit']);
             if($this->goods->update($id,$parm)){
@@ -70,18 +80,9 @@ class Goods extends Admin_Api_Controller {
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '更改失败'), parent::HTTP_OK);
             }  
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '不能传空值'), parent::HTTP_OK);
         }
-        
-        $type = $this->good_type->get_list(-1);
-        $type_list = array_column($type, 'name' ,'id');
-
-        $data['type_list'] = $type_list;
-        $data['status_list'] = $this->config->item('status_common');
-        
-        $data['data'] = $this->goods->get_info($id);
-        $this->response($this->getResponseData(parent::HTTP_OK, '商品信息',$data), parent::HTTP_OK);
-
-
     }
 
 

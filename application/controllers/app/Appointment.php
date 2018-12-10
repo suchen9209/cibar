@@ -99,7 +99,7 @@ class Appointment extends App_Api_Controller {
 		if($uid){
 			$appoint_id = $this->input->post_get('appoint_id');
 			if($this->appointment->update($appoint_id,array('state'=>$this->config->item('appointment_status')['indate']))){
-				$this->response($this->getResponseData(parent::HTTP_OK, '已确认预约，届时会保留座位'), parent::HTTP_OK);
+				$this->response($this->getResponseData(parent::HTTP_OK, '预约成功'), parent::HTTP_OK);
 			}else{
 				$this->response($this->getResponseData(parent::HTTP_OK, '确认失败'), parent::HTTP_OK);
 			}

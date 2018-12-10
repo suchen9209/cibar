@@ -20,14 +20,20 @@ class Goods extends Admin_Api_Controller {
         $type = $this->good_type->get_list(-1);
         $type_list = array_column($type, 'name' ,'id');
 
+        
+
         $list = $this->goods->get_list(1,$num,$offset);
+        foreach ($list as $key => $value) {
+            $list[$key]['type'] = $type_list[$value['type']];
+            $list[$key]['status'] = $this->config->item('status_common')[$value['status']];
+        }
         $count = $this->goods->get_num()->num;
         $this->response($this->getLayuiList(0,'商品列表',$count,$list));     
     }
 
 	public function insert(){
         $action = $this->input->get('action');
-        if($action == 'insert'){
+        if($_POST){
             $parm = $_POST;
             unset($parm['submit']);
             if($this->goods->insert($parm)){
@@ -35,9 +41,9 @@ class Goods extends Admin_Api_Controller {
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '增加失败'), parent::HTTP_OK);
             }  
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '不能传空值'), parent::HTTP_OK);
         }
-        exit();
-        
 	}
 
     public function update($id){
@@ -51,16 +57,6 @@ class Goods extends Admin_Api_Controller {
 
 
     }
-
-    public function delete($id){
-        if($this->machine->delete($id)){
-            $this->response($this->getResponseData(parent::HTTP_OK, '删除成功'), parent::HTTP_OK);
-        }else{
-            $this->response($this->getResponseData(parent::HTTP_OK, '删除失败'), parent::HTTP_OK);
-        } 
-
-    }
-
 
 
 }

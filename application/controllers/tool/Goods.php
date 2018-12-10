@@ -61,13 +61,25 @@ class Goods extends Admin_Api_Controller {
 	}
 
     public function update($id){
-        $parm = $_POST;
-        unset($parm['submit']);
-        if($this->goods->update($id,$parm)){
-            $this->response($this->getResponseData(parent::HTTP_OK, '更新成功'), parent::HTTP_OK);
-        }else{
-            $this->response($this->getResponseData(parent::HTTP_OK, '更新失败'), parent::HTTP_OK);
-        } 
+        $action = $this->input->get('action');
+        if($action == 'update'){
+            $parm = $_POST;
+            unset($parm['submit']);
+            if($this->goods->update($id,$parm)){
+                $this->response($this->getResponseData(parent::HTTP_OK, '更改成功'), parent::HTTP_OK);
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_OK, '更改失败'), parent::HTTP_OK);
+            }  
+        }
+        
+        $type = $this->good_type->get_list(-1);
+        $type_list = array_column($type, 'name' ,'id');
+
+        $data['type_list'] = $type_list;
+        $data['status_list'] = $this->config->item('status_common');
+        
+        $data['data'] = $this->goods->get_info($id);
+        $this->response($this->getResponseData(parent::HTTP_OK, '商品信息',$data), parent::HTTP_OK);
 
 
     }

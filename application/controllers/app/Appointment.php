@@ -45,24 +45,26 @@ class Appointment extends App_Api_Controller {
 					}else{//没满，录入预约记录
 						$appoint_parm['uid'] = $uid;
 						$appoint_parm['createtime'] = time();
-						$appoint_parm['state'] = $this->config->item('appointment_status')['indate'];
+						$appoint_parm['state'] = $this->config->item('appointment_status')['init'];
 						$appoint_parm['starttime'] = $date;
 						$appoint_parm['endtime'] = $date + 3600*$time;
 						$appoint_parm['type'] = $type;
 						$appoint_parm['number'] = $number;
 
-						if($this->appointment->insert($appoint_parm)){
-							$this->response($this->getResponseData(parent::HTTP_OK, '预约成功'), parent::HTTP_OK);
+						$appointment_id = $this->appointment->insert($appoint_parm);
+
+						if($appointment_id && $appointment_id>0){
+							$this->response($this->getResponseData(parent::HTTP_OK, '可以预约',$appointment_id), parent::HTTP_OK);
 						}else{
 							$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '预约失败，请联系服务员'), parent::HTTP_OK);
 						}
 					}			
 				}
 			}else{
-				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, 'error', '参数错误'), parent::HTTP_OK);
+				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', '参数错误'), parent::HTTP_OK);
 			}
 		}else{
-			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, 'error', '登录信息失效'), parent::HTTP_OK);
+			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '登录信息失效', '登录信息失效'), parent::HTTP_OK);
 		}
 
 	}
@@ -92,8 +94,18 @@ class Appointment extends App_Api_Controller {
 	}
 
 	//修改预约
-	public function change(){
-
+	public function confirm(){
+		$uid = $this->getUserId();
+		if($uid){
+			$appoint_id = $this->input->post_get('appoint_id');
+			if($this->appointment->update($appoint_id,array('state'=>$this->config->item('appointment_status')['indate']))){
+				$this->response($this->getResponseData(parent::HTTP_OK, '已确认预约，届时会保留座位'), parent::HTTP_OK);
+			}else{
+				$this->response($this->getResponseData(parent::HTTP_OK, '确认失败'), parent::HTTP_OK);
+			}
+		}else{
+			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '登录信息失效', '登录信息失效'), parent::HTTP_OK);
+		}
 	}
 
 

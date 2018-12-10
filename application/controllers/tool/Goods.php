@@ -34,6 +34,17 @@ class Goods extends Admin_Api_Controller {
         $this->response($return_arr);     
     }
 
+    public function config_info(){
+        //商品种类
+        $type = $this->good_type->get_list(-1);
+        $type_list = array_column($type, 'name' ,'id');
+
+        $return_arr['type_list'] = $type_list;
+        $return_arr['status_list'] = $this->config->item('status_common');
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '商品类型和状态',$return_arr), parent::HTTP_OK);
+    }
+
 	public function insert(){
         $action = $this->input->get('action');
         if($_POST['name'] && $_POST['img'] && $_POST['type'] && $_POST['price'] && $_POST['status']){

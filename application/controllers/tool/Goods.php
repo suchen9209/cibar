@@ -60,10 +60,12 @@ class Goods extends Admin_Api_Controller {
     }
 
 	public function insert(){
-        if($_POST['name'] && $_POST['img'] && $_POST['type'] && $_POST['price'] && $_POST['status']){
-            $parm = $_POST;
-            unset($parm['submit']);
-            if($this->goods->insert($parm)){
+        $data_json = $this->input->post_get('data');
+/*        $data_json = '{"name":"百事可乐","price":"2.5","status":"1","type":"1","img":"https://pay.imbatv.cn/1812/154443306257.png"}';*/
+        $data = json_decode($data_json,true);
+        
+        if($data){
+            if($this->goods->insert($data)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '增加成功'), parent::HTTP_OK);
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '增加失败'), parent::HTTP_OK);

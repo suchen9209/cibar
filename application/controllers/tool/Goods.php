@@ -38,6 +38,7 @@ class Goods extends Admin_Api_Controller {
         $type = $this->good_type->get_list(-1);
         $type_list = array_column($type, 'name' ,'id');
 
+
         $data['type_list'] = $type_list;
         $data['status_list'] = $this->config->item('status_common');
         
@@ -48,7 +49,9 @@ class Goods extends Admin_Api_Controller {
     public function config_info(){
         //商品种类
         $type = $this->good_type->get_list(-1);
-        $type_list = array_column($type, 'name' ,'id');
+        foreach ($type as $key => $value) {
+            $type_list []= array('id'=>$value['id'],'name'=>$value['name']);
+        }
 
         $return_arr['type_list'] = $type_list;
         $return_arr['status_list'] = $this->config->item('status_common');
@@ -57,7 +60,6 @@ class Goods extends Admin_Api_Controller {
     }
 
 	public function insert(){
-        $action = $this->input->get('action');
         if($_POST['name'] && $_POST['img'] && $_POST['type'] && $_POST['price'] && $_POST['status']){
             $parm = $_POST;
             unset($parm['submit']);

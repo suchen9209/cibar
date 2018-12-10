@@ -9,7 +9,10 @@ class Goods_model extends CI_Model {
 
     public function get_list($status = 1, $num = -1, $offset = -1){
         $this->db->select('*');
-        $this->db->where('status',$status);
+        if($status != -1){
+            $this->db->where('status',$status); 
+        }
+        
         if($offset != -1 && $num != -1){
             $this->db->limit($num,$offset);
         }

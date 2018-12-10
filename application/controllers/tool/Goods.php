@@ -28,12 +28,15 @@ class Goods extends Admin_Api_Controller {
             $list[$key]['status'] = $this->config->item('status_common')[$value['status']];
         }
         $count = $this->goods->get_num()->num;
-        $this->response($this->getLayuiList(0,'商品列表',$count,$list));     
+        $return_arr = $this->getLayuiList(0,'商品列表',$count,$list);
+        $return_arr['type_list'] = $type_list;
+        $return_arr['status_list'] = $this->config->item('status_common');
+        $this->response($return_arr);     
     }
 
 	public function insert(){
         $action = $this->input->get('action');
-        if($_POST){
+        if($_POST['name'] && $_POST['img'] && $_POST['type'] && $_POST['price'] && $_POST['status']){
             $parm = $_POST;
             unset($parm['submit']);
             if($this->goods->insert($parm)){

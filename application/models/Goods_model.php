@@ -16,6 +16,7 @@ class Goods_model extends CI_Model {
         if($offset != -1 && $num != -1){
             $this->db->limit($num,$offset);
         }
+        $this->db->order_by('id','DESC');
         $this->db->from($this->table_name);
         $query = $this->db->get();
         return $query->result_array();

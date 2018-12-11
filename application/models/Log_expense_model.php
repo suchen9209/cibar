@@ -18,6 +18,23 @@ class Log_expense_model extends CI_Model {
         $query = $this->db->get();
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }
+
+    public function get_tool_list($offset,$num,$parm=array()){
+        $this->db->select('log_expense.*,user.name name,user.username vip_num,user.phone,user.idcard');
+        $this->db->limit($num,$offset);
+
+        if($parm['log_expense.type'] != 0){
+            $this->db->select('goods.name good_name');
+            $this->db->join('goods','goods.id = log_expense.goodid');
+        }        
+        $this->db->join('user','user.id = log_expense.uid');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->num_rows() > 0 ? $query->result_array() : false;
+    }
     
 
     public function get_num($parm=array()){

@@ -10,7 +10,6 @@ class Log_play_model extends CI_Model {
     public function get_list($offset,$num,$parm=array()){
         $this->db->select('log_play.*,user.name name,user.username vip_num,user.phone,user.idcard');
         $this->db->limit($num,$offset);
-
         $this->db->join('user','user.id = log_play.uid');
         foreach ($parm as $key => $value) {
             $this->db->where($key,$value);

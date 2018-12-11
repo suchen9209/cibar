@@ -18,8 +18,8 @@ class Machine extends Admin_Api_Controller {
 
         $data = $this->machine->get_machine_list($page,$num);
         foreach ($data as $key => $value) {
-            $data['type'] = $this->config->item('machine_type')[$value['type']];
-            $data['status'] = $this->config->item('machine_hardware_status')[$value['status']];
+            $data[$key]['type'] = $this->config->item('machine_type')[$value['type']];
+            $data[$key]['status'] = $this->config->item('machine_hardware_status')[$value['status']];
         }
 
         $count = $this->machine->get_num();

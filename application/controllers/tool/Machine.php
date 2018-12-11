@@ -43,7 +43,7 @@ class Machine extends Admin_Api_Controller {
 	public function insert()
 	{
         $data_json = $this->input->post_get('data');
-/*        $data_json = '{"machine_name":"S0088","ip":"158.222.666.33","type":"1","status":"1","postion":"38","box_id":"散座"}';*/
+/*        $data_json = '{"machine_name":"S0088","ip":"158.222.666.33","type":"1","status":"1","position":"38","box_id":"散座"}';*/
         $data = json_decode($data_json,true);
         
         if($data){
@@ -70,17 +70,21 @@ class Machine extends Admin_Api_Controller {
 
     public function update($id){
         $data_json = $this->input->post_get('data');
-/*        $data_json = '{"machine_name":"S0088","ip":"158.222.666.33","type":"1","status":"1","postion":"38","box_id":"散座"}';*/
+/*        $data_json = '{"machine_name":"S0088","ip":"158.222.666.33","type":"1","status":"1","position":"38","box_id":"散座"}';*/
         $data = json_decode($data_json,true);
         if($data){
             $this->db->trans_start();
             $this->machine->update($id,$data);
 
             if($data['status'] == 2){
-                $active_parm = array('state'=>4);
+                $active_parm = array('state'=>4);//机器状态中标记为损坏
                 $this->active_status->update($id,$active_parm);    
-            }
-            
+            }else if($data['status'] == 1){
+                if($this->active_status->get_info($id)->state == 4){//将损坏的机器更为正常
+                    $active_parm = array('state'=>1);
+                    $this->active_status->update($id,$active_parm);  
+                }
+            }            
 
             if($this->db->trans_status() === FALSE){
                 $this->db->trans_rollback();   //增加失败，回滚

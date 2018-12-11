@@ -17,12 +17,13 @@ class Log extends Admin_Api_Controller {
         $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
         $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
         $startdate = $this->input->get_post('startdate') ? $this->input->get_post('startdate') : date('Y-m-d',time()-24*3600);
-        $enddate = $this->input->get_post('enddate') ? $this->input->get_post('enddate') : date('Y-m-d');
+        $enddate = $this->input->get_post('enddate') ? $this->input->get_post('enddate') : date('Y-m-d H:i:s');
         $offset = ($page-1)*$num;
 
         $parm = array();
         $parm['log_play.endtime >'] = strtotime($startdate);
         $parm['log_play.endtime <'] = strtotime($enddate);
+
 
         $data = $this->log_play->get_list($offset,$num,$parm);
         foreach ($data as $key => $value) {
@@ -44,7 +45,7 @@ class Log extends Admin_Api_Controller {
         $parm = array();
         $parm['log_expense.endtime >'] = strtotime($startdate);
         $parm['log_expense.endtime <'] = strtotime($enddate);
-        
+
         $data = $this->log_expense->get_tool_list($offset,$num,$parm);
         foreach ($data as $key => $value) {
             $data[$key]['level'] = $this->user_account->get_member_level($value['uid']);

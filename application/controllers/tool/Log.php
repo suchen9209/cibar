@@ -93,6 +93,9 @@ class Log extends Admin_Api_Controller {
         $total_money_expense = $this->log_expense->get_total_money($log_parm);
         //上机消费额
         $total_money_play = $this->log_play->get_total_money($log_parm);
+        if(!$total_money_play){
+            $total_money_play = 0;
+        }
         //总充值额
         $pay_parm['time >'] = strtotime($startdate);
         $pay_parm['time <'] = strtotime($enddate);

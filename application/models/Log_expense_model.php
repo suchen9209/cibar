@@ -60,7 +60,7 @@ class Log_expense_model extends CI_Model {
         }
         $this->db->from($this->table_name);
         $query = $this->db->get();
-        return $query->row()->money;
+        return $query->row()->money ? $query->row()->money : 0;
     }
 
     public function get_drink_num($parm=array()){
@@ -70,7 +70,7 @@ class Log_expense_model extends CI_Model {
         }
         $this->db->from($this->table_name);
         $query = $this->db->get();
-        return $query->row()->number?$query->row()->number:0;
+        return $query->row()->number ? $query->row()->number : 0;
     }
 
 

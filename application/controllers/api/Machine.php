@@ -55,7 +55,6 @@ class Machine extends Admin_Api_Controller {
                 $log_parm['login_type'] = $this->config->item('log_login_type')['bar'];
                 $log_parm['machine_id'] = $machine_id;
                 $log_parm['time'] = time();
-                $log_parm['login_or_logout'] = $this->config->item('log_login')['login'];
 
                 $this->db->trans_start();
                 $this->log_login->insert($log_parm);
@@ -95,12 +94,9 @@ class Machine extends Admin_Api_Controller {
                 $this->db->trans_start();
 
                 //记录登出信息
-                $log_parm['uid'] = $uid;
-                $log_parm['login_type'] = $this->config->item('log_login_type')['bar'];
-                $log_parm['machine_id'] = $machine_id;
-                $log_parm['time'] = time();
-                $log_parm['login_or_logout'] = $this->config->item('log_login')['logout'];                
-                $this->log_login->insert($log_parm);
+                $log_parm['logout_time'] = time();           
+                $login_info = $this->log_login->get_last_login_info($uid);   
+                $this->log_login->update($login_info->id,$log_parm);
 
                 //更新机器状态
                 $active_parm['uid'] = 0;

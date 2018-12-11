@@ -99,7 +99,6 @@ class Checkin extends Admin_Api_Controller {
                 $log_parm['login_type'] = $this->config->item('log_login_type')['bar'];
                 $log_parm['machine_id'] = $machine_id;
                 $log_parm['time'] = time();
-                $log_parm['login_or_logout'] = $this->config->item('log_login')['login'];
                 $this->log_login->insert($log_parm);
 
                 //更新机器状态

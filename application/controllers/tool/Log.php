@@ -8,6 +8,7 @@ class Log extends Admin_Api_Controller {
 
         $this->load->model('Log_expense_model','log_expense');
         $this->load->model('Log_pay_model','log_pay');
+        $this->load->model('Log_play_model','log_play');
         $this->load->model('function/user_account_model','user_account');
 
     }
@@ -20,12 +21,10 @@ class Log extends Admin_Api_Controller {
         $offset = ($page-1)*$num;
 
         $parm = array();
-        $parm['log_expense.endtime >'] = strtotime($startdate);
-        $parm['log_expense.endtime <'] = strtotime($enddate);
-        $parm['log_expense.type'] = 0;
-        $parm['log_expense.goodid'] = 0;
+        $parm['log_play.endtime >'] = strtotime($startdate);
+        $parm['log_play.endtime <'] = strtotime($enddate);
 
-        $data = $this->log_expense->get_tool_list($offset,$num,$parm);
+        $data = $this->log_play->get_list($offset,$num,$parm);
         foreach ($data as $key => $value) {
             $data[$key]['level'] = $this->user_account->get_member_level($value['uid']);
         }
@@ -45,9 +44,7 @@ class Log extends Admin_Api_Controller {
         $parm = array();
         $parm['log_expense.endtime >'] = strtotime($startdate);
         $parm['log_expense.endtime <'] = strtotime($enddate);
-        $parm['log_expense.type >'] = 0;
-        $parm['log_expense.goodid >'] = 0;
-
+        
         $data = $this->log_expense->get_tool_list($offset,$num,$parm);
         foreach ($data as $key => $value) {
             $data[$key]['level'] = $this->user_account->get_member_level($value['uid']);

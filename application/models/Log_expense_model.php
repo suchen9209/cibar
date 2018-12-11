@@ -53,6 +53,26 @@ class Log_expense_model extends CI_Model {
 
     }
 
+    public function get_total_money($parm=array()){
+        $this->db->select('SUM(money) money');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row()->money;
+    }
+
+    public function get_drink_num($parm=array()){
+        $this->db->select('SUM(number) number');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row()->number?$query->row()->number:0;
+    }
+
 
     
 }

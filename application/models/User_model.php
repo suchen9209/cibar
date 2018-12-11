@@ -40,6 +40,15 @@ class User_model extends CI_Model {
         }
     }
 
+    public function get_new_member($stime,$etime){
+        $this->db->select('COUNT(*) num');
+        $this->db->where('regtime >',$stime);
+        $this->db->where('regtime <',$etime);
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row()->num ? $query->row()->num : 0;
+   
+    }
     
 }
 ?>

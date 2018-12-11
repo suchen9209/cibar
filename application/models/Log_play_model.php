@@ -39,6 +39,16 @@ class Log_play_model extends CI_Model {
 
     }
 
+    public function get_total_money($parm=array()){
+        $this->db->select('SUM(money) money');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row()->money;
+    }
+
 
     
 }

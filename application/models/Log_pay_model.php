@@ -39,5 +39,15 @@ class Log_pay_model extends CI_Model {
         $query = $this->db->get();
         return $query->row()->num;
     }
+
+    public function get_total_money($parm=array()){
+        $this->db->select('SUM(money) money,SUM(extra_num) extra_num');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row()->money + $query->row()->extra_num;
+    }
 }
 ?>

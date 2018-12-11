@@ -29,7 +29,7 @@ class Log extends Admin_Api_Controller {
             $data[$key]['level'] = $this->user_account->get_member_level($value['uid']);
         }
 
-        $count = $this->log_expense->get_num($parm);
+        $count = $this->log_play->get_num($parm);
 
         $this->response($this->getLayuiList(0,'上机款',$count,$data));    
     }

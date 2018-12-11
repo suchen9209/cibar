@@ -16,6 +16,7 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('peripheral_num_model','peripheral_num');
         $this->load->model('peripheral_last_model','peripheral_last');
         $this->load->model('function/send_wokerman_model','send_wokerman');
+        $this->load->model('user_model','user');
 
     }
 
@@ -136,7 +137,7 @@ class Machine extends Admin_Api_Controller {
                     $log_expense['type'] = 0;
                     $log_expense['goodid'] = 0;
                     if($deduct_info['whopay'] != $uid){
-                        $log_expense['extra'] = '请客，为'.$uid.'买单';  
+                        $log_expense['extra'] = '请客，为'.$this->user->get_user_info($uid)->username.'买单';  
                     }
 
                     $this->log_expense->insert($log_expense);    

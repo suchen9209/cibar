@@ -28,7 +28,8 @@ $config['active_status'] = array(
 	0	=>	'初始入库',
 	1	=>	'空闲',
 	2	=>	'正在使用',
-	3	=>	'预约'
+	3	=>	'预约',
+	4	=>	'损坏'
 );
 
 //log_login中login_logout的含义

@@ -27,7 +27,12 @@ class Peripheral_num extends Admin_Api_Controller {
 
     public function config_info(){
 
-        $return_arr['type_list'] = $this->config->item('peripheral_type');
+        $peripheral_type = $this->config->item('peripheral_type');
+        $return = array();
+        foreach ($peripheral_type as $key => $value) {
+            $return []= array('id'=>$key,'name'=>$value);
+        }
+        $return_arr['type_list'] = $return;
 
         $this->response($this->getResponseData(parent::HTTP_OK, '硬件类型',$return_arr), parent::HTTP_OK);
     }

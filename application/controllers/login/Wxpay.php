@@ -128,6 +128,7 @@ class Wxpay extends Weixin {
                     $log_parm['money'] = $log->total_fee/100;
                     $log_parm['pay_type'] = $this->config->item('log_pay_type')['wx'];
                     $log_parm['operator'] = $log->uid;
+                    $log_parm['wx_order_num'] = $log->out_trade_no;
                     $this->log_pay->insert($log_parm);
                     $this->account->recharge($log->uid,$log_parm['money']);
 

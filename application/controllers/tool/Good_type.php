@@ -17,7 +17,8 @@ class Good_type extends Admin_Api_Controller {
         $num = 20;
         $data = $this->good_type->get_list(-1);
 
-        $this->response($this->getResponseData(parent::HTTP_OK, '所有类型',$data), parent::HTTP_OK);
+
+        $this->response($this->getLayuiList(0,'商品类型列表',0,$data));
     }
 
 	public function insert()

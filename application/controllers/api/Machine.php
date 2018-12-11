@@ -127,20 +127,18 @@ class Machine extends Admin_Api_Controller {
 
                 //计入消费信息
                 if($deduct_info){
-                    $log_expense_parm = array();
-                    $log_expense['uid'] = $deduct_info['whopay'];
-                    $log_expense['starttime'] = strtotime($deduct_info['start_time']);
-                    $log_expense['endtime'] = strtotime($deduct_info['end_time']);
-                    $log_expense['number'] = round(($log_expense['endtime'] - $log_expense['starttime'])/3600 , 2);
-                    $log_expense['price'] = $this->config->item('price')[$machine_info->type];
-                    $log_expense['money'] = $deduct_info['total_money'];
-                    $log_expense['type'] = 0;
-                    $log_expense['goodid'] = 0;
+                    $log_play_parm = array();
+                    $log_play_parm['uid'] = $deduct_info['whopay'];
+                    $log_play_parm['starttime'] = strtotime($deduct_info['start_time']);
+                    $log_play_parm['endtime'] = strtotime($deduct_info['end_time']);
+                    $log_play_parm['number'] = round(($log_play_parm['endtime'] - $log_play_parm['starttime'])/3600 , 2);
+                    $log_play_parm['price'] = $this->config->item('price')[$machine_info->type];
+                    $log_play_parm['money'] = $deduct_info['total_money'];
                     if($deduct_info['whopay'] != $uid){
-                        $log_expense['extra'] = '请客，为'.$this->user->get_user_info($uid)->username.'买单';  
+                        $log_play_parm['extra'] = '请客，为'.$this->user->get_user_info($uid)->username.'买单';  
                     }
 
-                    $this->log_expense->insert($log_expense);    
+                    $this->log_play->insert($log_play_parm);    
                 }
                       
  

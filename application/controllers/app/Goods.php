@@ -69,7 +69,7 @@ class Goods extends App_Api_Controller {
 						$log_parm = [];
 						$log_parm['uid'] = $uid;
 						$log_parm['starttime'] = time();
-						$log_parm['starttime'] = time();
+						$log_parm['endtime'] = time();
 						$log_parm['number'] = $value->quantity;
 						$log_parm['price'] = $value->discount_price;
 						$log_parm['money'] = round($value->quantity * $value->discount_price,2);

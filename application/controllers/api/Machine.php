@@ -12,6 +12,7 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('box_status_model','box_status');
         $this->load->model('log_login_model','log_login');
         $this->load->model('log_expense_model','log_expense');
+        $this->load->model('log_play_model','log_play');
         $this->load->model('log_deduct_money_model','log_deduct_money');
         $this->load->model('peripheral_num_model','peripheral_num');
         $this->load->model('peripheral_last_model','peripheral_last');

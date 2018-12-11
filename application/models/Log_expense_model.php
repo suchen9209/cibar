@@ -23,7 +23,7 @@ class Log_expense_model extends CI_Model {
         $this->db->select('log_expense.*,user.name name,user.username vip_num,user.phone,user.idcard');
         $this->db->limit($num,$offset);
 
-        if($parm['log_expense.type'] != 0){
+        if(!isset($parm['log_expense.type']) || $parm['log_expense.type'] != 0){
             $this->db->select('goods.name good_name');
             $this->db->join('goods','goods.id = log_expense.goodid');
         }        

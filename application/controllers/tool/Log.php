@@ -160,8 +160,7 @@ class Log extends Admin_Api_Controller {
 
         $return['PC机台数/可运营台数'] = $machine_num_all . '/' . $machine_num;
 
-
-        $this->response($this->getResponseData(parent::HTTP_OK, '统计', $return), parent::HTTP_OK);
+        $this->response($this->getResponseData(0, '统计', $return), parent::HTTP_OK);
 
 
 

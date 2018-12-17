@@ -14,19 +14,19 @@ class Info extends CI_Controller {
         $return_arr['ad'] = array(
             array(
                 'id'=>1,
-                'img'=>'https://bar.suchot.com/1.png'
+                'img'=>'https://pay.imbatv.cn/1.png'
             ),
             array(
                 'id'=>2,
-                'img'=>'https://bar.suchot.com/2.png'
+                'img'=>'https://pay.imbatv.cn/2.png'
             ),
             array(
                 'id'=>3,
-                'img'=>'https://bar.suchot.com/3.png'
+                'img'=>'https://pay.imbatv.cn/3.png'
             ),
             array(
                 'id'=>4,
-                'img'=>'https://bar.suchot.com/2.png'
+                'img'=>'https://pay.imbatv.cn/2.png'
             ),
         );
 

@@ -26,7 +26,7 @@ class Info extends CI_Controller {
             ),
             array(
                 'id'=>4,
-                'img'=>'https://pay.imbatv.cn/2.png'
+                'img'=>'https://pay.imbatv.cn/4.png'
             ),
         );
 

@@ -78,6 +78,18 @@ $config['peripheral_status'] = array(
 	2	=>	'损坏'
 );
 
+//coupon中type的含义
+$config['coupon_type'] = array(
+	1	=>	'上网优惠券',
+	2	=>	'饮料优惠券'
+);
+
+//coupon中state的含义
+$config['coupon_state'] = array(
+	1	=>	'可发放',
+	0	=>	'不可发放'
+);
+
 
 //机器的分布类型
 $config['machine_type'] = array(

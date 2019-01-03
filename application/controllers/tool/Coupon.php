@@ -8,6 +8,7 @@ class Coupon extends Admin_Api_Controller {
 
         $this->load->model('coupon_model','coupon');
         $this->load->model('user_coupon_model','user_coupon');
+        $this->load->model('goods_model','goods');
 
     }
 
@@ -18,6 +19,20 @@ class Coupon extends Admin_Api_Controller {
 
         $data = $this->coupon->get_list($offset,$num);
         $count = $this->coupon->get_num();
+
+        foreach ($data as $key => $value) {
+            $good_id_arr = [];
+            $good_name_str = '';
+            if($value['good_ids'] != 0){
+                $good_id_arr = explode(',', $value['good_ids']);
+                $good_names = [];
+                foreach ($good_id_arr as $kk => $vv) {
+                    $good_names []= $this->goods->get_info($vv)->name;
+                }
+                $good_name_str = implode(',', $good_names);
+            }
+            $data[$key]['good_names'] = $good_name_str;
+        }
 
         $this->response($this->getLayuiList(0,'优惠券列表',$count,$data));
     }
@@ -40,12 +55,19 @@ class Coupon extends Admin_Api_Controller {
 	}
 
     public function config_info(){
-        $this->load->model('goods_model','goods');
+        
         $list = $this->goods->get_list(1,-1,-1,array('type'=>2));
         $return_arr['drink_list'] = $list;
 
-        $return_arr['coupon_type'] = $this->config->item('coupon_type');
-        $return_arr['coupon_state'] = $this->config->item('coupon_state');
+        foreach ($this->config->item('coupon_type') as $key => $value) {
+            $temp []= array('id'=>$key,'name'=>$value);
+        }
+        $return_arr['coupon_type'] = $temp;
+
+        foreach ($this->config->item('coupon_state') as $key => $value) {
+            $temp2 []= array('id'=>$key,'name'=>$value);
+        }
+        $return_arr['coupon_state'] = $temp2;
 
         $this->response($this->getResponseData(parent::HTTP_OK, '饮品列表及优惠券字段属性',$return_arr), parent::HTTP_OK);
     }

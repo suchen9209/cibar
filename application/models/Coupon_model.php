@@ -27,6 +27,10 @@ class Coupon_model extends CI_Model {
         return $query->row()->num;
     }
 
+    public function delete($id){
+        return $this->machine->delete($id);
+    }
+
     
 }
 ?>

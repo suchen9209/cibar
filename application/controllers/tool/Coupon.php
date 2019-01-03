@@ -57,4 +57,13 @@ class Coupon extends Admin_Api_Controller {
 
     }
 
+    public function delete($id){
+        if($this->coupon->delete($id)){
+            $this->response($this->getResponseData(parent::HTTP_OK, '删除成功'), parent::HTTP_OK);
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_OK, '删除失败'), parent::HTTP_OK);  
+        }
+
+    }
+
 }

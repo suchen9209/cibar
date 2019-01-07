@@ -17,6 +17,7 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('peripheral_num_model','peripheral_num');
         $this->load->model('peripheral_last_model','peripheral_last');
         $this->load->model('function/send_wokerman_model','send_wokerman');
+        $this->load->model('function/user_account_model','user_account');
         $this->load->model('user_model','user');
 
     }
@@ -77,6 +78,30 @@ class Machine extends Admin_Api_Controller {
             }
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
+        }
+    }
+
+    public function down_info(){
+        $uid = $this->input->get_post('user_id');
+        if(isset($uid) && $uid > 0){
+            $log_deduct_info = $this->log_deduct_money->get_total_info($uid);
+            if($log_deduct_info){
+
+                $ac_temp = $this->active_status->get_info_uid($uid);
+                $machine_id = $ac_temp->mid;
+                $machine_info = $this->machine->get_info($machine_id);
+
+                $return_data = array();
+                $return_data['machine_info'] = $machine_info;
+                $return_data['user_info'] = $this->user_account->get_user_info($uid);
+                $return_data['deduct_info'] = $log_deduct_info;
+
+                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '用户机器信息及扣款信息', $return_data), parent::HTTP_OK); 
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '无记录', 'nothing'), parent::HTTP_OK);    
+            }
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK); 
         }
     }
 

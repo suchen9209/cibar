@@ -95,7 +95,8 @@ class Deduct extends Ci_Controller {
 
 			$this->log_deduct_money->insert($log_parm);
 
-			$this->account->expense($this->pay_uid,$discount_price);
+			//扣款放在下机时进行，此处只记录呼吸扣款额
+			//$this->account->expense($this->pay_uid,$discount_price);
 
 			if($this->db->trans_status() === FALSE){
                 $this->db->trans_rollback();

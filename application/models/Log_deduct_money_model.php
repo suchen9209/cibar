@@ -31,9 +31,12 @@ class Log_deduct_money_model extends CI_Model {
             $return_data['start_time'] = $list[0]['time'];
             $return_data['end_time'] = end($list)['time'];
             $return_data['whopay'] = $list[0]['pay_uid'];
+            $return_data['type'] = $list[0]['type'];
+            $return_data['money'] = 0;
             $return_data['total_money'] = 0;
             foreach ($list as $key => $value) {
                 $return_data['total_money'] += $value['discount_money'];
+                $return_data['money'] += $value['money'];
             }
 
             return $return_data;

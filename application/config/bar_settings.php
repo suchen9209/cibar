@@ -168,4 +168,5 @@ $config['status_common'] = array(
 	0	=>	'停用'
 );
 
-
+//低于该值后提醒余额不足
+$config['critical_value'] = 20;

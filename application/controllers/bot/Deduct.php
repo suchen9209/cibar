@@ -20,6 +20,7 @@ class Deduct extends Ci_Controller {
 		//$session_name = 'user_id';
 		parent::__construct();
 		$this->load->model('function/user_account_model','user_account');
+		$this->load->model('function/send_wokerman_model','send_wokerman');
 		$this->load->model('account_model','account');
 		$this->load->model('appointment_model','appointment');
 		$this->load->model('machine_model','machine');
@@ -94,6 +95,17 @@ class Deduct extends Ci_Controller {
 			$log_parm['type'] = $this->type == 'san' ? 1 : 2;
 
 			$this->log_deduct_money->insert($log_parm);
+
+			$deduct_info = $this->log_deduct_money->get_total_info($this->uid);
+
+			$remain_money = $this->account->get_info($this->pay_uid)->balance - $deduct_info['total_money'];
+			if($remain_money < $this->config->item('critical_value')){
+				$send_parm = array();
+		        $send_parm['uid'] = $this->uid;
+		        $send_parm['mid'] = $this->mid;
+		        $send_parm['cmd'] = 'not_enough_money';
+		        $this->send_wokerman->send(json_encode($send_parm));
+			}
 
 			//扣款放在下机时进行，此处只记录呼吸扣款额
 			//$this->account->expense($this->pay_uid,$discount_price);

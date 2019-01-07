@@ -21,6 +21,7 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('user_model','user');
         $this->load->model('user_coupon_model','user_coupon');
         $this->load->model('account_model','account');
+        $this->load->model('coupon_model','coupon');
 
     }
 
@@ -112,6 +113,7 @@ class Machine extends Admin_Api_Controller {
     public function down(){
         $uid = $this->input->get_post('user_id');
         $op = $this->input->get_post('op');
+        $cid = $this->input->get_post('coupon_id')?$this->input->get_post('coupon_id'):0;
 
         if(isset($uid) && $uid > 0){
             $ac_temp = $this->active_status->get_info_uid($uid);
@@ -151,9 +153,23 @@ class Machine extends Admin_Api_Controller {
                 //删除log_deduct_money中对应uid的记录
                 $this->log_deduct_money->delete_by_uid($uid);
 
-                //计入消费信息
-                if($deduct_info){                    
-                    $this->account->expense($deduct_info['whopay'],$deduct_info['total_money']);
+                //计入消费信息，并扣款
+                if($deduct_info){     
+
+                    if($cid > 0){//使用优惠券
+                        $coupon_info = $this->coupon->get_info($cid);
+                        $reduced_time = $coupon_info->num * 3600;
+                        if($reduced_time > $deduct_info['total_time']){
+                            $final_money = round($deduct_info['total_money'] * $coupon_info->discount,2);
+                        }else{
+                            // final_money = m*r/t*discount + m*(t-r)/t
+                            $final_money = round($deduct_info['total_money'] * $reduced_time / $deduct_info['total_money'] * $coupon_info->discount , 2) + round($deduct_info['total_money'] * ($deduct_info]['total_time'] - $reduced_time) / $deduct_info['total_time'] , 2);
+                        }
+                        $this->account->expense($deduct_info['whopay'],$final_money); 
+                    }else{
+                        $this->account->expense($deduct_info['whopay'],$deduct_info['total_money']);   
+                    }            
+                    
 
                     $log_play_parm = array();
                     $log_play_parm['uid'] = $deduct_info['whopay'];

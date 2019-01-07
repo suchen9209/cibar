@@ -13,6 +13,7 @@ class Coupon_model extends CI_Model {
             $this->db->where($key,$value);
         }
         $this->db->from($this->table_name);
+        $this->db->order_by('id','DESC');
         $query = $this->db->get();
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }

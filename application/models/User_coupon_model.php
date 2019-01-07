@@ -24,9 +24,9 @@ class User_coupon_model extends CI_Model {
         $this->db->where('user_coupon.uid',$uid);
         $this->db->where('coupon.type',$type);
 
-        $this->db->where('starttime <',time());
-        $this->db->where('endtime >',strtotime(date('Y-m-d 23:59:59')));
-        $this->db->where('state',1);
+        $this->db->where('user_coupon.starttime <',time());
+        $this->db->where('user_coupon.endtime >',strtotime(date('Y-m-d 23:59:59')));
+        $this->db->where('user_coupon.state',1);
 
         $this->db->from($this->table_name);
         $query = $this->db->get();

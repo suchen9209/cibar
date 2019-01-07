@@ -30,7 +30,7 @@ class User_coupon_model extends CI_Model {
 
         $this->db->from($this->table_name);
         $query = $this->db->get();
-        return $query->num_rows() > 0 ? $query->result_array() : false;
+        return $query->num_rows() > 0 ? $query->result_array() : array();
     }
     
 }

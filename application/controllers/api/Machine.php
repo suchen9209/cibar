@@ -98,7 +98,7 @@ class Machine extends Admin_Api_Controller {
                 $return_data['deduct_info'] = $log_deduct_info;
                 $return_data['coupon_info'] = $this->user_coupon->get_can_use_by_uid_type($uid,1);
 
-                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '用户机器信息及扣款信息', $return_data), parent::HTTP_OK); 
+                $this->response($this->getResponseData(parent::HTTP_OK, '用户机器信息及扣款信息', $return_data), parent::HTTP_OK); 
             }else{
                 $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '无记录', 'nothing'), parent::HTTP_OK);    
             }

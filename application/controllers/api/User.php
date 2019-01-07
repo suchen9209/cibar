@@ -7,11 +7,15 @@ class User extends Admin_Api_Controller {
         parent::__construct();
 
         $this->load->model('function/user_account_model','user_account');
+        $this->load->model('account_model','account');
         $this->load->model('user_model','user');
         $this->load->model('active_status_model','active_status');
         $this->load->model('log_login_model','log_login');
+        $this->load->model('log_pay_model','log_pay');
         $this->load->model('box_status_model','box_status');
         $this->load->model('log_deduct_money_model','log_deduct_money');
+        $this->load->model('coupon_model','coupon');
+        $this->load->model('user_coupon_model','user_coupon');
         
 
 
@@ -43,6 +47,7 @@ class User extends Admin_Api_Controller {
         $num = $this->input->post_get('number');
         $type = $this->input->post_get('type');
         $extra_number = $this->input->post_get('extra_number');
+        $cid = $this->input->post_get('coupon_id')?$this->input->post_get('coupon_id'):0;
 
         if(isset($uid) && isset($num) && isset($type) && isset($extra_number) && $uid>0){
             $log_parm['uid'] = $uid;
@@ -53,6 +58,36 @@ class User extends Admin_Api_Controller {
             //$log_parm['operator'] = $this->session->admin_id;
             $log_parm['operator'] = 100;
             $log_parm['extra_num'] = $extra_number;
+
+            $this->db->trans_start();
+
+            $log_pay_id = $this->log_pay->insert($log_parm);
+            $this->account->recharge($uid,$log_parm['money']);
+            if(isset($log_parm['extra_num']) && $log_parm['extra_num']>0){
+                $this->account->recharge($uid,$log_parm['extra_num']);
+            }
+
+            if($cid > 0){
+                $coupon_info = $this->coupon->get_info($cid);
+
+                $user_coupon_parm = array();
+                $user_coupon_parm['uid'] = $uid;
+                $user_coupon_parm['cid'] = $cid;
+                $user_coupon_parm['starttime'] = time();
+                $user_coupon_parm['endtime'] = time() + $coupon_info->validity * 24 * 60 * 60;
+                $user_coupon_parm['state'] = 1;
+                $user_coupon_parm['log_pay_id'] = $cid;
+                $this->user_coupon->insert($user_coupon_parm);
+            }
+
+
+            if($this->db->trans_status() === FALSE){
+                $this->db->trans_rollback();
+                return false;
+            }else{
+                $this->db->trans_complete();
+                return true;
+            } 
 
             if($this->user_account->add_balance($uid,$log_parm)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '充值成功'), parent::HTTP_OK);

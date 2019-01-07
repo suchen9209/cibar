@@ -163,7 +163,7 @@ class Machine extends Admin_Api_Controller {
                             $final_money = round($deduct_info['total_money'] * $coupon_info->discount,2);
                         }else{
                             // final_money = m*r/t*discount + m*(t-r)/t
-                            $final_money = round($deduct_info['total_money'] * $reduced_time / $deduct_info['total_money'] * $coupon_info->discount , 2) + round($deduct_info['total_money'] * ($deduct_info]['total_time'] - $reduced_time) / $deduct_info['total_time'] , 2);
+                            $final_money = round($deduct_info['total_money'] * $reduced_time / $deduct_info['total_money'] * $coupon_info->discount , 2) + round($deduct_info['total_money'] * ($deduct_info['total_time'] - $reduced_time) / $deduct_info['total_time'] , 2);
                         }
                         $this->account->expense($deduct_info['whopay'],$final_money); 
                     }else{

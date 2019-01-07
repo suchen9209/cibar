@@ -76,24 +76,18 @@ class User extends Admin_Api_Controller {
                 $user_coupon_parm['starttime'] = time();
                 $user_coupon_parm['endtime'] = time() + $coupon_info->validity * 24 * 60 * 60;
                 $user_coupon_parm['state'] = 1;
-                $user_coupon_parm['log_pay_id'] = $cid;
+                $user_coupon_parm['log_pay_id'] = $log_pay_id;
                 $this->user_coupon->insert($user_coupon_parm);
             }
 
 
             if($this->db->trans_status() === FALSE){
                 $this->db->trans_rollback();
-                return false;
+                $this->response($this->getResponseData(parent::HTTP_OK, '充值失败'), parent::HTTP_OK);
             }else{
                 $this->db->trans_complete();
-                return true;
-            } 
-
-            if($this->user_account->add_balance($uid,$log_parm)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '充值成功'), parent::HTTP_OK);
-            }else{
-                $this->response($this->getResponseData(parent::HTTP_OK, '充值失败'), parent::HTTP_OK);
-            }  
+            } 
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
         }

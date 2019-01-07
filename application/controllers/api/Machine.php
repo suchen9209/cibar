@@ -20,6 +20,7 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('function/user_account_model','user_account');
         $this->load->model('user_model','user');
         $this->load->model('user_coupon_model','user_coupon');
+        $this->load->model('account_model','account');
 
     }
 
@@ -96,6 +97,7 @@ class Machine extends Admin_Api_Controller {
                 $return_data['machine_info'] = $machine_info;
                 $return_data['user_info'] = $this->user_account->get_user_info($uid);
                 $return_data['deduct_info'] = $log_deduct_info;
+                $return_data['deduct_info']['pay_user_info'] = $this->user_account->get_user_info($log_deduct_info['whopay']);
                 $return_data['coupon_info'] = $this->user_coupon->get_can_use_by_uid_type($uid,1);
 
                 $this->response($this->getResponseData(parent::HTTP_OK, '用户机器信息及扣款信息', $return_data), parent::HTTP_OK); 
@@ -150,7 +152,9 @@ class Machine extends Admin_Api_Controller {
                 $this->log_deduct_money->delete_by_uid($uid);
 
                 //计入消费信息
-                if($deduct_info){
+                if($deduct_info){                    
+                    $this->account->expense($deduct_info['whopay'],$deduct_info['total_money']);
+
                     $log_play_parm = array();
                     $log_play_parm['uid'] = $deduct_info['whopay'];
                     $log_play_parm['starttime'] = strtotime($deduct_info['start_time']);

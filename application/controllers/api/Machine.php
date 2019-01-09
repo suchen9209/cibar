@@ -165,6 +165,9 @@ class Machine extends Admin_Api_Controller {
                             // final_money = m*r/t*discount + m*(t-r)/t
                             $final_money = round($deduct_info['total_money'] * $reduced_time / $deduct_info['total_money'] * $coupon_info->discount , 2) + round($deduct_info['total_money'] * ($deduct_info['total_time'] - $reduced_time) / $deduct_info['total_time'] , 2);
                         }
+
+
+                        $this->coupon->use_conpon($cid);
                         $this->account->expense($deduct_info['whopay'],$final_money); 
                     }else{
                         $this->account->expense($deduct_info['whopay'],$deduct_info['total_money']);   

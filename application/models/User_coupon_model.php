@@ -7,7 +7,8 @@ class User_coupon_model extends CI_Model {
     }
 
     public function get_list($offset,$num,$parm=array()){
-        $this->db->select('*');
+        $this->db->select('coupon.*,user_coupon.id as user_coupon_id');
+        $this->db->join('coupon','coupon.id = user_coupon.cid');
         $this->db->limit($num,$offset);
         foreach ($parm as $key => $value) {
             $this->db->where($key,$value);
@@ -22,7 +23,9 @@ class User_coupon_model extends CI_Model {
 
         $this->db->join('coupon','coupon.id = user_coupon.cid');
         $this->db->where('user_coupon.uid',$uid);
-        $this->db->where('coupon.type',$type);
+        if($type != 0){
+            $this->db->where('coupon.type',$type);    
+        }        
 
         $this->db->where('user_coupon.starttime <',time());
         $this->db->where('user_coupon.endtime >',strtotime(date('Y-m-d 23:59:59')));

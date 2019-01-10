@@ -171,6 +171,7 @@ class Machine extends Admin_Api_Controller {
                         $this->user_coupon->use_conpon($ucid);
                         $this->account->expense($deduct_info['whopay'],$final_money); 
                     }else{
+                        $final_money = $deduct_info['total_money'];
                         $this->account->expense($deduct_info['whopay'],$deduct_info['total_money']);   
                     }            
                     
@@ -181,9 +182,9 @@ class Machine extends Admin_Api_Controller {
                     $log_play_parm['endtime'] = strtotime($deduct_info['end_time']);
                     $log_play_parm['number'] = round(($log_play_parm['endtime'] - $log_play_parm['starttime'])/3600 , 2);
                     $log_play_parm['price'] = $this->config->item('price')[$machine_info->type];
-                    $log_play_parm['money'] = $deduct_info['total_money'];
+                    $log_play_parm['money'] = $final_money;
                     if($deduct_info['whopay'] != $uid){
-                        $log_play_parm['extra'] = '请客，为'.$this->user->get_user_info($uid)->username.'买单';  
+                        $log_play_parm['extra'] = '请客，为'.$this->user->get_user_info($uid)->username.'买单';
                     }
 
                     $this->log_play->insert($log_play_parm);    

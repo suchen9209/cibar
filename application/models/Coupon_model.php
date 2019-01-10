@@ -32,12 +32,7 @@ class Coupon_model extends CI_Model {
         return $this->machine->delete($id);
     }
 
-    public function use_conpon($id){
-        $parm = array('state' => 2, 'usetime' => time());
-        $this->db->where($this->primary_key, $id);
-        $this->db->update($this->table_name, $parm);
-        return $this->db->affected_rows();
-    }
+
 
     
 }

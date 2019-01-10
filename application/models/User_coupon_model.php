@@ -19,7 +19,7 @@ class User_coupon_model extends CI_Model {
     }
 
     public function get_can_use_by_uid_type($uid,$type){
-        $this->db->select('coupon.*,user_coupon.id as user_coupon_id');
+        $this->db->select('coupon.*,user_coupon.id as user_coupon_id,user_coupon.endtime as endtime');
 
         $this->db->join('coupon','coupon.id = user_coupon.cid');
         $this->db->where('user_coupon.uid',$uid);
@@ -34,6 +34,13 @@ class User_coupon_model extends CI_Model {
         $this->db->from($this->table_name);
         $query = $this->db->get();
         return $query->num_rows() > 0 ? $query->result_array() : array();
+    }
+
+    public function use_conpon($id){
+        $parm = array('state' => 2, 'usetime' => time());
+        $this->db->where($this->primary_key, $id);
+        $this->db->update($this->table_name, $parm);
+        return $this->db->affected_rows();
     }
     
 }

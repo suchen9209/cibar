@@ -113,7 +113,7 @@ class Machine extends Admin_Api_Controller {
     public function down(){
         $uid = $this->input->get_post('user_id');
         $op = $this->input->get_post('op');
-        $cid = $this->input->get_post('coupon_id')?$this->input->get_post('coupon_id'):0;
+        $ucid = $this->input->get_post('user_coupon_id')?$this->input->get_post('user_coupon_id'):0;
 
         if(isset($uid) && $uid > 0){
             $ac_temp = $this->active_status->get_info_uid($uid);
@@ -156,8 +156,9 @@ class Machine extends Admin_Api_Controller {
                 //计入消费信息，并扣款
                 if($deduct_info){     
 
-                    if($cid > 0){//使用优惠券
-                        $coupon_info = $this->coupon->get_info($cid);
+                    if($ucid > 0){//使用优惠券
+                        $coupon_id = $this->user_coupon->get_info($ucid)->cid;
+                        $coupon_info = $this->coupon->get_info($coupon_id);
                         $reduced_time = $coupon_info->num * 3600;
                         if($reduced_time > $deduct_info['total_time']){
                             $final_money = round($deduct_info['total_money'] * $coupon_info->discount,2);
@@ -167,7 +168,7 @@ class Machine extends Admin_Api_Controller {
                         }
 
 
-                        $this->coupon->use_conpon($cid);
+                        $this->user_coupon->use_conpon($ucid);
                         $this->account->expense($deduct_info['whopay'],$final_money); 
                     }else{
                         $this->account->expense($deduct_info['whopay'],$deduct_info['total_money']);   

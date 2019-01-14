@@ -87,23 +87,22 @@ class Machine extends Admin_Api_Controller {
     public function down_info(){
         $uid = $this->input->get_post('user_id');
         if(isset($uid) && $uid > 0){
+            $ac_temp = $this->active_status->get_info_uid($uid);
+            $machine_id = $ac_temp->mid;
+            $machine_info = $this->machine->get_info($machine_id);
+
+            $return_data = array();
+            $return_data['machine_info'] = $machine_info;
+            $return_data['user_info'] = $this->user_account->get_user_info($uid);
+            $return_data['coupon_info'] = $this->user_coupon->get_can_use_by_uid_type($uid,1);
             $log_deduct_info = $this->log_deduct_money->get_total_info($uid);
-            if($log_deduct_info){
-
-                $ac_temp = $this->active_status->get_info_uid($uid);
-                $machine_id = $ac_temp->mid;
-                $machine_info = $this->machine->get_info($machine_id);
-
-                $return_data = array();
-                $return_data['machine_info'] = $machine_info;
-                $return_data['user_info'] = $this->user_account->get_user_info($uid);
+            if($log_deduct_info){                
                 $return_data['deduct_info'] = $log_deduct_info;
-                $return_data['deduct_info']['pay_user_info'] = $this->user_account->get_user_info($log_deduct_info['whopay']);
-                $return_data['coupon_info'] = $this->user_coupon->get_can_use_by_uid_type($uid,1);
+                $return_data['deduct_info']['pay_user_info'] = $this->user_account->get_user_info($log_deduct_info['whopay']);                
 
                 $this->response($this->getResponseData(parent::HTTP_OK, '用户机器信息及扣款信息', $return_data), parent::HTTP_OK); 
             }else{
-                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '无记录', 'nothing'), parent::HTTP_OK);    
+                $this->response($this->getResponseData(parent::HTTP_OK, '无扣款记录', $return_data), parent::HTTP_OK);    
             }
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK); 

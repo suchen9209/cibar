@@ -158,14 +158,13 @@ class Machine extends Admin_Api_Controller {
                     if($ucid > 0){//使用优惠券
                         $coupon_id = $this->user_coupon->get_info($ucid)->cid;
                         $coupon_info = $this->coupon->get_info($coupon_id);
-                        $reduced_time = $coupon_info->num * 3600;
-                        if($reduced_time > $deduct_info['total_time']){
-                            $final_money = round($deduct_info['total_money'] * $coupon_info->discount,2);
-                        }else{
-                            // final_money = m*r/t*discount + m*(t-r)/t
-                            $final_money = round($deduct_info['total_money'] * $reduced_time / $deduct_info['total_money'] * $coupon_info->discount , 2) + round($deduct_info['total_money'] * ($deduct_info['total_time'] - $reduced_time) / $deduct_info['total_time'] , 2);
-                        }
 
+                        $reduced_money = $this->config->item('price')[$machine_info->type] * $coupon_info->num * (1-$coupon_info->discount);
+                        if($reduced_money >= $deduct_info['total_money']){
+                            $final_money = 0;
+                        }else{
+                            $final_money = $deduct_info['total_money'] - $reduced_money;
+                        }
 
                         $this->user_coupon->use_conpon($ucid);
                         $this->account->expense($deduct_info['whopay'],$final_money); 

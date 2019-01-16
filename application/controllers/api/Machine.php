@@ -12,6 +12,7 @@ class Machine extends Admin_Api_Controller {
         $this->load->model('box_status_model','box_status');
         $this->load->model('log_login_model','log_login');
         $this->load->model('log_expense_model','log_expense');
+        $this->load->model('log_peripheral_in_model','log_peripheral_in');
         $this->load->model('log_play_model','log_play');
         $this->load->model('log_deduct_money_model','log_deduct_money');
         $this->load->model('peripheral_num_model','peripheral_num');
@@ -134,12 +135,18 @@ class Machine extends Admin_Api_Controller {
                 $active_parm['updatetime'] = time();
                 $this->active_status->update($machine_id,$active_parm);
 
-                //更新外设库存
+                //更新外设库存,外移，此处仅记录待入库
                 if($last_p = $this->peripheral_last->get_last_by_uid($uid)){
                     $pjson = $last_p->pid;
                     $pdata = json_decode($pjson,true);
                     foreach ($pdata as $key => $value) {
-                        $this->peripheral_num->in($value['id']);
+                        $log_per_in_parm = array();
+                        $log_per_in_parm['uid'] = $uid;
+                        $log_per_in_parm['pnid'] = $value['id'];
+                        $log_per_in_parm['pid'] = 0;
+                        $log_per_in_parm['ouid'] = 0;
+                        $this->log_peripheral_in->insert($log_per_in_parm);
+                        //$this->peripheral_num->in($value['id']);
                     }
                 }
 

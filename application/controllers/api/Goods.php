@@ -116,7 +116,7 @@ class Goods extends Admin_Api_Controller {
 
             if($this->db->trans_status() === FALSE){
                 $this->db->trans_rollback();
-                $this->response($this->getResponseData(parent::HTTP_OK, '购买失败'), parent::HTTP_OK);
+                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '购买失败'), parent::HTTP_OK);
             }else{
                 $this->db->trans_complete();
                 $this->response($this->getResponseData(parent::HTTP_OK, '购买成功'), parent::HTTP_OK);

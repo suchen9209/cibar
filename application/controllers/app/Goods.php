@@ -28,7 +28,8 @@ class Goods extends App_Api_Controller {
 
 		foreach ($list as $key => $value) {
 			$list[$key]['quantity'] = 0;
-			$list[$key]['discount_price'] = round($value['price'] * $discount , 2);
+			//$list[$key]['discount_price'] = round($value['price'] * $discount , 2);//19.01.15应店长要求去除小商品的折扣
+			$list[$key]['discount_price'] = $value['price'];
 		}
 
 		$return_arr['good_list'] = $list;

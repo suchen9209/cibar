@@ -44,6 +44,15 @@ class Active_status_model extends CI_Model {
         return $query->row()->num;
     }
 
+    public function get_all_live_user_id(){
+        $this->db->select('uid');
+        $this->db->where('state',2);
+        $this->db->where('uid <>',0);
+        $query = $this->db->get($this->table_name);
+
+        return $query->num_rows() > 0 ? $query->result_array() : false;
+    }
+
 
 }
 ?>

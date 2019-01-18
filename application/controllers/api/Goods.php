@@ -12,6 +12,8 @@ class Goods extends Admin_Api_Controller {
         $this->load->model('order_status_model','order_status');
         $this->load->model('function/user_account_model','user_account');
         $this->load->model('account_model','account');
+        $this->load->model('user_coupon_model','user_coupon');
+        $this->load->model('coupon_model','coupon');
     }
 
     public function index(){
@@ -34,6 +36,7 @@ class Goods extends Admin_Api_Controller {
         
     }
 
+    //不用了 20190118
     public function calculate_discount(){
         $list_json = $this->input->post_get('cartList');
         $uid = $this->input->get_post('user_id')?$this->input->get_post('user_id'):0;
@@ -64,6 +67,7 @@ class Goods extends Admin_Api_Controller {
         $list_json = $this->input->post_get('cartList');
         $uid = $this->input->get_post('user_id') ? $this->input->get_post('user_id') : 0;
         $payment = $this->input->post_get('payment') ? $this->input->get_post('payment') : 0;
+        $user_coupon_id = $this->input->post_get('user_coupon_id') ? $this->input->get_post('user_coupon_id') : 0;
 
         if(isset($total) && isset($list_json)){
             $list = json_decode($list_json);
@@ -72,14 +76,11 @@ class Goods extends Admin_Api_Controller {
             //分商品计入消费log
             //扣除账户余额
             $discount = 1;
-            if($uid != 0){
+            if($uid != 0 && $payment == 0){
                 $acc = $this->account->get_info($uid);
                 if($acc->balance < $total){//先判断余额是否足够
                     $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '余额不足'), parent::HTTP_OK);
                 }
-
-                $level = $this->user_account->get_member_level($uid);
-                $discount = $this->config->item('discount_level')[$level];
             }
 
             $this->db->trans_start();
@@ -91,8 +92,8 @@ class Goods extends Admin_Api_Controller {
                 $log_parm['starttime'] = time();
                 $log_parm['endtime'] = time();
                 $log_parm['number'] = $value->quantity;
-                $log_parm['price'] = $value->price * $discount;
-                $log_parm['money'] = round($value->quantity * $value->price * $discount,2);
+                $log_parm['price'] = $value->price;
+                $log_parm['money'] = round($value->quantity * $value->price,2);
                 $log_parm['type'] = $value->type;
                 $log_parm['goodid'] = $value->id;
 
@@ -108,10 +109,15 @@ class Goods extends Admin_Api_Controller {
             $order_status_parm['payment'] = $payment;
             $order_status_parm['status'] = $this->config->item('order_status_status')['done'];
             $order_status_parm['total'] = $total;
+            $order_status_parm['user_coupon_id'] = $user_coupon_id;
             $this->order_status->insert($order_status_parm);
 
-            if($uid != 0){
+            if($uid != 0 && $payment == 0){
                 $this->account->expense($uid,$total);//账户扣款
+            }
+
+            if($user_coupon_id > 0){
+                $this->user_coupon->use_conpon($user_coupon_id);
             }
 
             if($this->db->trans_status() === FALSE){

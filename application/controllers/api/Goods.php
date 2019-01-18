@@ -110,14 +110,14 @@ class Goods extends Admin_Api_Controller {
             $order_status_parm['status'] = $this->config->item('order_status_status')['done'];
             $order_status_parm['total'] = $total;
             $order_status_parm['user_coupon_id'] = $user_coupon_id;
-            $this->order_status->insert($order_status_parm);
+            $order_status_id = $this->order_status->insert($order_status_parm);
 
             if($uid != 0 && $payment == 0){
                 $this->account->expense($uid,$total);//账户扣款
             }
 
             if($user_coupon_id > 0){
-                $this->user_coupon->use_conpon($user_coupon_id);
+                $this->user_coupon->use_coupon($user_coupon_id,0,$order_status_id);
             }
 
             if($this->db->trans_status() === FALSE){

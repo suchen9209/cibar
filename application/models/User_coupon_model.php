@@ -36,8 +36,8 @@ class User_coupon_model extends CI_Model {
         return $query->num_rows() > 0 ? $query->result_array() : array();
     }
 
-    public function use_conpon($id){
-        $parm = array('state' => 2, 'usetime' => time());
+    public function use_coupon($id,$log_play_id=0,$order_status_id=0){
+        $parm = array('state' => 2, 'usetime' => time(),'log_play_id'=>$log_play_id,'order_status_id'=>$order_status_id);
         $this->db->where($this->primary_key, $id);
         $this->db->update($this->table_name, $parm);
         return $this->db->affected_rows();

@@ -175,7 +175,6 @@ class Machine extends Admin_Api_Controller {
                             $final_money = $deduct_info['total_money'] - $reduced_money;
                         }
 
-                        $this->user_coupon->use_conpon($ucid);
                         $this->account->expense($deduct_info['whopay'],$final_money); 
                     }else{
                         $final_money = $deduct_info['total_money'];
@@ -193,8 +192,13 @@ class Machine extends Admin_Api_Controller {
                     if($deduct_info['whopay'] != $uid){
                         $log_play_parm['extra'] = '请客，为'.$this->user->get_user_info($uid)->username.'买单';
                     }
+                    $log_play_parm['user_coupon_id'] = $ucid;                    
 
-                    $this->log_play->insert($log_play_parm);    
+                    $log_play_id = $this->log_play->insert($log_play_parm);    
+
+                    if($ucid > 0){
+                        $this->user_coupon->use_coupon($ucid,$log_play_id);
+                    }
                 }
                       
  

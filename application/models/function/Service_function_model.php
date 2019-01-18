@@ -52,6 +52,12 @@ class Service_function_model extends CI_Model {
             array_splice($service, $key, 1);
         }
         if($this->cache->memcached->save($this->service_memcached_name,json_encode($service),3600*24)){
+            $send_parm = array();
+            $send_parm['uid'] = $uid;
+            $send_parm['mid'] = $seat_info;
+            $send_parm['cmd'] = 'remove_service';
+            $this->send_wokerman->send(json_encode($send_parm));
+
             return $seat_info;
         }else{
             return false;

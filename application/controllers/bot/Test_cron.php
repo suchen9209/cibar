@@ -15,7 +15,7 @@ class Test_cron extends Ci_Controller {
 		$uids = $this->active_status->get_all_live_user_id();
 		foreach ($uids as $key => $value) {
 			$temp_uid = $value['uid'];
-			$url = "https://pay.imbatv.cn/bot/deduct/index?uid=".$temp_uid."&utime=60";
+			$url = "https://pay.imbatv.cn/bot/deduct/index?uid=".$temp_uid."&utime=180";
 			$ch = curl_init();  
 		    curl_setopt($ch, CURLOPT_URL, $url);  
 		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true) ; // 获取数据返回    

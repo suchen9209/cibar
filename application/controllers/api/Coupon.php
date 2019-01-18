@@ -41,7 +41,7 @@ class Coupon extends Admin_Api_Controller {
                 $user_coupon_parm['starttime'] = time();
                 $user_coupon_parm['endtime'] = time() + $coupon_info->validity * 24 * 60 * 60;
                 $user_coupon_parm['state'] = 1;
-                $user_coupon_parm['log_pay_id'] = $log_pay_id;
+                $user_coupon_parm['log_pay_id'] = 0;
                 $this->user_coupon->insert($user_coupon_parm);    
             }          
 

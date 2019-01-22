@@ -42,6 +42,7 @@ class Goods extends Admin_Api_Controller {
         $user_coupon_id = $this->input->get_post('user_coupon_id')?$this->input->get_post('user_coupon_id'):0;
 
 /*        $list_json = '[{"id":4,"name":"红牛","price":5.00,"quantity":2,"type":2},{"id":3,"name":"巴黎水","price":8.00,"quantity":2,"type":2},{"id":2,"name":"依云","price":4.00,"quantity":2,"type":2},{"id":1,"name":"可乐","price":3.00,"quantity":2,"type":2}]';
+        $list_json = '[{"id":4,"name":"红牛","price":5.00,"quantity":1,"type":2},{"id":3,"name":"巴黎水","price":8.00,"quantity":1,"type":2},{"id":2,"name":"依云","price":4.00,"quantity":1,"type":2}]';
         $user_coupon_id= 27;
         $uid = 57;*/
         $user_coupon_info = $this->user_coupon->get_info($user_coupon_id);
@@ -70,7 +71,7 @@ class Goods extends Admin_Api_Controller {
         array_multisort(array_column($need_discount_goods, 'price'),SORT_DESC,SORT_NUMERIC,$need_discount_goods);
         $reduce_money = 0;
         $reduce_good_list = array();
-        for ($j=0; $j < $coupon_info->num; $j++) { 
+        for ($j=0; $j < $coupon_info->num && $j < count($need_discount_goods); $j++) { 
             $reduce_money += (1-$coupon_info->discount)*$need_discount_goods[$j]['price'];
             if($reduce_good_list[$need_discount_goods[$j]['id']]){
                 $reduce_good_list[$need_discount_goods[$j]['id']] ++;

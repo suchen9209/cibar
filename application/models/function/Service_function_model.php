@@ -10,6 +10,7 @@ class Service_function_model extends CI_Model {
     {
         $this->load->database();
         $this->load->model('function/user_seat_model','user_seat');
+        $this->load->model('function/send_wokerman_model','send_wokerman');
         $this->load->model('active_status_model','active_status');
         $this->load->driver('cache');
     }

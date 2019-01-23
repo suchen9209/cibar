@@ -37,7 +37,7 @@ class User_coupon_model extends CI_Model {
     }
 
     public function get_cannot_use_by_uid_type($uid,$type){
-        $this->db->select('coupon.*,user_coupon.id as user_coupon_id,user_coupon.endtime as endtime');
+        $this->db->select('coupon.*,user_coupon.id as user_coupon_id,user_coupon.endtime as endtime,user_coupon.state as user_coupon_state');
         $this->db->join('coupon','coupon.id = user_coupon.cid','left');
         $this->db->where('user_coupon.uid',$uid);
         if($type != 0){
@@ -53,7 +53,7 @@ class User_coupon_model extends CI_Model {
     }
 
     public function get_used_coupon_by_uid_type($uid,$type){
-        $this->db->select('coupon.*,user_coupon.id as user_coupon_id,user_coupon.endtime as endtime');
+        $this->db->select('coupon.*,user_coupon.id as user_coupon_id,user_coupon.endtime as endtime,user_coupon.state as user_coupon_state');
         $this->db->join('coupon','coupon.id = user_coupon.cid','left');
         $this->db->where('user_coupon.uid',$uid);
         if($type != 0){

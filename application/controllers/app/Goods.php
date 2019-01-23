@@ -15,6 +15,8 @@ class Goods extends App_Api_Controller {
 		$this->load->model('active_status_model','active_status');
 		$this->load->model('function/user_account_model','user_account');
 		$this->load->model('function/send_wokerman_model','send_wokerman');
+		$this->load->model('coupon_model','coupon');
+        $this->load->model('user_coupon_model','user_coupon');
 	}
 
 	public function index(){
@@ -36,7 +38,19 @@ class Goods extends App_Api_Controller {
 		array_unshift($type_list,array('id'=>'0','name'=>'全部','status'=>'1'));
 		$return_arr['type'] = $type_list;
 
-		$return_arr['show'] = $level > 0 ? true : false;
+		$return_arr['show'] = false;
+
+		//获取能使用优惠券的商品id
+		$user_coupons = $this->user_coupon->get_can_use_by_uid_type($uid,2);
+		$good_ids_need_handle = array();
+		foreach ($user_coupons as $key => $value) {
+			$good_ids_need_handle = array_merge($good_ids_need_handle,explode(',', $value['good_ids']));
+		}
+		$good_ids_need_handle = array_unique($good_ids_need_handle);
+		array_multisort($good_ids_need_handle);
+
+		$return_arr['coupon_good_ids'] = implode(',', $good_ids_need_handle);
+
 
 		
 

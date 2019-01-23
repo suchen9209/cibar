@@ -30,7 +30,11 @@ class Coupon extends App_Api_Controller {
         if($uid){
             if($outdate > 0){
                 $data = $this->user_coupon->get_cannot_use_by_uid_type($uid,$type);
-                $this->response($this->getResponseData(parent::HTTP_OK,'不可用优惠券列表',$data), parent::HTTP_OK);
+                $data2 = $this->user_coupon->get_used_coupon_by_uid_type($uid,$type);
+
+                $return_data = array_merge($data,$data2);
+                array_multisort(array_column($return_data, 'endtime'),SORT_DESC,SORT_NUMERIC,$return_data);
+                $this->response($this->getResponseData(parent::HTTP_OK,'不可用优惠券列表',array_slice($return_data, 0,50)), parent::HTTP_OK);
             }else{
                 $data = $this->user_coupon->get_can_use_by_uid_type($uid,$type);
                 $this->response($this->getResponseData(parent::HTTP_OK,'可用优惠券列表',$data), parent::HTTP_OK);    

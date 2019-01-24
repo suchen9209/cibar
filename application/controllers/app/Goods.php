@@ -125,6 +125,7 @@ class Goods extends App_Api_Controller {
 
 			$total = $this->input->post_get('number');
 			$list_json = $this->input->post_get('cartList');
+			$user_coupon_id = $this->input->get_post('user_coupon_id')?$this->input->get_post('user_coupon_id'):0;
 
 			if(isset($total) && isset($list_json)){
 				$list = json_decode($list_json);
@@ -158,9 +159,14 @@ class Goods extends App_Api_Controller {
 					$order_status_parm['createtime'] = time();
 					$order_status_parm['log_ids'] = $log_ids_str;
 					$order_status_parm['total'] = $total;
+					$order_status_parm['user_coupon_id'] = $user_coupon_id;
 					$order_status_id = $this->order_status->insert($order_status_parm);
 
 					$this->account->expense($uid,$total);//账户扣款
+
+					if($user_coupon_id > 0){
+		                $this->user_coupon->use_coupon($user_coupon_id,0,$order_status_id);
+		            }
 
 					if($this->db->trans_status() === FALSE){
 						$this->db->trans_rollback();

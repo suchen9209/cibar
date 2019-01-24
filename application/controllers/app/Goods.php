@@ -122,7 +122,6 @@ class Goods extends App_Api_Controller {
 	public function buy(){
 		$uid = $this->getUserId();
 		if($uid){
-
 			$total = $this->input->post_get('number');
 			$list_json = $this->input->post_get('cartList');
 			$user_coupon_id = $this->input->get_post('user_coupon_id')?$this->input->get_post('user_coupon_id'):0;
@@ -223,7 +222,6 @@ class Goods extends App_Api_Controller {
 				$this->response($this->getResponseData(parent::HTTP_OK, '订单列表', $list), parent::HTTP_OK);
 			}else{
 				$this->response($this->getResponseData(parent::HTTP_NOT_FOUND, '暂无订单'), parent::HTTP_OK);
-				
 			}
 			
 			

@@ -80,8 +80,11 @@ class Checkin extends Admin_Api_Controller {
                     $whopay = $this->input->post_get('whopay') ? $this->input->post_get('whopay') : $uid;
 
                     //随机分配一台该包厢的空机器
-                    $machine_list = $this->machine->get_active_machine_in_box($box_id);
-                    $machine_id = $machine_list[0]['id'];
+                    //后讨论仍改为前台手动选择，对应公安系统
+/*                    $machine_list = $this->machine->get_active_machine_in_box($box_id);
+                    $machine_id = $machine_list[0]['id'];*/
+                    $machine_id = $this->input->post_get('machine_id');
+
                     $box_price = $this->config->item('box_price')[$machine_list[0]['type']];
 
 

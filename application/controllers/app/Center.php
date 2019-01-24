@@ -9,6 +9,7 @@ class Center extends App_Api_Controller {
 		parent::__construct('app_rest');
 		$this->load->model('function/user_account_model','user_account');
 		$this->load->model('appointment_model','appointment');
+        $this->load->model('user_coupon_model','user_coupon');
 	}
 
 	public function index(){
@@ -19,9 +20,12 @@ class Center extends App_Api_Controller {
 		if($uid){
 			$user_info = $this->user_account->get_user_info($uid);
 			$appoint = $this->appointment->get_appoint_indate($uid);
+			$have_coupon = $this->user_coupon->have_coupon($uid);
+
 
 			$return['user_info'] = $user_info;
 			$return['appoint_info'] = $appoint;
+			$return['have_coupon'] = $have_coupon;
 
 			$this->response($this->getResponseData(parent::HTTP_OK, 'user&appoint', $return), parent::HTTP_OK);
 		}else{

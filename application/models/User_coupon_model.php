@@ -73,6 +73,14 @@ class User_coupon_model extends CI_Model {
         $this->db->update($this->table_name, $parm);
         return $this->db->affected_rows();
     }
+
+    public function have_coupon($uid){
+        $this->db->select('count(*) as num');
+        $this->db->where('user_coupon.uid',$uid);
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row()->num > 0? true: false;
+    }
     
 }
 ?>

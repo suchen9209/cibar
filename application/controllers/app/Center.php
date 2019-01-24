@@ -13,8 +13,6 @@ class Center extends App_Api_Controller {
 	}
 
 	public function index(){
-		//session判断
-		//$uid = $_SESSION['user_id'];
 		$uid = $this->getUserId();
 
 		if($uid){

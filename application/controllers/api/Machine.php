@@ -163,7 +163,7 @@ class Machine extends Admin_Api_Controller {
 
                 //计入消费信息，并扣款
                 if($deduct_info){    
-
+                    $pay_user_id = $deduct_info['whopay'];
                     if($ucid > 0){//使用优惠券
                         $coupon_id = $this->user_coupon->get_info($ucid)->cid;
                         $coupon_info = $this->coupon->get_info($coupon_id);
@@ -180,19 +180,20 @@ class Machine extends Admin_Api_Controller {
 
                 }else{
                     $final_money = 0;
+                    $pay_user_id = $uid;
                 }
 
-                if($this->account->get_info($deduct_info['whopay'])->balance > $final_money){
-                    $this->account->expense($deduct_info['whopay'],$final_money); 
+                if($this->account->get_info($pay_user_id)->balance >= $final_money){
+                    $this->account->expense($pay_user_id,$final_money); 
 
                     $log_play_parm = array();
-                    $log_play_parm['uid'] = $deduct_info['whopay'];
+                    $log_play_parm['uid'] = $pay_user_id;
                     $log_play_parm['starttime'] = strtotime($deduct_info['start_time']);
                     $log_play_parm['endtime'] = strtotime($deduct_info['end_time']);
                     $log_play_parm['number'] = round(($log_play_parm['endtime'] - $log_play_parm['starttime'])/3600 , 2);
                     $log_play_parm['price'] = $this->config->item('price')[$machine_info->type];
                     $log_play_parm['money'] = $final_money;
-                    if($deduct_info['whopay'] != $uid){
+                    if($pay_user_id != $uid){
                         $log_play_parm['extra'] = '请客，为'.$this->user->get_user_info($uid)->username.'买单';
                     }
                     $log_play_parm['user_coupon_id'] = $ucid;                    

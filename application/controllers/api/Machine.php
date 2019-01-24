@@ -162,7 +162,7 @@ class Machine extends Admin_Api_Controller {
                 $this->log_deduct_money->delete_by_uid($uid);
 
                 //计入消费信息，并扣款
-                if($deduct_info){     
+                if($deduct_info){    
 
                     if($ucid > 0){//使用优惠券
                         $coupon_id = $this->user_coupon->get_info($ucid)->cid;
@@ -173,14 +173,17 @@ class Machine extends Admin_Api_Controller {
                             $final_money = 0;
                         }else{
                             $final_money = $deduct_info['total_money'] - $reduced_money;
-                        }
-
-                        $this->account->expense($deduct_info['whopay'],$final_money); 
+                        }                        
                     }else{
                         $final_money = $deduct_info['total_money'];
-                        $this->account->expense($deduct_info['whopay'],$deduct_info['total_money']);   
-                    }            
-                    
+                    }   
+
+                }else{
+                    $final_money = 0;
+                }
+
+                if($this->account->get_info($deduct_info['whopay'])->balance > $final_money){
+                    $this->account->expense($deduct_info['whopay'],$final_money); 
 
                     $log_play_parm = array();
                     $log_play_parm['uid'] = $deduct_info['whopay'];
@@ -199,22 +202,24 @@ class Machine extends Admin_Api_Controller {
                     if($ucid > 0){
                         $this->user_coupon->use_coupon($ucid,$log_play_id);
                     }
-                }
-                      
- 
-                if($this->db->trans_status() === FALSE){
-                    $this->db->trans_rollback();
-                    $this->response($this->getResponseData(parent::HTTP_OK, '失败'), parent::HTTP_OK);
+
+                    if($this->db->trans_status() === FALSE){
+                        $this->db->trans_rollback();
+                        $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '失败'), parent::HTTP_OK);
+                    }else{
+                        $this->db->trans_complete();
+                        //发送关机指令
+                        $send_parm = array();
+                        $send_parm['uid'] = $uid;
+                        $send_parm['mid'] = $machine_id;
+                        $send_parm['cmd'] = 'down';
+                        $this->send_wokerman->send(json_encode($send_parm));
+                        $this->response($this->getResponseData(parent::HTTP_OK, '已下机'), parent::HTTP_OK);
+                    }
                 }else{
-                    $this->db->trans_complete();
-                    //发送关机指令
-                    $send_parm = array();
-                    $send_parm['uid'] = $uid;
-                    $send_parm['mid'] = $machine_id;
-                    $send_parm['cmd'] = 'down';
-                    $this->send_wokerman->send(json_encode($send_parm));
-                    $this->response($this->getResponseData(parent::HTTP_OK, '已下机'), parent::HTTP_OK);
-                }
+                    $this->db->trans_rollback();
+                    $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '余额不足，请先充值'), parent::HTTP_OK);
+                }                
 
             }else{
                 $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);

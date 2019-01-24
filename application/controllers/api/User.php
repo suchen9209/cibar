@@ -49,7 +49,7 @@ class User extends Admin_Api_Controller {
         $extra_number = $this->input->post_get('extra_number');
         $cid = $this->input->post_get('coupon_id')?$this->input->post_get('coupon_id'):0;
 
-        if(isset($uid) && isset($num) && isset($type) && isset($extra_number) && $uid>0){
+        if(isset($uid) && isset($num) && isset($type) && isset($extra_number) && $uid>0 && $num > 0){
             $log_parm['uid'] = $uid;
             $log_parm['time'] = time();
             $log_parm['money'] = $num;

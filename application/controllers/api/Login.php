@@ -40,6 +40,12 @@ class Login extends CI_Controller {
         
     }
 
+    public function get_info(){
+        $return['username'] =  $_SESSION['username'];
+        echo json_encode($return);
+        exit();
+    }
+
     public function register()
     {
         $action = $this->input->get('action');

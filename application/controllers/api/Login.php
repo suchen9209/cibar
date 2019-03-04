@@ -23,6 +23,7 @@ class Login extends CI_Controller {
             if ($res->password === password_md5($user_pass)) {
                 $_SESSION[ADMIN_SESSION_NAME]        =   $res->id;
                 $_SESSION['username']   =   $res->username;
+                $_SESSION['ouid']   =   $res->id;
                 $return['status'] = 'success';
                 $return['detail'] = '登录成功';
             }else{

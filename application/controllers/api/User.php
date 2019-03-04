@@ -46,7 +46,8 @@ class User extends Admin_Api_Controller {
         $uid = $this->input->get_post('user_id');
         $num = $this->input->post_get('number');
         $type = $this->input->post_get('type');
-        $extra_number = $this->input->post_get('extra_number');
+        $extra_number = 0;
+        //$extra_number = $this->input->post_get('extra_number');
         $cid = $this->input->post_get('coupon_id')?$this->input->post_get('coupon_id'):0;
 
         if(isset($uid) && isset($num) && isset($type) && isset($extra_number) && $uid>0 && $num > 0){

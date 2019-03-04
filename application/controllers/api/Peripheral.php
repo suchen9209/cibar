@@ -7,6 +7,7 @@ class Peripheral extends Admin_Api_Controller {
         parent::__construct();
         $this->load->model('peripheral_num_model','peripheral_num');
         $this->load->model('peripheral_last_model','peripheral_last');
+        $this->load->model('log_peripheral_in_model','log_peripheral_in');
 
     }
 
@@ -108,6 +109,22 @@ class Peripheral extends Admin_Api_Controller {
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
         }
+    }
+
+    public function get_need_in_list(){
+        $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
+        $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
+
+        $offset = ($page-1)*$num;
+        $parm = array('state'=>0);
+        $p_list = $this->log_peripheral_in->get_list($offset,$num,$parm);
+        $p_num = $this->log_peripheral_in->get_num($parm);
+
+
+        $this->response($this->getLayuiList(0,'在线用户列表',intval($p_num),$p_list));    
+
+
+
     }
 
 

@@ -121,7 +121,7 @@ class Peripheral extends Admin_Api_Controller {
         $p_num = $this->log_peripheral_in->get_num($parm);
 
 
-        $this->response($this->getLayuiList(0,'在线用户列表',intval($p_num),$p_list));    
+        $this->response($this->getLayuiList(0,'待入库外设列表',intval($p_num),$p_list));    
     }
 
     public function in(){

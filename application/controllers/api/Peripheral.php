@@ -125,16 +125,16 @@ class Peripheral extends Admin_Api_Controller {
     }
 
     public function in(){
-        $pnid = $this->input->get_post('pnid') ? $this->input->get_post('pnid') : 0;
+        $id = $this->input->get_post('id') ? $this->input->get_post('id') : 0;
         $ouid = 10;
 
-        if($pnid > 0){
+        if($id > 0){
             $update_parm = array(
                 'state'=>1,
                 'intime'=>time(),
                 'ouid'=>$ouid
             );
-            if($this->log_peripheral_in->update($pnid,$update_parm)){
+            if($this->log_peripheral_in->update($id,$update_parm)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '入库成功', 'success'), parent::HTTP_OK);
             }else{
                 $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '入库错误', '请联系系统管理员'), parent::HTTP_OK);

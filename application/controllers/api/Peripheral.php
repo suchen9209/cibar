@@ -116,7 +116,7 @@ class Peripheral extends Admin_Api_Controller {
         $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
 
         $offset = ($page-1)*$num;
-        $parm = array('state'=>0);
+        $parm = array('log_peripheral_in.state'=>0);
         $p_list = $this->log_peripheral_in->get_list($offset,$num,$parm);
         $p_num = $this->log_peripheral_in->get_num($parm);
 

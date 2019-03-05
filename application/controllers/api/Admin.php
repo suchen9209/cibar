@@ -43,4 +43,11 @@ class Admin extends Admin_Api_Controller {
         }
     }
 
+    public function logout(){
+        $_SESSION[ADMIN_SESSION_NAME]        =   0;
+        $_SESSION['username']   =   '';
+        $_SESSION['ouid']   =   0;
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '已退出登录', 'success'), parent::HTTP_OK);
+    }
 }

@@ -126,7 +126,11 @@ class Peripheral extends Admin_Api_Controller {
 
     public function in(){
         $id = $this->input->get_post('id') ? $this->input->get_post('id') : 0;
-        $ouid = 10;
+
+        $ouid = $this->input->get_post('ouid') ? $this->input->get_post('ouid') : 0;
+        if(!$ouid && $_SESSION['ouid']){
+            $ouid = $_SESSION['ouid'];
+        }
 
         if($id > 0){
             $update_parm = array(

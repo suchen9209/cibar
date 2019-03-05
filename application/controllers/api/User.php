@@ -286,11 +286,16 @@ class User extends Admin_Api_Controller {
         }else{
             $log_num = $this->log_expense->get_num();
             $return_data['list'] = $this->log_expense->get_list($offset,$num);
-
         }
-        $return_data['page_num'] = ceil($log_num/$num);
+        if($log_num){
+            $this->response($this->getLayuiList(0,'消费记录',intval($log_num),$return_data['list']));      
+        }else{
+            $this->response($this->getLayuiList(0,'消费记录',0,[]));  
+        }
+        //$return_data['page_num'] = ceil($log_num/$num);
 
-        $this->response($this->getResponseData(parent::HTTP_OK, '消费记录', $return_data), parent::HTTP_OK);
+          
+        //$this->response($this->getResponseData(parent::HTTP_OK, '消费记录', $return_data), parent::HTTP_OK);
     }
 
     //获取充值记录
@@ -311,8 +316,12 @@ class User extends Admin_Api_Controller {
         foreach ($list as $key => $value) {
             $list[$key]['pay_type'] = $type_name[$value['pay_type']];
         }
-        
-        $this->response($this->getLayuiList(0,'用户列表',intval($log_num),$list));    
+        if($log_num){
+            $this->response($this->getLayuiList(0,'充值记录',intval($log_num),$list));   
+        }else{
+            $this->response($this->getLayuiList(0,'充值记录',0,[]));  
+        }
+           
         //$this->response($this->getResponseData(parent::HTTP_OK, '充值记录', $return_data), parent::HTTP_OK);
     }
 

@@ -30,7 +30,7 @@ class Admin extends Admin_Api_Controller {
         $new_password = $this->input->get_post('new_password');
         if(isset($old_password) && isset($new_password) && $ouid){
             if ($admin_user_info->password === password_md5($old_password)) {
-            	if($this->adminuser->update($ouid,array('password'=>$new_password)){
+            	if($this->adminuser->update($ouid,array('password'=>$new_password))){
             		$this->response($this->getResponseData(parent::HTTP_OK, '修改成功', 'success'), parent::HTTP_OK);
             	}else{
             		$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '修改失败', 'success'), parent::HTTP_OK);

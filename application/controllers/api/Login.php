@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends CI_Controller {
 
     public function __construct(){
-        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Origin:www.imbatv.cn');
         header('Content-Type:application/json');
         parent::__construct();
 

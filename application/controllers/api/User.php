@@ -56,8 +56,7 @@ class User extends Admin_Api_Controller {
             $log_parm['money'] = $num;
             $log_parm['pay_type'] = $type;
             //暂时写死
-            //$log_parm['operator'] = $this->session->admin_id;
-            $log_parm['operator'] = 100;
+            $log_parm['operator'] = $_SESSION[ADMIN_SESSION_NAME];
             $log_parm['extra_num'] = $extra_number;
 
             $this->db->trans_start();

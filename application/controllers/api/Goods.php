@@ -144,6 +144,12 @@ class Goods extends Admin_Api_Controller {
             $order_status_parm['status'] = $this->config->item('order_status_status')['done'];
             $order_status_parm['total'] = $total;
             $order_status_parm['user_coupon_id'] = $user_coupon_id;
+            if($_SESSION['ouid']){
+                $ouid = $_SESSION['ouid'];
+            }else{
+                $ouid = 0;
+            }
+            $order_status_parm['ouid'] = $ouid;
             $order_status_id = $this->order_status->insert($order_status_parm);
 
             if($uid != 0 && $payment == 0){
@@ -210,7 +216,12 @@ class Goods extends Admin_Api_Controller {
     public function done_order(){
         $order_id = $this->input->get_post('order_id') ? $this->input->get_post('order_id') : 0;
         if($order_id != 0){
-            if($this->order_status->update($order_id,array('status' => $this->config->item('order_status_status')['done'] ) ) ){
+            if($_SESSION['ouid']){
+                $ouid = $_SESSION['ouid'];
+            }else{
+                $ouid = 0;
+            }
+            if($this->order_status->update($order_id,array('status' => $this->config->item('order_status_status')['done'] , 'ouid' => $ouid ) ) ){
                 $this->response($this->getResponseData(parent::HTTP_OK, '更新成功'), parent::HTTP_OK);
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '更新失败'), parent::HTTP_OK);

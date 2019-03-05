@@ -311,11 +311,9 @@ class User extends Admin_Api_Controller {
         foreach ($list as $key => $value) {
             $list[$key]['pay_type'] = $type_name[$value['pay_type']];
         }
-        $return_data['list'] = $list;
-        $return_data['page_num'] = ceil($log_num/$num);
         
-
-        $this->response($this->getResponseData(parent::HTTP_OK, '充值记录', $return_data), parent::HTTP_OK);
+        $this->response($this->getLayuiList(0,'用户列表',intval($log_num),$list));    
+        //$this->response($this->getResponseData(parent::HTTP_OK, '充值记录', $return_data), parent::HTTP_OK);
     }
 
         //获取在线用户的信息

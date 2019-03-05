@@ -12,6 +12,7 @@ class Log_pay_model extends CI_Model {
         foreach ($parm as $key => $value) {
         	$this->db->where($key,$value);
         }
+        $this->db->order_by('time','DESC');
         $this->db->from($this->table_name);
         $query = $this->db->get();
         return $query->num_rows() > 0 ? $query->result_array() : false;

@@ -18,7 +18,7 @@ class Admin extends Admin_Api_Controller {
         $list = $this->adminuser->get_list($offset,$num);
         $count = $this->adminuser->get_num();
 
-        $this->response($this->getLayuiList(0,'优惠券列表',$count,$list));
+        $this->response($this->getLayuiList(0,'员工列表',$count,$list));
     }
 
     public function admin_role_info(){

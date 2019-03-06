@@ -32,7 +32,7 @@ class Admin extends Admin_Api_Controller {
 
     public function insert(){
         $data_json = $this->input->post_get('data');
-        $data_json = '{"username":"百事可乐","password":"123456","phone":"15588887777","name":"噶尔","authority":1}';
+       /* $data_json = '{"username":"百事可乐","password":"123456","phone":"15588887777","name":"噶尔","authority":1}';*/
         $data = json_decode($data_json,true);
         $data['password'] = password_md5($data['password']);
         $data['role'] = $this->config->item('admin_role')[$data['authority']];

@@ -24,7 +24,9 @@ class Goods extends Admin_Api_Controller {
 
         $list = $this->goods->get_list(-1,$num,$offset);
         foreach ($list as $key => $value) {
+            $list[$key]['type_id'] = $value['type'];
             $list[$key]['type'] = $type_list[$value['type']];
+
             $list[$key]['status'] = $this->config->item('status_common')[$value['status']];
         }
         $count = $this->goods->get_num()->num;

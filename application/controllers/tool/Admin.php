@@ -35,6 +35,7 @@ class Admin extends Admin_Api_Controller {
 /*        $data_json = '{"username":"百事可乐","password":"123456","phone":"15588887777","name":"噶尔","authority":1,"role":"店员"}';*/
         $data = json_decode($data_json,true);
         $data['password'] = password_md5($data['password']);
+        $data['role'] = $this->config->item['admin_role'][$data['authority']];
         
         if($data){
             if($this->adminuser->insert($data)){
@@ -50,6 +51,7 @@ class Admin extends Admin_Api_Controller {
     public function update($id=0){
         $data_json = $this->input->post_get('data');
         $data = json_decode($data_json,true);
+        $data['role'] = $this->config->item['admin_role'][$data['authority']];
         if($data && $id > 0){
             if($this->adminuser->update($id,$data)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '更改成功'), parent::HTTP_OK);

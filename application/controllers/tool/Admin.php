@@ -22,7 +22,10 @@ class Admin extends Admin_Api_Controller {
     }
 
     public function admin_role_info(){
-        $data['role_list'] = $this->config->item('admin_role');
+        $role_list = $this->config->item('admin_role');
+        foreach ($role_list as $key => $value) {
+            $data['role_list'] []= array('authority'=>$key,'role'=>$value);
+        }
     
         $this->response($this->getResponseData(parent::HTTP_OK, '身份列表',$data), parent::HTTP_OK);
     }

@@ -32,6 +32,7 @@ class Deduct extends Ci_Controller {
 	}
 
 	public function index(){
+
 		$this->uid = $this->input->get_post('uid')?$this->input->get_post('uid'):0;
 		$this->utime = $this->input->get_post('utime')?$this->input->get_post('utime'):15*60;
 		//判断用户是否是上机状态

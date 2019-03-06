@@ -168,3 +168,11 @@ $config['status_common'] = array(
 
 //低于该值后提醒余额不足
 $config['critical_value'] = 20;
+
+
+//管理员身份及对应权限
+$config['admin_role'] = array(
+	1	=>	'普通店员',
+	5	=>	'值班经理',
+	10	=>	'店长'
+);

@@ -12,6 +12,7 @@ class User_account_model extends CI_Model {
         $this->load->model('account_model','account');
         $this->load->model('log_pay_model','log_pay');
         $this->load->model('active_status_model','active_status');
+        $this->load->model('vip_level_special_model','vip_level_special');
     }
 
     private function save_info($parm){
@@ -105,13 +106,19 @@ class User_account_model extends CI_Model {
     }
 
     public function get_member_level($uid,$total=-1){
-        $member_level = $this->config->item('member_level');
-        if($total == -1){//用于在已知总额的情况下，减少一次数据库查询
-            $total = $this->account->get_info($uid)->total; 
-        }        
-        $level = $this->sorts($member_level,$total);
+        if($this->vip_level_special->get_info($uid)->level){
+            return $level;
+        }else{
+            $member_level = $this->config->item('member_level');
+            if($total == -1){//用于在已知总额的情况下，减少一次数据库查询
+                $total = $this->account->get_info($uid)->total; 
+            }        
+            $level = $this->sorts($member_level,$total);
 
-        return $level;
+            return $level;    
+        }
+
+        
     }
 
     public function sorts($stage_data,$stage_num){

@@ -158,7 +158,8 @@ $config['discount_level'] = array(
 	4 => 0.85,
 	5 => 0.80,
 	6 => 0.75,
-	7 => 0.70
+	7 => 0.70,
+	100 => 0
 );
 
 $config['status_common'] = array(

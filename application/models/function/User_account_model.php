@@ -106,8 +106,9 @@ class User_account_model extends CI_Model {
     }
 
     public function get_member_level($uid,$total=-1){
-        if($this->vip_level_special->get_info($uid)->level){
-            return $level;
+        $vip_level_info = $this->vip_level_special->get_info($uid);
+        if($vip_level_info && $vip_level_info->endtime > time()){
+            return $vip_level_info->level;
         }else{
             $member_level = $this->config->item('member_level');
             if($total == -1){//用于在已知总额的情况下，减少一次数据库查询

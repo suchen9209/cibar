@@ -60,6 +60,18 @@ class Vip extends Admin_Api_Controller {
         }
     }
 
+    public function delete($uid=0){
+        if($uid > 0){
+            if($this->vip_level_special->delete_by_uid($uid)){
+                $this->response($this->getResponseData(parent::HTTP_OK, '撤销成功'), parent::HTTP_OK);
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_OK, '撤销失败'), parent::HTTP_OK);
+            }  
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, 'uid不能为0'), parent::HTTP_OK);
+        }
+    }
+
 
 
 

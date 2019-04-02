@@ -41,7 +41,7 @@ class Vip extends Admin_Api_Controller {
             if($this->vip_level_special->insert($data)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '增加成功'), parent::HTTP_OK);
             }else{
-                $this->response($this->getResponseData(parent::HTTP_OK, '增加失败'), parent::HTTP_OK);
+                $this->response($this->getResponseData(parent::HTTP_OK, '增加失败',$data), parent::HTTP_OK);
             }  
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '不能传空值'), parent::HTTP_OK);

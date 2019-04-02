@@ -144,10 +144,11 @@ class User_account_model extends CI_Model {
 
     public function get_user_list($num=20,$offset=0,$order_option,$order,$parm){
 
-        $this->db->select('user.*,account.balance,account.total,active_status.state');
+        $this->db->select('user.*,account.balance,account.total,active_status.state,vip_level_special.level as svip_level');
         $this->db->from('user');
         $this->db->join('account','user.id = account.uid','LEFT');
         $this->db->join('active_status','user.id = active_status.uid','LEFT');
+        $this->db->join('vip_level_special','user.id = vip_level_special.uid','LEFT');
         foreach ($parm as $key => $value) {
             $this->db->where($key,$value);
         }

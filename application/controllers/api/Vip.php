@@ -23,13 +23,13 @@ class Vip extends Admin_Api_Controller {
     }
 
     public function insert(){
-        $data_json = $this->input->post_get('data');
         $data['uid'] = $this->input->get_post('uid') ? $this->input->get_post('uid') : 0;
         $data['level'] = $this->input->get_post('level') ? $this->input->get_post('level') : 0;
         $data['days'] = $this->input->get_post('days') ? $this->input->get_post('days') : 0;
 
         $data['starttime'] = time();
         $data['endtime'] = time() + 3600*24*$data['days'];
+        unset($data['days']);
         if($_SESSION['ouid']){
             $ouid = $_SESSION['ouid'];
         }else{

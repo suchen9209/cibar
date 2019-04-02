@@ -24,8 +24,10 @@ class Vip extends Admin_Api_Controller {
 
     public function insert(){
         $data_json = $this->input->post_get('data');
-/*        $data_json = '{"uid":52,"level":7,"days":365}';*/
-        $data = json_decode($data_json,true);
+        $data['uid'] = $this->input->get_post('uid') ? $this->input->get_post('uid') : 0;
+        $data['level'] = $this->input->get_post('level') ? $this->input->get_post('level') : 0;
+        $data['days'] = $this->input->get_post('days') ? $this->input->get_post('days') : 0;
+
         $data['starttime'] = time();
         $data['endtime'] = time() + 3600*24*$data['days'];
         if($_SESSION['ouid']){
@@ -35,7 +37,7 @@ class Vip extends Admin_Api_Controller {
         }
         $data['ouid'] = $ouid;
         
-        if($data['uid']){
+        if($data['uid'] && $data['level'] && $data['days']){
             if($this->vip_level_special->insert($data)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '增加成功'), parent::HTTP_OK);
             }else{

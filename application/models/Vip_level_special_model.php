@@ -7,7 +7,9 @@ class Vip_level_special_model extends CI_Model {
     }
 
     public function get_list($offset,$num,$option=array()){
-        $this->db->select('*');
+        $this->db->select('vip_level_special.*,user.username,user.phone,adminuser.username');
+        $this->db->join('user','vip_level_special.uid = user.id','left');
+        $this->db->join('adminuser','vip_level_special.ouid = adminuser.id','left');
         $this->db->limit($num,$offset);
         foreach ($option as $key => $value) {
             $this->db->where($key,$value);

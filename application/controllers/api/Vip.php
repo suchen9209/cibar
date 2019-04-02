@@ -38,7 +38,8 @@ class Vip extends Admin_Api_Controller {
         $data['ouid'] = $ouid;
         
         if($data['uid'] && $data['level']){
-            if($this->vip_level_special->insert($data)){
+            $vip_id = $this->vip_level_special->insert($data);
+            if($vip_id || $vip_id == 0){
                 $this->response($this->getResponseData(parent::HTTP_OK, '增加成功'), parent::HTTP_OK);
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '增加失败',$data), parent::HTTP_OK);

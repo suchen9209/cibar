@@ -14,6 +14,14 @@ class Active_status_model extends CI_Model {
         return $query->row();
     }
 
+    public function get_info_mid($mid){
+        $this->db->select('*');
+        $this->db->where('mid',$mid);
+        $query = $this->db->get($this->table_name);
+
+        return $query->row();
+    }
+
     public function get_live_user($offset=0,$num=20,$parm=array()){
         $this->db->select('*');
         $this->db->join('user','user.id = active_status.uid','left');

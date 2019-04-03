@@ -50,9 +50,10 @@ class Vip extends Admin_Api_Controller {
     }
 
     public function update($uid=0){
-        $data_json = $this->input->post_get('data');
-        $data = json_decode($data_json,true);
-        if($data && $uid > 0){
+
+        $data['level'] = $this->input->get_post('level') ? $this->input->get_post('level') : 0;
+        $data['endtime'] = $this->input->get_post('endtime') ? $this->input->get_post('endtime') : 0;
+        if($data['level'] && $data['endtime'] && $uid > 0){
             if($this->vip_level_special->update($uid,$data)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '更改成功'), parent::HTTP_OK);
             }else{

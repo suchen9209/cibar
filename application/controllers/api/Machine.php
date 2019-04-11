@@ -44,7 +44,7 @@ class Machine extends Admin_Api_Controller {
         $type = $this->input->get_post('type');
         $data['machine_type'] =$this->config->item('machine_type');
 
-        $data['machines'] =$this->machine->get_all_machine(array('machine.status'=>1));
+        $data['machines'] =$this->machine->get_all_machine();
 
         $this->response($this->getResponseData(parent::HTTP_OK, '所有机器', $data), parent::HTTP_OK);
     }

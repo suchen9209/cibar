@@ -169,20 +169,20 @@ class Log extends Admin_Api_Controller {
 
         $pay_parm_in['pay_type'] = $this->config->item('log_pay_type')['meituan_white'];
         $total_money_pay_meituan_white = $this->log_pay->get_total_money($pay_parm_in);        
-        $pay_parm_in['payment'] = $this->config->item('log_pay_type')['meituan_white'];
-        $total_money_order_meituan_white = $this->order_status->get_total_money($pay_parm_in);
+        $order_parm_in['payment'] = $this->config->item('log_pay_type')['meituan_white'];
+        $total_money_order_meituan_white = $this->order_status->get_total_money($order_parm_in);
         $return['美团小白盒支付金额'] = $total_money_pay_meituan_white + $total_money_order_meituan_white;
 
         $pay_parm_in['pay_type'] = $this->config->item('log_pay_type')['meituan_pos'];
         $total_money_pay_meituan_pos = $this->log_pay->get_total_money($pay_parm_in);        
-        $pay_parm_in['payment'] = $this->config->item('log_pay_type')['meituan_pos'];
-        $total_money_order_meituan_pos = $this->order_status->get_total_money($pay_parm_in);
+        $order_parm_in['payment'] = $this->config->item('log_pay_type')['meituan_pos'];
+        $total_money_order_meituan_pos = $this->order_status->get_total_money($order_parm_in);
         $return['美团POS机支付金额'] = $total_money_pay_meituan_pos + $total_money_order_meituan_pos;
 
         $pay_parm_in['pay_type'] = $this->config->item('log_pay_type')['cash'];
         $total_money_pay_meituan_cash = $this->log_pay->get_total_money($pay_parm_in);        
-        $pay_parm_in['payment'] = $this->config->item('log_pay_type')['cash'];
-        $total_money_order_meituan_cash = $this->order_status->get_total_money($pay_parm_in);
+        $order_parm_in['payment'] = $this->config->item('log_pay_type')['cash'];
+        $total_money_order_meituan_cash = $this->order_status->get_total_money($order_parm_in);
         $return['现金支付金额'] = $total_money_pay_meituan_cash + $total_money_order_meituan_cash;
 
         $pay_parm_in['pay_type'] = $this->config->item('log_pay_type')['wx'];

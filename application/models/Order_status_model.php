@@ -32,6 +32,16 @@ class Order_status_model extends CI_Model {
         return $query->row()->num;
     }
 
+    public function get_total_money($parm=array()){
+        $this->db->select('SUM(total) total');
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row()->total;
+    }
+
     
 
 

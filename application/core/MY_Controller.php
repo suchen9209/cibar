@@ -124,7 +124,7 @@ class Admin_Api_Controller extends REST2_Controller
 
     function __construct($config='admin_rest'){
         header('Access-Control-Allow-Origin:*');
-        parent::__construct('admin_rest');
+        parent::__construct($config);
         date_default_timezone_set("Asia/Shanghai");
     }
 

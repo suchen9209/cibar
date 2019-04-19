@@ -59,6 +59,7 @@ class User_account_model extends CI_Model {
             return $session_name;
 
         }else if($type == 'pc'){
+            
             $this->db->trans_start();
             
             $parm['regtime'] = $time;

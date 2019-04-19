@@ -46,10 +46,10 @@ class User_account_model extends CI_Model {
             $insert_parm['unionid'] = $parm['unionid'];
             $insert_parm['sessionkey'] = $parm['wxsessionkey'];
             $insert_parm['regtime'] = $time;
-            $this->tmp_user_wx->insert($insert_parm);
+            $tmp_id = $this->tmp_user_wx->insert($insert_parm);
 
             $session_name = makeRandomSessionName(16);
-            $this->save_info(array($session_name=>$user_id));
+            $this->save_info(array($session_name=>'tmp'.$tmp_id));
         }
 
         return $session_name;

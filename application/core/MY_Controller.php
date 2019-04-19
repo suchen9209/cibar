@@ -63,7 +63,12 @@ class App_Api_Controller extends REST_Controller
     public function getUserId(){
         $this->load->driver('cache');
         $uid = $this->cache->memcached->get($this->get_session_name());
-        return $uid;
+        if(strpos($uid,'tmp') !== false){
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '尚未绑定手机号', '尚未绑定手机号'), parent::HTTP_OK);
+        }else{
+            return $uid;    
+        }
+        
     }
 
 

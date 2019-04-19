@@ -15,9 +15,7 @@ class User extends Admin_Api_Controller {
         $this->load->model('box_status_model','box_status');
         $this->load->model('log_deduct_money_model','log_deduct_money');
         $this->load->model('coupon_model','coupon');
-        $this->load->model('user_coupon_model','user_coupon');
-        
-
+        $this->load->model('user_coupon_model','user_coupon');      
 
     }
 
@@ -342,7 +340,7 @@ class User extends Admin_Api_Controller {
         }
     }
 
-    public function new(){
+    public function new_user(){
         if($this->input->get_post('idcard')){
             $parm['idcard'] = $this->input->get_post('idcard');  
         }

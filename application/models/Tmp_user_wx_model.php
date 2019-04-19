@@ -6,7 +6,7 @@ class Tmp_user_wx_model extends CI_Model {
         parent::__construct('tmp_user_wx','id');
     }
 
-    public function get_tmp_id_by_unionid($unionid=0){
+    public function get_tmp_id_by_unionid($unionid){
     	if($unionid){
     		$this->db->select('*');
     		$this->db->where('unionid', $unionid);

@@ -351,7 +351,7 @@ class User extends Admin_Api_Controller {
             $parm['phone'] = $this->input->get_post('phone');  
         }
 
-        $user_id = $this->user_account->register('pc',$parm);
+        //$user_id = $this->user_account->register('pc',$parm);
         if($user_id > 0){
             $this->response($this->getResponseData(parent::HTTP_OK, '新增成功',$user_id), parent::HTTP_OK);
         }else{

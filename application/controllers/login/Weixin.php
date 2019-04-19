@@ -87,6 +87,7 @@ class Weixin extends CI_Controller {
 
         $this->load->driver('cache');
         $tmp_uid = $this->cache->memcached->get($mem_key);
+
         $tmp_id = intval(str_replace("tmp","",$tmp_uid));
 
         $tmp_user_wx_info = $this->tmp_user_wx->get_info($tmp_id);
@@ -108,6 +109,9 @@ class Weixin extends CI_Controller {
                 if($this->user->update($uid,$update_parm)){
                     $return['errcode'] = 0;
                     $return['errmsg'] = 'no error';
+                    $session_name = makeRandomSessionName(16);
+                    $this->save_info(array($session_name=>$uid));
+                    $return['3rd_session'] = $session_name;
                 }else{
                     $return['errcode'] = 500;
                     $return['errmsg'] = 'update error';
@@ -122,6 +126,8 @@ class Weixin extends CI_Controller {
             
         }
 
+        $return['data'] = $tmp_user_wx_info;
+        $return['uid'] = $uid;
         echo json_encode($return);
 
     }

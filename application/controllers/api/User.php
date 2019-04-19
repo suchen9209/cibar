@@ -357,7 +357,7 @@ class User extends Admin_Api_Controller {
         if($user_id > 0){
             $this->response($this->getResponseData(parent::HTTP_OK, '新增成功',$user_id), parent::HTTP_OK);
         }else{
-            $this->response($this->getResponseData(parent::HTTP_OK, '新增失败'), parent::HTTP_OK);
+            $this->response($this->getResponseData(parent::HTTP_UNPROCESSABLE_ENTITY, '新增失败'), parent::HTTP_OK);
         }
     }
 

@@ -111,7 +111,7 @@ class Weixin extends CI_Controller {
                 if($fect_num >= 0){
                     $return['errcode'] = 0;
                     $return['errmsg'] = 'no error';
-                    $session_name = $this->user_account_model->login('wx',array('uid'=>$user->id));
+                    $session_name = $this->user_account_model->login('direct_uid',array('uid'=>$user->id));
                     $return['3rd_session'] = $session_name;    
                 }else{
                     $return['errcode'] = 500;

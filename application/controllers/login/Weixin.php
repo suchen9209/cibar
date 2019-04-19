@@ -107,7 +107,7 @@ class Weixin extends CI_Controller {
                 $update_parm['wxunionid'] = $tmp_user_wx_info->unionid;
                 $update_parm['wxsessionkey'] = $tmp_user_wx_info->sessionkey;
 
-                $this->user->update($user->id,$update_parm)
+                $this->user->update($user->id,$update_parm);
                 $return['errcode'] = 0;
                 $return['errmsg'] = 'no error';
                 $session_name = makeRandomSessionName(16);

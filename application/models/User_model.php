@@ -22,10 +22,13 @@ class User_model extends CI_Model {
         if($type == 'wx'){
             $this->db->select('id');
             $this->db->where('wxid',$parm['openid']);
-            $this->db->from($this->table_name);
-            $query = $this->db->get();
-            return $query->row();
+        }elseif($type == 'phone'){
+            $this->db->select('id');
+            $this->db->where('phone',$parm['phone']);  
         }
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row();
     }
 
     public function get_info_u($key,$value){
@@ -38,6 +41,10 @@ class User_model extends CI_Model {
         }else{
             return false;
         }
+    }
+
+    public function get_user_info_by_phone(){
+
     }
 
     public function get_new_member($stime,$etime){

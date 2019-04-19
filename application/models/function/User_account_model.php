@@ -54,8 +54,6 @@ class User_account_model extends CI_Model {
                 $tmp_id = $this->tmp_user_wx->insert($insert_parm);   
             }     
 
-            return array('tmp_id'=>$tmp_id,'tmp'=>$tmp_user);      
-
             $session_name = makeRandomSessionName(16);
             $this->save_info(array($session_name=>'tmp'.$tmp_id));
         }

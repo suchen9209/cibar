@@ -7,7 +7,7 @@ class Tmp_user_wx_model extends CI_Model {
     }
 
     public function get_tmp_id_by_unionid($unionid=0){
-    	if($unionid!=0){
+    	if($unionid){
     		$this->db->select('*');
     		$this->db->where('unionid', $unionid);
     		$this->db->from($this->table_name);

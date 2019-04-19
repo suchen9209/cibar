@@ -41,7 +41,8 @@ class User_account_model extends CI_Model {
             $account_pram['lasttime'] = $time;
             $this->account->insert($account_pram);*/
 
-            $tmp_id = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
+            $tmp_user = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
+            $tmp_id = $tmp_user->id;
             if($tmp_id){
                 $this->tmp_user_wx->update($tmp_id,array('sessionkey',$parm['wxsessionkey']));
             }else{

@@ -44,7 +44,7 @@ class User_account_model extends CI_Model {
             $tmp_user = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
             $tmp_id = $tmp_user->id;
             if($tmp_id){
-                $this->tmp_user_wx->update($tmp_id,array('sessionkey',$parm['wxsessionkey']));
+                $this->tmp_user_wx->update($tmp_id,array('sessionkey'=>$parm['wxsessionkey']));
             }else{
                 $insert_parm = array();
                 $insert_parm['openid'] = $parm['openid'];

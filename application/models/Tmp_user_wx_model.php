@@ -11,7 +11,6 @@ class Tmp_user_wx_model extends CI_Model {
     		$this->db->select('*');
     		$this->db->where('unionid', $unionid);
     		$this->db->from($this->table_name);
-            $this->db->limit(1,0);
     		$query = $this->db->get();
     		return $query->row();
     	}else{

@@ -42,7 +42,7 @@ class User_account_model extends CI_Model {
             $this->account->insert($account_pram);*/
 
             $tmp_user = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
-            $tmp_id = $tmp_user->id;
+            $tmp_id = intval($tmp_user->id);
             if($tmp_id){
                 $this->tmp_user_wx->update($tmp_id,array('sessionkey'=>$parm['wxsessionkey']));
             }else{
@@ -52,7 +52,9 @@ class User_account_model extends CI_Model {
                 $insert_parm['sessionkey'] = $parm['wxsessionkey'];
                 $insert_parm['regtime'] = $time;
                 $tmp_id = $this->tmp_user_wx->insert($insert_parm);   
-            }           
+            }     
+
+            return array('tmp_id'=>$tmp_id,'tmp'=>$tmp_user);      
 
             $session_name = makeRandomSessionName(16);
             $this->save_info(array($session_name=>'tmp'.$tmp_id));

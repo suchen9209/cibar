@@ -70,6 +70,12 @@ class User_account_model extends CI_Model {
             $session_name = makeRandomSessionName(16);
             $this->save_info(array($session_name=>$uid));
             return $session_name;
+        }else if($type == 'direct_uid'){
+            $uid = $parm['uid'];
+            
+            $session_name = makeRandomSessionName(16);
+            $this->save_info(array($session_name=>$uid));
+            return $session_name;
         }
 
     }

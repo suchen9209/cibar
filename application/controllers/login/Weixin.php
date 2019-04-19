@@ -101,16 +101,16 @@ class Weixin extends CI_Controller {
             $data_arr = json_decode($data,true);
             $phone = $data_arr['phoneNumber'];
 
-            $uid = $this->user->check_user('phone',array('phone'=>$phone));
-            if($uid && $uid>0){
+            $user = $this->user->get_info_u('phone',$phone);
+            if($user){
                 $update_parm['wxid'] = $tmp_user_wx_info->openid;
                 $update_parm['wxunionid'] = $tmp_user_wx_info->unionid;
                 $update_parm['wxsessionkey'] = $tmp_user_wx_info->sessionkey;
-                if($this->user->update($uid,$update_parm)){
+                if($this->user->update($user->id,$update_parm)){
                     $return['errcode'] = 0;
                     $return['errmsg'] = 'no error';
                     $session_name = makeRandomSessionName(16);
-                    $this->save_info(array($session_name=>$uid));
+                    $this->save_info(array($session_name=>$user->id));
                     $return['3rd_session'] = $session_name;
                 }else{
                     $return['errcode'] = 500;
@@ -127,7 +127,7 @@ class Weixin extends CI_Controller {
         }
 
         $return['data'] = $tmp_user_wx_info;
-        $return['uid'] = $uid;
+        $return['uid'] = $user->id;
         echo json_encode($return);
 
     }

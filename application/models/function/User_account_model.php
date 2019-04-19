@@ -56,15 +56,34 @@ class User_account_model extends CI_Model {
 
             $session_name = makeRandomSessionName(16);
             $this->save_info(array($session_name=>'tmp'.$tmp_id));
+            return $session_name;
+
         }else if($type == 'pc'){
+            
+            $this->db->trans_start();
+            
             $parm['regtime'] = $time;
             $parm['lasttime'] = $time;
             $parm['nickname'] = $parm['name'];
-            
+            $user_id = $this->user->insert($parm);
+            $username = member_id($user_id,$time);
+            $this->user->update($user_id,array('username'=>$username));
 
+            $account_pram['uid'] =$user_id;
+            $account_pram['regtime'] = $time;
+            $account_pram['lasttime'] = $time;
+            $this->account->insert($account_pram);
+
+            if($this->db->trans_status() === FALSE){
+                $this->db->trans_rollback();
+                return false;
+            }else{
+                $this->db->trans_complete();
+                return $user_id;
+            }   
         }
 
-        return $session_name;
+        
     }
 
     public function login($type,$parm){

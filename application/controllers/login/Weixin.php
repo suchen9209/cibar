@@ -128,6 +128,7 @@ class Weixin extends CI_Controller {
 
         $return['data'] = $tmp_user_wx_info;
         $return['uid'] = $user->id;
+        $return['update_parm'] = $update_parm;
         echo json_encode($return);
 
     }

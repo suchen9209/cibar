@@ -11,6 +11,7 @@ class User_account_model extends CI_Model {
         $this->load->model('user_model','user');
         $this->load->model('account_model','account');
         $this->load->model('log_pay_model','log_pay');
+        $this->load->model('tmp_user_wx_model','tmp_user_wx');
         $this->load->model('active_status_model','active_status');
         $this->load->model('vip_level_special_model','vip_level_special');
     }
@@ -25,7 +26,7 @@ class User_account_model extends CI_Model {
     public function register($type,$parm){
         $time = time();
         if($type == 'wx'){
-            $insert_parm = array();
+/*            $insert_parm = array();
             $insert_parm['regtime'] = $time;
             $insert_parm['lasttime'] = $time;
             $insert_parm['wxid'] = $parm['openid'];
@@ -38,7 +39,14 @@ class User_account_model extends CI_Model {
             $account_pram['uid'] =$user_id;
             $account_pram['regtime'] = $time;
             $account_pram['lasttime'] = $time;
-            $this->account->insert($account_pram);
+            $this->account->insert($account_pram);*/
+
+            $insert_parm = array();
+            $insert_parm['openid'] = $parm['openid'];
+            $insert_parm['unionid'] = $parm['unionid'];
+            $insert_parm['sessionkey'] = $parm['wxsessionkey'];
+            $insert_parm['regtime'] = $time;
+            $this->tmp_user_wx->insert($insert_parm);
 
             $session_name = makeRandomSessionName(16);
             $this->save_info(array($session_name=>$user_id));

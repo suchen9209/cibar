@@ -64,7 +64,7 @@ class App_Api_Controller extends REST_Controller
         $this->load->driver('cache');
         $uid = $this->cache->memcached->get($this->get_session_name());
         if(strpos($uid,'tmp') !== false){
-            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '尚未绑定手机号', '尚未绑定手机号'), parent::HTTP_OK);
+            $this->response($this->getResponseData(410, '尚未绑定手机号', '尚未绑定手机号'), parent::HTTP_OK);
         }else{
             return $uid;    
         }

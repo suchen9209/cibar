@@ -342,4 +342,23 @@ class User extends Admin_Api_Controller {
         }
     }
 
+    public function new(){
+        if($this->input->get_post('idcard')){
+            $parm['idcard'] = $this->input->get_post('idcard');  
+        }
+        if($this->input->get_post('name')){
+            $parm['name'] = $this->input->get_post('name');  
+        }
+        if($this->input->get_post('phone')){
+            $parm['phone'] = $this->input->get_post('phone');  
+        }
+
+        $user_id = $this->user_account_model->register('pc',$parm);
+        if($user_id > 0){
+            $this->response($this->getResponseData(parent::HTTP_OK, '新增成功',$user_id), parent::HTTP_OK);
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_OK, '新增失败'), parent::HTTP_OK);
+        }
+    }
+
 }

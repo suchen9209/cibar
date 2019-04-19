@@ -42,15 +42,15 @@ class User_account_model extends CI_Model {
             $this->account->insert($account_pram);*/
 
             $tmp_id = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
-            if(!$tmp_id){
+            if($tmp_id){
+                $this->tmp_user_wx->update($tmp_id,array('sessionkey',$parm['wxsessionkey']));
+            }else{
                 $insert_parm = array();
                 $insert_parm['openid'] = $parm['openid'];
                 $insert_parm['unionid'] = $parm['unionid'];
                 $insert_parm['sessionkey'] = $parm['wxsessionkey'];
                 $insert_parm['regtime'] = $time;
                 $tmp_id = $this->tmp_user_wx->insert($insert_parm);   
-            }else{
-                $this->tmp_user_wx->update($tmp_id,array('sessionkey',$parm['wxsessionkey']));
             }           
 
             $session_name = makeRandomSessionName(16);

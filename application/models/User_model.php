@@ -47,6 +47,15 @@ class User_model extends CI_Model {
 
     }
 
+    public function get_user_info_by_parm($parm){
+        $query = $this->db->select('*')->from($this->table_name)
+            ->or_where('phone', $parm)
+            ->or_where('name', $parm)
+            ->or_where('idcard', $parm)
+            ->get();
+        return $query->row();
+    }
+
     public function get_new_member($stime,$etime){
         $this->db->select('COUNT(*) num');
         $this->db->where('regtime >',$stime);

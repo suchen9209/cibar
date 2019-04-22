@@ -148,7 +148,7 @@ class Machine extends Admin_Api_Controller {
                         $log_per_in_parm['time'] = time();
                         $log_per_in_parm['intime'] = 0;
                         $this->log_peripheral_in->insert($log_per_in_parm);
-                        //$this->peripheral_num->in($value['id']);
+                        $this->peripheral_num->in($value['id']);
                     }
                 }
 

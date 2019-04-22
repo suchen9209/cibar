@@ -25,10 +25,12 @@ class User extends Admin_Api_Controller {
 
         if(is_numeric($uid)){
             $user_info = $this->user_account->get_user_info($uid);
+            $user_info['discount'] = $discount = $this->config->item('discount_level')[$user_info['level']];
             $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
         }else if(substr($uid,0,1) == 'V' && is_numeric(substr($uid,-6)) ){
             $user = $this->user->get_info_u('username',$uid);
             $user_info = $this->user_account->get_user_info($user->id);
+            $user_info['discount'] = $discount = $this->config->item('discount_level')[$user_info['level']];
             $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);
         }else if($phone){
             $user = $this->user->get_info_u('phone',$phone);
@@ -38,6 +40,22 @@ class User extends Admin_Api_Controller {
         }else{
             $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'nothing'), parent::HTTP_OK);
         }   
+    }
+
+    public function find(){
+        $parm = $this->input->get_post('parm');
+        if(isset($parm)){
+            $user = $this->user->get_user_info_by_parm($parm);
+            if($user){
+                $user_info = $this->user_account->get_user_info($user->id);
+                $user_info['discount'] = $discount = $this->config->item('discount_level')[$user_info['level']];
+                $this->response($this->getResponseData(parent::HTTP_OK, '用户信息', $user_info), parent::HTTP_OK);    
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '未查到用户'), parent::HTTP_OK);
+            }            
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误'), parent::HTTP_OK);
+        }
     }
 
     public function pay(){

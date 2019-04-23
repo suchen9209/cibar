@@ -91,11 +91,18 @@ class Machine extends Admin_Api_Controller {
         if( (isset($uid) && $uid > 0) || (isset($mid) && $mid > 0) ){
             if(isset($uid)){
                 $ac_temp = $this->active_status->get_info_uid($uid);
+                if(!isset($ac_temp)){
+                    $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '用户未上机', 'nothing'), parent::HTTP_OK); 
+                }
                 $machine_id = $ac_temp->mid;
+
                 $machine_info = $this->machine->get_info($machine_id);
             }else{
                 $machine_info = $this->machine->get_info($mid);
                 $ac_temp = $this->active_status->get_info_mid($mid);
+                if(!isset($ac_temp)){
+                    $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '该机器无人上机', 'nothing'), parent::HTTP_OK); 
+                }
                 $uid = $ac_temp->uid;
             }
             

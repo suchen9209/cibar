@@ -120,7 +120,8 @@ class Checkin extends Admin_Api_Controller {
                     'pid'   =>  $pjson
                 );
                 //记录最近一次的外设信息
-                if($tmp = $this->peripheral_last->get_last_by_uid($uid)){
+                $tmp = $this->peripheral_last->get_last_by_uid($uid)
+                if($tmp){
                     $this->peripheral_last->update($tmp->id,$parm);
                 }else{
                     $this->peripheral_last->insert($parm);

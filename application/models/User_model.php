@@ -48,11 +48,20 @@ class User_model extends CI_Model {
     }
 
     public function get_user_info_by_parm($parm){
-        $query = $this->db->select('*')->from($this->table_name)
-            ->or_where('phone', $parm)
-            ->or_where('name', $parm)
-            ->or_where('idcard', $parm)
-            ->get();
+        $this->db->select('*')->from($this->table_name);
+
+        if(is_numeric($parm) &&strlen($parm) == 18){
+            $this->db->where('idcard', $parm);
+        }else if(is_numeric($parm) && strlen($parm) == 11){
+            $this->db->where('phone', $parm);
+        }else if(is_numeric($parm)){
+            $this->db->where('id', $parm);
+        }else{
+            $this->db->where('username', $parm);   
+        }       
+        
+        
+        $query = $this->db->get();
         return $query->row();
     }
 

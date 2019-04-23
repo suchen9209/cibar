@@ -116,6 +116,7 @@ class User_account_model extends CI_Model {
         $return_arr['balance'] = $account_info->balance;
         $return_arr['regtime'] = $user_info->regtime;
         $return_arr['username'] = $user_info->username;
+        $return_arr['idcard'] = $user_info->idcard;
         if($active_status){
             $return_arr['active'] = true;
         }else{

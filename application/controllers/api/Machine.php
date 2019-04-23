@@ -96,6 +96,13 @@ class Machine extends Admin_Api_Controller {
             $return_data['machine_info'] = $machine_info;
             $return_data['user_info'] = $this->user_account->get_user_info($uid);
             $return_data['coupon_info'] = $this->user_coupon->get_can_use_by_uid_type($uid,1);
+
+            $peripheral_last_json = $this->peripheral_last->get_last_by_uid($uid)->pid;
+            $peripheral_last_arr = json_decode($peripheral_last_json,true);
+            foreach ($peripheral_last_arr as $key => $value) {
+                $return_data['peripheral_last_data'][$value['type']] = $this->peripheral_num->get_info($value['id']);
+            }
+            
             $log_deduct_info = $this->log_deduct_money->get_total_info($uid);
             if($log_deduct_info){                
                 $return_data['deduct_info'] = $log_deduct_info;

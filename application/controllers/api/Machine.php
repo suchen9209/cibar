@@ -87,7 +87,7 @@ class Machine extends Admin_Api_Controller {
 
     public function down_info(){
         $uid = $this->input->get_post('user_id');
-        $mid = $this->input->get_post('machine_id');
+        $mid = intval($this->input->get_post('machine_id'));
         if( (isset($uid) && $uid > 0) || (isset($mid) && $mid > 0) ){
             if(isset($uid)){
                 $ac_temp = $this->active_status->get_info_uid($uid);

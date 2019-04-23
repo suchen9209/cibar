@@ -87,10 +87,18 @@ class Machine extends Admin_Api_Controller {
 
     public function down_info(){
         $uid = $this->input->get_post('user_id');
-        if(isset($uid) && $uid > 0){
-            $ac_temp = $this->active_status->get_info_uid($uid);
-            $machine_id = $ac_temp->mid;
-            $machine_info = $this->machine->get_info($machine_id);
+        $mid = $this->input->get_post('machine_id');
+        if( (isset($uid) && $uid > 0) || (isset($mid) && $mid > 0) ){
+            if(isset($uid)){
+                $ac_temp = $this->active_status->get_info_uid($uid);
+                $machine_id = $ac_temp->mid;
+                $machine_info = $this->machine->get_info($machine_id);
+            }else{
+                $machine_info = $this->machine->get_info($mid);
+                $ac_temp = $this->active_status->get_info_mid($mid);
+                $uid = $ac_temp->mid;
+            }
+            
 
             $return_data = array();
             $return_data['machine_info'] = $machine_info;
@@ -102,7 +110,7 @@ class Machine extends Admin_Api_Controller {
             foreach ($peripheral_last_arr as $key => $value) {
                 $return_data['peripheral_last_data'][$value['type']] = $this->peripheral_num->get_info($value['id']);
             }
-            
+
             $log_deduct_info = $this->log_deduct_money->get_total_info($uid);
             if($log_deduct_info){                
                 $return_data['deduct_info'] = $log_deduct_info;

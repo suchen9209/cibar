@@ -58,8 +58,7 @@ class User_model extends CI_Model {
             $this->db->where('id', $parm);
         }else{
             $this->db->where('username', $parm);   
-        }       
-        
+        }               
         
         $query = $this->db->get();
         return $query->row();

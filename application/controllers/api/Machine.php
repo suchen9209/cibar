@@ -96,7 +96,7 @@ class Machine extends Admin_Api_Controller {
             }else{
                 $machine_info = $this->machine->get_info($mid);
                 $ac_temp = $this->active_status->get_info_mid($mid);
-                $uid = $ac_temp->mid;
+                $uid = $ac_temp->uid;
             }
             
 

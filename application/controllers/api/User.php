@@ -361,19 +361,33 @@ class User extends Admin_Api_Controller {
     public function new_user(){
         if($this->input->get_post('idcard')){
             $parm['idcard'] = $this->input->get_post('idcard');  
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_UNPROCESSABLE_ENTITY, '请输入身份证号码'), parent::HTTP_OK);
         }
         if($this->input->get_post('name')){
             $parm['name'] = $this->input->get_post('name');  
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_UNPROCESSABLE_ENTITY, '请输入姓名'), parent::HTTP_OK);
         }
         if($this->input->get_post('phone')){
             $parm['phone'] = $this->input->get_post('phone');  
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_UNPROCESSABLE_ENTITY, '请输入号码'), parent::HTTP_OK);
         }
+
+        if($this->user->get_user_info_by_parm($parm['idcard'])){
+            $this->response($this->getResponseData(parent::HTTP_UNPROCESSABLE_ENTITY, '该身份证已注册'), parent::HTTP_OK);
+        }
+        if($this->user->get_user_info_by_parm($parm['phone'])){
+            $this->response($this->getResponseData(parent::HTTP_UNPROCESSABLE_ENTITY, '该手机号码已注册'), parent::HTTP_OK);
+        }
+
 
         $user_id = $this->user_account->register('pc',$parm);
         if($user_id > 0){
             $this->response($this->getResponseData(parent::HTTP_OK, '新增成功',$user_id), parent::HTTP_OK);
         }else{
-            $this->response($this->getResponseData(parent::HTTP_UNPROCESSABLE_ENTITY, '新增失败'), parent::HTTP_OK);
+            
         }
     }
 

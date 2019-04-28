@@ -88,7 +88,7 @@ class Machine extends Admin_Api_Controller {
     public function down_info(){
         $uid = $this->input->get_post('user_id');
         $mid = intval($this->input->get_post('machine_id'));
-        if( (isset($uid) && $uid > 0) || (isset($mid) && $mid > 0) ){
+        if( (isset($uid) && $uid > 0) || isset($mid) ){
             if($uid>0){
                 $ac_temp = $this->active_status->get_info_uid($uid);
                 if(!isset($ac_temp)){
@@ -98,7 +98,7 @@ class Machine extends Admin_Api_Controller {
 
                 $machine_info = $this->machine->get_info($machine_id);
             }else{
-                $machine_info = $this->machine->get_info($mid);
+                $machine_info = $this->machine->get_machine_by_name($mid);
                 $ac_temp = $this->active_status->get_info_mid($mid);
                 if(!isset($ac_temp)){
                     $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '该机器无人上机', 'nothing'), parent::HTTP_OK); 

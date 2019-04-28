@@ -34,6 +34,8 @@ class Shift extends Admin_Api_Controller {
         $order_parm_in['createtime >'] = $starttime;
         $order_parm_in['createtime <'] = $endtime;
 
+        $return['lasttime'] = $starttime;
+
         $pay_parm_in['pay_type'] = $this->config->item('log_pay_type')['meituan_white'];
         $total_money_pay_meituan_white = $this->log_pay->get_total_money($pay_parm_in);        
         $order_parm_in['payment'] = $this->config->item('log_pay_type')['meituan_white'];

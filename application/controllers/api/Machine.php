@@ -100,7 +100,7 @@ class Machine extends Admin_Api_Controller {
             }else{
                 $machine_info = $this->machine->get_machine_by_name($mid);
                 $ac_temp = $this->active_status->get_info_mid($machine_info->id);
-                if($ac_temp->state == 2){
+                if($ac_temp->state != 2){
                     $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '该机器无人上机', 'nothing'), parent::HTTP_OK); 
                 }
                 $uid = $ac_temp->uid;

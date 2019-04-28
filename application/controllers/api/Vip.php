@@ -122,6 +122,15 @@ class Vip extends Admin_Api_Controller {
         
     }
 
+    public function info($uid){
+        $info = $this->vip_level_special->get_info_by_uid($uid);
+        if($info){
+            $this->response($this->getResponseData(parent::HTTP_OK, 'VIP信息',$info), parent::HTTP_OK);
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '无特殊VIP信息'), parent::HTTP_OK);
+        }
+    }
+
 
 
 

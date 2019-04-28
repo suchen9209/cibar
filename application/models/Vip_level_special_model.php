@@ -32,6 +32,13 @@ class Vip_level_special_model extends CI_Model {
         $this->db->delete($this->table_name);
         return $this->db->affected_rows();
     }
+
+    public function get_info_by_uid($uid){
+        $this->db->select('*');
+        $this->db->where('uid', $uid);
+        $query = $this->db->get($this->table_name);
+        return $query->num_rows() > 0 ? $query->row() : false;
+    }
     
 }
 ?>

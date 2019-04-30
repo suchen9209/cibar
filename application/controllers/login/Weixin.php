@@ -22,6 +22,7 @@ class Weixin extends CI_Controller {
         parent::__construct();
 
         $this->load->model('user_model','user');
+        $this->load->model('tmp_user_wx_model','tmp_user_wx');
         $this->load->model('function/user_account_model','user_account_model');
 
     }
@@ -85,6 +86,65 @@ class Weixin extends CI_Controller {
 
 
         $this->load->driver('cache');
+        $tmp_uid = $this->cache->memcached->get($mem_key);
+
+        $tmp_id = intval(str_replace("tmp","",$tmp_uid));
+
+        $tmp_user_wx_info = $this->tmp_user_wx->get_info($tmp_id);
+        $sessionKey = $tmp_user_wx_info->sessionkey;
+        /*$this->user->get_user_info_by_phone();*/
+
+        $pc = new WXBizDataCrypt($this->app_id, $sessionKey);
+        $errCode = $pc->decryptData($encryptedData, $iv, $data );
+
+        if ($errCode == 0) {
+            $data_arr = json_decode($data,true);
+            $phone = $data_arr['phoneNumber'];
+
+            $user = $this->user->get_info_u('phone',$phone);
+            if($user){
+                $update_parm['wxid'] = $tmp_user_wx_info->openid;
+                $update_parm['wxunionid'] = $tmp_user_wx_info->unionid;
+                $update_parm['wxsessionkey'] = $tmp_user_wx_info->sessionkey;
+
+                $fect_num = $this->user->update($user->id,$update_parm);
+                if($fect_num >= 0){
+                    $return['errcode'] = 0;
+                    $return['errmsg'] = 'no error';
+                    $session_name = $this->user_account_model->login('direct_uid',array('uid'=>$user->id));
+                    $return['3rd_session'] = $session_name;    
+                }else{
+                    $return['errcode'] = 500;
+                    $return['errmsg'] = 'update error';
+                }
+                
+
+            }else{
+                $return['errcode'] = 444;
+                $return['errmsg'] = 'no user in this phone';
+            }            
+        } else {
+            $return['errcode'] = $errCode;
+            $return['errmsg'] = 'decrypt error';
+            
+        }
+
+        $return['data'] = $tmp_user_wx_info;
+        $return['uid'] = $user->id;
+        $return['update_parm'] = $update_parm;
+        echo json_encode($return);
+
+    }
+
+/*    public function bind_phone(){
+        header('Content-Type:application/json');
+        $encryptedData = $this->input->get_post('encryptedData');
+        $iv = $this->input->get_post('iv');
+        $mem_key = $this->input->get_post('3rd_session');
+
+
+
+        $this->load->driver('cache');
         $uid = $this->cache->memcached->get($mem_key);
         $user_info = $this->user->get_user_info($uid);
         $sessionKey = $user_info->wxsessionkey;
@@ -112,7 +172,7 @@ class Weixin extends CI_Controller {
 
     }
 
-
+*/
 
 
 

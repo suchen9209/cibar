@@ -63,7 +63,12 @@ class App_Api_Controller extends REST_Controller
     public function getUserId(){
         $this->load->driver('cache');
         $uid = $this->cache->memcached->get($this->get_session_name());
-        return $uid;
+        if(strpos($uid,'tmp') !== false){
+            $this->response($this->getResponseData(410, '尚未绑定手机号', '尚未绑定手机号'), parent::HTTP_OK);
+        }else{
+            return $uid;    
+        }
+        
     }
 
 
@@ -124,7 +129,7 @@ class Admin_Api_Controller extends REST2_Controller
 
     function __construct($config='admin_rest'){
         header('Access-Control-Allow-Origin:*');
-        parent::__construct('admin_rest');
+        parent::__construct($config);
         date_default_timezone_set("Asia/Shanghai");
     }
 

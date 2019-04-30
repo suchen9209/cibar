@@ -7,7 +7,9 @@ class Vip_level_special_model extends CI_Model {
     }
 
     public function get_list($offset,$num,$option=array()){
-        $this->db->select('*');
+        $this->db->select('vip_level_special.*,user.username,user.name,user.phone,adminuser.username as ousername');
+        $this->db->join('user','vip_level_special.uid = user.id','left');
+        $this->db->join('adminuser','vip_level_special.ouid = adminuser.id','left');
         $this->db->limit($num,$offset);
         foreach ($option as $key => $value) {
             $this->db->where($key,$value);
@@ -29,6 +31,13 @@ class Vip_level_special_model extends CI_Model {
         $this->db->where('uid', $uid);
         $this->db->delete($this->table_name);
         return $this->db->affected_rows();
+    }
+
+    public function get_info_by_uid($uid){
+        $this->db->select('*');
+        $this->db->where('uid', $uid);
+        $query = $this->db->get($this->table_name);
+        return $query->num_rows() > 0 ? $query->row() : false;
     }
     
 }

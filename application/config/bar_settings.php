@@ -3,22 +3,24 @@
 /*
  *	充值方式
  */
+
+/*
+** 1为小程序充值
+** 2为美团小白盒
+** 3为美团POS机
+** 4为现金交易
+*/
 $config["log_pay_type"] = array(
 	"wx"		=>	1,
-	"wx_f"		=>	2,
-	"scan"		=>	3,
-	"cash"		=>	4,
-	"pos"		=>	5,
-	"gift"		=>	6,
-	"meituan"	=>	7
+	"meituan_white"		=>	2,
+	"meituan_pos"		=>	3,
+	"cash"		=>	4
 );
 
 $config['log_pay_type_cn'] = array(
-	1	=>	'小程序自充',
-	2	=>	'微信扫码',
-	3	=>	'支付宝扫码',
-	4	=>	'现金',
-	5	=>	'POS机'
+	2	=>	'美团小白盒',
+	3	=>	'美团POS机',
+	4	=>	'现金交易'
 );
 
 //acitve_status表中status字段含义

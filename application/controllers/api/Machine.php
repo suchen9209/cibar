@@ -44,7 +44,7 @@ class Machine extends Admin_Api_Controller {
         $type = $this->input->get_post('type');
         $data['machine_type'] =$this->config->item('machine_type');
 
-        $data['machines'] =$this->machine->get_all_machine(array('machine.status'=>1));
+        $data['machines'] =$this->machine->get_all_machine();
 
         $this->response($this->getResponseData(parent::HTTP_OK, '所有机器', $data), parent::HTTP_OK);
     }
@@ -87,15 +87,37 @@ class Machine extends Admin_Api_Controller {
 
     public function down_info(){
         $uid = $this->input->get_post('user_id');
-        if(isset($uid) && $uid > 0){
-            $ac_temp = $this->active_status->get_info_uid($uid);
-            $machine_id = $ac_temp->mid;
-            $machine_info = $this->machine->get_info($machine_id);
+        $mid = intval($this->input->get_post('machine_id'));
+        if( (isset($uid) && $uid > 0) || isset($mid) ){
+            if($uid>0){
+                $ac_temp = $this->active_status->get_info_uid($uid);
+                if(!isset($ac_temp)){
+                    $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '用户未上机', 'nothing'), parent::HTTP_OK); 
+                }
+                $machine_id = $ac_temp->mid;
+
+                $machine_info = $this->machine->get_info($machine_id);
+            }else{
+                $machine_info = $this->machine->get_machine_by_name($mid);
+                $ac_temp = $this->active_status->get_info_mid($machine_info->id);
+                if($ac_temp->state != 2){
+                    $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '该机器无人上机', 'nothing'), parent::HTTP_OK); 
+                }
+                $uid = $ac_temp->uid;
+            }
+            
 
             $return_data = array();
             $return_data['machine_info'] = $machine_info;
             $return_data['user_info'] = $this->user_account->get_user_info($uid);
             $return_data['coupon_info'] = $this->user_coupon->get_can_use_by_uid_type($uid,1);
+
+            $peripheral_last_json = $this->peripheral_last->get_last_by_uid($uid)->pid;
+            $peripheral_last_arr = json_decode($peripheral_last_json,true);
+            foreach ($peripheral_last_arr as $key => $value) {
+                $return_data['peripheral_last_data'][$value['type']] = $this->peripheral_num->get_info($value['id']);
+            }
+
             $log_deduct_info = $this->log_deduct_money->get_total_info($uid);
             if($log_deduct_info){                
                 $return_data['deduct_info'] = $log_deduct_info;
@@ -148,7 +170,7 @@ class Machine extends Admin_Api_Controller {
                         $log_per_in_parm['time'] = time();
                         $log_per_in_parm['intime'] = 0;
                         $this->log_peripheral_in->insert($log_per_in_parm);
-                        //$this->peripheral_num->in($value['id']);
+                        $this->peripheral_num->in($value['id']);
                     }
                 }
 

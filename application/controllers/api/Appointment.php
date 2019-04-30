@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Appointment extends Admin_Api_Controller {
 
     public function __construct(){
-        parent::__construct();
+        parent::__construct('none_rest');
         $this->load->model('appointment_model','appointment');
 
     }

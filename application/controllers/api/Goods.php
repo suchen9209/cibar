@@ -14,6 +14,7 @@ class Goods extends Admin_Api_Controller {
         $this->load->model('account_model','account');
         $this->load->model('user_coupon_model','user_coupon');
         $this->load->model('coupon_model','coupon');
+        $this->load->model('function/send_wokerman_model','send_wokerman');
     }
 
     public function index(){
@@ -222,6 +223,9 @@ class Goods extends Admin_Api_Controller {
                 $ouid = 0;
             }
             if($this->order_status->update($order_id,array('status' => $this->config->item('order_status_status')['done'] , 'ouid' => $ouid ) ) ){
+                $send_parm['order_id'] = $order_id;
+                $send_parm['cmd'] = 'order_down';
+                $this->send_wokerman->send(json_encode($send_parm));
                 $this->response($this->getResponseData(parent::HTTP_OK, '更新成功'), parent::HTTP_OK);
             }else{
                 $this->response($this->getResponseData(parent::HTTP_OK, '更新失败'), parent::HTTP_OK);

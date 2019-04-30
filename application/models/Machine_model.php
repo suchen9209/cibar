@@ -6,6 +6,14 @@ class Machine_model extends CI_Model {
         parent::__construct('machine','id');
     }
 
+    public function get_machine_by_name($machine_name){
+        $this->db->select('*');
+        $this->db->where('machine_name', $machine_name);
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     public function get_machine_list($page,$num,$option=array()){
         $offset = ($page-1)*$num;
         $this->db->select('*');

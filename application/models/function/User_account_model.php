@@ -11,6 +11,7 @@ class User_account_model extends CI_Model {
         $this->load->model('user_model','user');
         $this->load->model('account_model','account');
         $this->load->model('log_pay_model','log_pay');
+        $this->load->model('tmp_user_wx_model','tmp_user_wx');
         $this->load->model('active_status_model','active_status');
         $this->load->model('vip_level_special_model','vip_level_special');
     }
@@ -25,7 +26,7 @@ class User_account_model extends CI_Model {
     public function register($type,$parm){
         $time = time();
         if($type == 'wx'){
-            $insert_parm = array();
+/*            $insert_parm = array();
             $insert_parm['regtime'] = $time;
             $insert_parm['lasttime'] = $time;
             $insert_parm['wxid'] = $parm['openid'];
@@ -38,13 +39,51 @@ class User_account_model extends CI_Model {
             $account_pram['uid'] =$user_id;
             $account_pram['regtime'] = $time;
             $account_pram['lasttime'] = $time;
-            $this->account->insert($account_pram);
+            $this->account->insert($account_pram);*/
+
+            $tmp_user = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
+            $tmp_id = intval($tmp_user->id);
+            if($tmp_id){
+                $this->tmp_user_wx->update($tmp_id,array('sessionkey'=>$parm['wxsessionkey']));
+            }else{
+                $insert_parm = array();
+                $insert_parm['openid'] = $parm['openid'];
+                $insert_parm['unionid'] = $parm['unionid'];
+                $insert_parm['sessionkey'] = $parm['wxsessionkey'];
+                $insert_parm['regtime'] = $time;
+                $tmp_id = $this->tmp_user_wx->insert($insert_parm);   
+            }     
 
             $session_name = makeRandomSessionName(16);
-            $this->save_info(array($session_name=>$user_id));
+            $this->save_info(array($session_name=>'tmp'.$tmp_id));
+            return $session_name;
+
+        }else if($type == 'pc'){
+            
+            $this->db->trans_start();
+            
+            $parm['regtime'] = $time;
+            $parm['lasttime'] = $time;
+            $parm['nickname'] = $parm['name'];
+            $user_id = $this->user->insert($parm);
+            $username = member_id($user_id,$time);
+            $this->user->update($user_id,array('username'=>$username));
+
+            $account_pram['uid'] =$user_id;
+            $account_pram['regtime'] = $time;
+            $account_pram['lasttime'] = $time;
+            $this->account->insert($account_pram);
+
+            if($this->db->trans_status() === FALSE){
+                $this->db->trans_rollback();
+                return false;
+            }else{
+                $this->db->trans_complete();
+                return $user_id;
+            }   
         }
 
-        return $session_name;
+        
     }
 
     public function login($type,$parm){
@@ -52,6 +91,12 @@ class User_account_model extends CI_Model {
             $user = $this->user->get_info_u('wxid',$parm['openid']);
             $this->user->update($user->id,array('lasttime'=>time(),'wxsessionkey'=>$parm['wxsessionkey']));
             $uid = $user->id;
+            
+            $session_name = makeRandomSessionName(16);
+            $this->save_info(array($session_name=>$uid));
+            return $session_name;
+        }else if($type == 'direct_uid'){
+            $uid = $parm['uid'];
             
             $session_name = makeRandomSessionName(16);
             $this->save_info(array($session_name=>$uid));
@@ -71,6 +116,7 @@ class User_account_model extends CI_Model {
         $return_arr['balance'] = $account_info->balance;
         $return_arr['regtime'] = $user_info->regtime;
         $return_arr['username'] = $user_info->username;
+        $return_arr['idcard'] = $user_info->idcard;
         if($active_status){
             $return_arr['active'] = true;
         }else{
@@ -144,10 +190,11 @@ class User_account_model extends CI_Model {
 
     public function get_user_list($num=20,$offset=0,$order_option,$order,$parm){
 
-        $this->db->select('user.*,account.balance,account.total,active_status.state');
+        $this->db->select('user.*,account.balance,account.total,active_status.state,vip_level_special.level as svip_level');
         $this->db->from('user');
         $this->db->join('account','user.id = account.uid','LEFT');
         $this->db->join('active_status','user.id = active_status.uid','LEFT');
+        $this->db->join('vip_level_special','user.id = vip_level_special.uid','LEFT');
         foreach ($parm as $key => $value) {
             $this->db->where($key,$value);
         }

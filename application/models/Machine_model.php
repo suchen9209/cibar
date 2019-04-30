@@ -27,8 +27,9 @@ class Machine_model extends CI_Model {
     }
 
     public function get_active_machine($type=0){
-        $this->db->select('*');
+        $this->db->select('machine.*,machine_info.mac');
         $this->db->join('active_status','active_status.mid = machine.id','left');
+        $this->db->join('machine_info','machine_info.machine_id = machine.id','left');
         $this->db->where('active_status.state',1);
         $this->db->where('machine.status',1);
         if($type > 0){

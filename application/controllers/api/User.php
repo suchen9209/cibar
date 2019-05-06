@@ -353,7 +353,7 @@ class User extends Admin_Api_Controller {
             $user_info['opentime'] = $login_info->time;
             $user_info['duration'] = time() - $login_info->time;
 
-            $deduct_info = $this->log_deduct_money->get_total_info($value['uid']);
+            $deduct_info = $this->log_deduct_money->get_total_info($uid);
             if($deduct_info){
                 $user_info['cost'] = $deduct_info['total_money'];
             }else{

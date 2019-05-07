@@ -23,8 +23,20 @@ class Checkin extends Admin_Api_Controller {
         $data['machine_type'] =$this->config->item('machine_type');
         $data['machine_price'] =$this->config->item('price');
         $data['machines'] = $this->machine->get_active_machine();  
+        $mid_by_box = array();
+        foreach ($data['machines'] as $key => $value) {
+            $mid_by_box[$value['box_id']] []= $value;
+        }
+        $data['machines'] = $mid_by_box;
         $data['box_list'] = $this->machine->get_all_box(array('active_status.state'=>1));
+        $tmp = array();
+        foreach ($data['box_list'] as $key => $value) {
+            $tmp[$value['type']] []= $value['box_id'];
+        }
+        $tmp["1"] = ['散座'];
+        $data['box_list'] = $tmp;
         $data['box_type'] =$this->config->item('machine_type');
+        unset($data['box_type'][1]);
         $data['box_price'] =$this->config->item('box_price');
         $data['pay_type'] = $this->config->item('box_status_pay_type');
         if($uid != 0){

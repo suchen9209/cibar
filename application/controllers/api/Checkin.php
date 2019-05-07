@@ -17,7 +17,7 @@ class Checkin extends Admin_Api_Controller {
 
     }
 
-    public function single_info(){
+    public function single_info_front(){
         $uid = $this->input->get_post('user_id') ? $this->input->get_post('user_id') : 0;
 
         $data['machine_type'] =$this->config->item('machine_type');
@@ -37,6 +37,52 @@ class Checkin extends Admin_Api_Controller {
         $data['box_list'] = $tmp;
         $data['box_type'] =$this->config->item('machine_type');
         unset($data['box_type'][1]);
+        $data['box_price'] =$this->config->item('box_price');
+        $data['pay_type'] = $this->config->item('box_status_pay_type');
+        if($uid != 0){
+            $list = $this->peripheral_num->get_list_free();
+
+            $id_arr= [];
+            $last = $this->peripheral_last->get_last_by_uid($uid);
+            if($last){
+                $tmp = json_decode($last->pid,true);
+                $data['last_use'] = $tmp;
+                $id_arr = array_column($tmp, 'id');
+                $is_null = false;
+            }else{
+                $is_null = true;
+            }
+            
+            $plist = array();
+            foreach ($list as $key => $value) {
+                if(in_array($value['id'], $id_arr)){
+                    $value['last_use'] = true;
+                }
+                if($is_null && !isset($plist[$value['type']])){
+                    $value['last_use'] = true;
+                }
+                $plist[$value['type']] []= $value; 
+            }
+
+            $type_name = $this->config->item('peripheral_type');
+            $data['peripheral_type_name'] = $type_name;
+            $data['peripheral_list'] = $plist;
+        }
+
+
+        $this->response($this->getResponseData(parent::HTTP_OK, '上机初始信息', $data), parent::HTTP_OK);
+
+    }
+
+
+    public function single_info(){
+        $uid = $this->input->get_post('user_id') ? $this->input->get_post('user_id') : 0;
+
+        $data['machine_type'] =$this->config->item('machine_type');
+        $data['machine_price'] =$this->config->item('price');
+        $data['machines'] = $this->machine->get_active_machine();  
+        $data['box_list'] = $this->machine->get_all_box(array('active_status.state'=>1));
+        $data['box_type'] =$this->config->item('machine_type');
         $data['box_price'] =$this->config->item('box_price');
         $data['pay_type'] = $this->config->item('box_status_pay_type');
         if($uid != 0){

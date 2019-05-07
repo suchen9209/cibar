@@ -6,6 +6,14 @@ class Machine_model extends CI_Model {
         parent::__construct('machine','id');
     }
 
+    public function get_machine_by_ip($ip){
+        $this->db->select('*');
+        $this->db->where('ip', $ip);
+        $this->db->from($this->table_name);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     public function get_machine_by_name($machine_name){
         $this->db->select('*');
         $this->db->where('machine_name', $machine_name);

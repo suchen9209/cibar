@@ -80,6 +80,22 @@ class Machine extends Admin_Api_Controller {
         }
     }
 
+    public function check_status_by_ip(){
+        $ip = $this->input->get_post('ip') ? $this->input->get_post('ip') : '';
+        if($ip != ''){
+            $machine = $this->machine->get_machine_by_ip($ip);
+            $active_status_info = $this->active_status->get_info_mid($machine->id);
+            if($active_status_info->state == 2){
+                $this->response($this->getResponseData(parent::HTTP_OK, '允许开机', '已在前台登录'), parent::HTTP_OK);
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '禁止开机', '未在前台登录'), parent::HTTP_OK);
+            }
+
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', 'ip无法获取'), parent::HTTP_OK);
+        }
+    }
+
 
 
 }

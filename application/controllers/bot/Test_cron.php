@@ -36,6 +36,7 @@ class Test_cron extends Ci_Controller {
 		$id = intval($id);
 		$id++;
 		if($id > 240){
+			echo 'over';
 			return 'over';
 		}
 
@@ -65,26 +66,31 @@ class Test_cron extends Ci_Controller {
 				echo $id.'更新machine失败<br/>';
 			}
 		}else{
+			$update_parm = array();
+
 			echo '<br/>'.$id.'存在ip，预留';
 		}
 
 		sleep(1);
 		
-		// // 1. 初始化
-		//  $ch = curl_init();
-		//  // 2. 设置选项，包括URL
-		//  curl_setopt($ch,CURLOPT_URL,"http://status.golgaming.com:8443/api/v1/launch?jtname=macaddr&jthost=10.100.111.34");
-		//  curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-		//  curl_setopt($ch,CURLOPT_HEADER,0);
-		//  // 3. 执行并获取HTML文档内容
-		//  $output = curl_exec($ch);
-		//  if($output === FALSE ){
-		//  echo "CURL Error:".curl_error($ch);
-		//  }
+		// 1. 初始化
+		 $ch = curl_init();
+		 // 2. 设置选项，包括URL
+		 curl_setopt($ch,CURLOPT_URL,"http://status.golgaming.com:8443/api/v1/launch?jtname=macaddr&jthost=10.100.111.34");
+		 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		 curl_setopt($ch,CURLOPT_HEADER,0);
+		 // 3. 执行并获取HTML文档内容
+		 $output = curl_exec($ch);
+		 if($output === FALSE ){
+		 echo "CURL Error:".curl_error($ch);
+		 }
 
-		//  var_dump($output);
-		//  // 4. 释放curl句柄
-		//  curl_close($ch);
+
+		 $get_detail = json_decode($output);
+		var_dump($get_detail);
+		 // 4. 释放curl句柄
+		curl_close($ch);
+		die;
 
 		 exit('<script language="javascript" type="text/javascript">
 window.location.href="http://pay.imbatv.cn/bot/test_cron/get_mac/'.$id.'";

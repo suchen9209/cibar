@@ -33,6 +33,10 @@ class Test_cron extends Ci_Controller {
 
 	public function get_mac($id=0)
 	{
+		$id=$id++;
+		if($id > 240){
+			return 'over';
+		}
 		// 1. 初始化
 		 $ch = curl_init();
 		 // 2. 设置选项，包括URL
@@ -48,6 +52,10 @@ class Test_cron extends Ci_Controller {
 		 var_dump($output);
 		 // 4. 释放curl句柄
 		 curl_close($ch);
+
+		 exit('<script language="javascript" type="text/javascript">
+window.location.href="www.imbatv.cn";
+</script>');
 		# code...
 	}
 

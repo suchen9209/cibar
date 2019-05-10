@@ -48,9 +48,21 @@ class Test_cron extends Ci_Controller {
 			$update_parm['machine_info'] = '未同步';
 			$update_parm['repair_info'] = '未安装系统';
 			if($this->machine_info->update($machine_detail->id,$update_parm)){
-				echo $id.'更新成功';
+				echo $id.'更新machine_info成功<br/>';
 			}else{
-				echo $id.'更新失败';
+				echo $id.'更新machine_info失败<br/>';
+			}
+
+			if($this->active_status->update($machine_detail->id,array('state'=>4))){
+				echo $id.'更新active_status成功<br/>';
+			}else{
+				echo $id.'更新active_status失败<br/>';
+			}
+
+			if($this->machine->update($machine_detail->id,array('status'=>2))){
+				echo $id.'更新machine成功<br/>';
+			}else{
+				echo $id.'更新machine失败<br/>';
 			}
 		}else{
 			echo '<br/>'.$id.'存在ip，预留';

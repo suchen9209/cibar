@@ -31,6 +31,26 @@ class Test_cron extends Ci_Controller {
         $this->load->model('log_deduct_money_model','log_deduct_money');
 	}
 
+	public function get_mac($id=0)
+	{
+		// 1. 初始化
+		 $ch = curl_init();
+		 // 2. 设置选项，包括URL
+		 curl_setopt($ch,CURLOPT_URL,"http://status.golgaming.com:8443/api/v1/launch?jtname=macaddr&jthost=10.100.111.34");
+		 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		 curl_setopt($ch,CURLOPT_HEADER,0);
+		 // 3. 执行并获取HTML文档内容
+		 $output = curl_exec($ch);
+		 if($output === FALSE ){
+		 echo "CURL Error:".curl_error($ch);
+		 }
+
+		 var_dump($output);
+		 // 4. 释放curl句柄
+		 curl_close($ch);
+		# code...
+	}
+
 	public function index(){
 
 		$this->utime = $this->input->get_post('utime')?$this->input->get_post('utime'):180;

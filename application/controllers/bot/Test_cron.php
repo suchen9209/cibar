@@ -39,7 +39,7 @@ class Test_cron extends Ci_Controller {
 			return 'over';
 		}
 
-		echo '进行到id:'.$id;
+		echo '进行到id:'.$id.'<br/>';
 		$machine_detail = $this->machine->get_info($id);
 
 		if(!$machine_detail->ip){
@@ -53,7 +53,7 @@ class Test_cron extends Ci_Controller {
 				echo $id.'更新失败';
 			}
 		}else{
-			echo $id.'存在ip，预留';
+			echo '<br/>'.$id.'存在ip，预留';
 		}
 
 		sleep(1);

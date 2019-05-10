@@ -32,7 +32,7 @@ class Test_cron extends Ci_Controller {
 	}
 
 	public function update_machine_name(){
-
+die;
 		$all_machine = $this->machine->get_all_machine();
 		foreach ($all_machine as $key => $value) {
 			if($value['ip'] != ''){
@@ -48,6 +48,7 @@ class Test_cron extends Ci_Controller {
 
 	public function get_mac($id)
 	{
+		die;
 		$id = intval($id);
 		$id++;
 		if($id > 240){

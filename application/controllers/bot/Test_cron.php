@@ -37,24 +37,42 @@ class Test_cron extends Ci_Controller {
 		if($id > 240){
 			return 'over';
 		}
-		// 1. 初始化
-		 $ch = curl_init();
-		 // 2. 设置选项，包括URL
-		 curl_setopt($ch,CURLOPT_URL,"http://status.golgaming.com:8443/api/v1/launch?jtname=macaddr&jthost=10.100.111.34");
-		 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-		 curl_setopt($ch,CURLOPT_HEADER,0);
-		 // 3. 执行并获取HTML文档内容
-		 $output = curl_exec($ch);
-		 if($output === FALSE ){
-		 echo "CURL Error:".curl_error($ch);
-		 }
 
-		 var_dump($output);
-		 // 4. 释放curl句柄
-		 curl_close($ch);
+		echo '进行到id:'.$id;
+		$machine_detail = $this->machine->get_info($id);
+
+		if(!$machine_detail->ip){
+			$update_parm = array();
+			$update_parm['mac'] = '暂无';
+			$update_parm['machine_info'] = '未同步';
+			$update_parm['repair_info'] = '未安装系统';
+			if($this->machine_info->update($machine_detail->id,$update_parm)){
+				echo $id.'更新成功';
+			}else{
+				echo $id.'更新失败';
+			}
+		}else{
+			echo $id.'存在ip，预留';
+		}
+		
+		// // 1. 初始化
+		//  $ch = curl_init();
+		//  // 2. 设置选项，包括URL
+		//  curl_setopt($ch,CURLOPT_URL,"http://status.golgaming.com:8443/api/v1/launch?jtname=macaddr&jthost=10.100.111.34");
+		//  curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		//  curl_setopt($ch,CURLOPT_HEADER,0);
+		//  // 3. 执行并获取HTML文档内容
+		//  $output = curl_exec($ch);
+		//  if($output === FALSE ){
+		//  echo "CURL Error:".curl_error($ch);
+		//  }
+
+		//  var_dump($output);
+		//  // 4. 释放curl句柄
+		//  curl_close($ch);
 
 		 exit('<script language="javascript" type="text/javascript">
-window.location.href="www.imbatv.cn";
+window.location.href="get_mac/'.$id.'";
 </script>');
 		# code...
 	}

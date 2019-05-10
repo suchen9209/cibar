@@ -80,19 +80,27 @@ class Test_cron extends Ci_Controller {
 			 }
 			 $get_detail = json_decode($output);
 			if($get_detail->code == 200){
-				var_dump($get_detail->data->vals[0]);
+				$update_parm = array();
+				$update_parm['mac'] = $get_detail->data->vals[0];
+				$update_parm['machine_info'] = 'ip-mac-ok';
+				$update_parm['repair_info'] = 'ok';
+				if($this->machine_info->update($machine_detail->id,$update_parm)){
+					echo $id.'更新machine_info成功<br/>';
+				}else{
+					echo $id.'更新machine_info失败<br/>';
+				}
+				//var_dump($get_detail->data->vals[0]);
+			}else{
+				echo '接口错误';
 			}
 			curl_close($ch);
-			die;
-			$update_parm = array();
-
-			echo '<br/>'.$id.'存在ip，预留';
+			echo $id.'ok<br/>';
 		}
 
 		sleep(1);
 		
 		
-		die;
+		
 
 		 exit('<script language="javascript" type="text/javascript">
 window.location.href="http://pay.imbatv.cn/bot/test_cron/get_mac/'.$id.'";

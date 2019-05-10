@@ -72,7 +72,7 @@ class Test_cron extends Ci_Controller {
 		//  curl_close($ch);
 
 		 exit('<script language="javascript" type="text/javascript">
-window.location.href="get_mac/'.$id.'";
+window.location.href="http://pay.imbatv.cn/bot/test_cron/get_mac/'.$id.'";
 </script>');
 		# code...
 	}

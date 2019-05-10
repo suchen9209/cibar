@@ -31,9 +31,10 @@ class Test_cron extends Ci_Controller {
         $this->load->model('log_deduct_money_model','log_deduct_money');
 	}
 
-	public function get_mac($id=0)
+	public function get_mac($id)
 	{
-		$id=$id++;
+		$id = intval($id);
+		$id++;
 		if($id > 240){
 			return 'over';
 		}
@@ -54,6 +55,8 @@ class Test_cron extends Ci_Controller {
 		}else{
 			echo $id.'存在ip，预留';
 		}
+
+		sleep(1);
 		
 		// // 1. 初始化
 		//  $ch = curl_init();

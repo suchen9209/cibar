@@ -31,6 +31,15 @@ class Test_cron extends Ci_Controller {
         $this->load->model('log_deduct_money_model','log_deduct_money');
 	}
 
+	public function update_machine_name(){
+
+		$all_machine = $this->machine->get_all_machine();
+		foreach ($all_machine as $key => $value) {
+			echo $value['ip'];
+		}
+	}
+
+
 	public function get_mac($id)
 	{
 		$id = intval($id);

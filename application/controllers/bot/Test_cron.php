@@ -35,10 +35,11 @@ class Test_cron extends Ci_Controller {
 
 		$all_machine = $this->machine->get_all_machine();
 		foreach ($all_machine as $key => $value) {
-			if($value != ''){
+			if($value['ip'] != ''){
 				$machine_name = str_replace('10.100.111.', '', $value['ip']);
-			echo $machine_name;
-			echo '<br/>';
+				echo $machine_name;
+				echo '<br/>';
+				$this->machine->update($value['id'],array('machine_name'=>$machine_name));
 			}
 			
 		}

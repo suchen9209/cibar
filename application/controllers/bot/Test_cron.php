@@ -97,7 +97,7 @@ class Test_cron extends Ci_Controller {
 			echo $id.'ok<br/>';
 		}
 
-		sleep(1);
+		
 		
 		
 		

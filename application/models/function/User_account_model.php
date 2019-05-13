@@ -9,6 +9,7 @@ class User_account_model extends CI_Model {
     {
         $this->load->database();
         $this->load->model('user_model','user');
+        $this->load->model('machine_model','machine');
         $this->load->model('account_model','account');
         $this->load->model('log_pay_model','log_pay');
         $this->load->model('tmp_user_wx_model','tmp_user_wx');
@@ -119,6 +120,8 @@ class User_account_model extends CI_Model {
         $return_arr['idcard'] = $user_info->idcard;
         if($active_status){
             $return_arr['active'] = true;
+            $machine_info = $this->machine->get_info($active_status->mid);
+            $return_arr['machine_name'] = $machine_info->machine_name;
         }else{
             $return_arr['active'] = false;
         }

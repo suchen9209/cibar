@@ -31,6 +31,99 @@ class Test_cron extends Ci_Controller {
         $this->load->model('log_deduct_money_model','log_deduct_money');
 	}
 
+	public function update_machine_name(){
+die;
+		$all_machine = $this->machine->get_all_machine();
+		foreach ($all_machine as $key => $value) {
+			if($value['ip'] != ''){
+				$machine_name = str_replace('10.100.111.', '', $value['ip']);
+				echo $machine_name;
+				echo '<br/>';
+				$this->machine->update($value['id'],array('machine_name'=>$machine_name));
+			}
+			
+		}
+	}
+
+
+	public function get_mac($id)
+	{
+		die;
+		$id = intval($id);
+		$id++;
+		if($id > 240){
+			echo 'over';
+			return 'over';
+		}
+
+		echo '进行到id:'.$id.'<br/>';
+		$machine_detail = $this->machine->get_info($id);
+
+		if(!$machine_detail->ip){
+			$update_parm = array();
+			$update_parm['mac'] = '暂无';
+			$update_parm['machine_info'] = '未同步';
+			$update_parm['repair_info'] = '未安装系统';
+			if($this->machine_info->update($machine_detail->id,$update_parm)){
+				echo $id.'更新machine_info成功<br/>';
+			}else{
+				echo $id.'更新machine_info失败<br/>';
+			}
+
+			if($this->active_status->update($machine_detail->id,array('state'=>4))){
+				echo $id.'更新active_status成功<br/>';
+			}else{
+				echo $id.'更新active_status失败<br/>';
+			}
+
+			if($this->machine->update($machine_detail->id,array('status'=>2))){
+				echo $id.'更新machine成功<br/>';
+			}else{
+				echo $id.'更新machine失败<br/>';
+			}
+		}else{
+			$url = "http://status.golgaming.com:8443/api/v1/launch?jtname=macaddr&jthost=".$machine_detail->ip;
+			// 1. 初始化
+			 $ch = curl_init();
+			 // 2. 设置选项，包括URL
+			 curl_setopt($ch,CURLOPT_URL,$url);
+			 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+			 curl_setopt($ch,CURLOPT_HEADER,0);
+			 // 3. 执行并获取HTML文档内容
+			 $output = curl_exec($ch);
+			 if($output === FALSE ){
+			 echo "CURL Error:".curl_error($ch);
+			 }
+			 $get_detail = json_decode($output);
+			if($get_detail->code == 200){
+				$update_parm = array();
+				$update_parm['mac'] = $get_detail->data->vals[0];
+				$update_parm['machine_info'] = 'ip-mac-ok';
+				$update_parm['repair_info'] = 'ok';
+				if($this->machine_info->update($machine_detail->id,$update_parm)){
+					echo $id.'更新machine_info成功<br/>';
+				}else{
+					echo $id.'更新machine_info失败<br/>';
+				}
+				//var_dump($get_detail->data->vals[0]);
+			}else{
+				echo '接口错误';
+			}
+			curl_close($ch);
+			echo $id.'ok<br/>';
+		}
+
+		
+		
+		
+		
+
+		 exit('<script language="javascript" type="text/javascript">
+window.location.href="http://pay.imbatv.cn/bot/test_cron/get_mac/'.$id.'";
+</script>');
+		# code...
+	}
+
 	public function index(){
 
 		$this->utime = $this->input->get_post('utime')?$this->input->get_post('utime'):180;

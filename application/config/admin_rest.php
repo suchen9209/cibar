@@ -87,7 +87,7 @@ $config['rest_realm'] = 'REST API';
 |           authorization key
 |
 */
-$config['rest_auth'] = FALSE;
+$config['rest_auth'] = 'session';
 
 /*
 |--------------------------------------------------------------------------

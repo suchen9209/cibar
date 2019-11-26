@@ -11,8 +11,7 @@ class Appointment extends Admin_Api_Controller {
 
     public function index(){
         $list = $this->appointment->get_appoint_today();
-        $this->response($this->getResponseData(parent::HTTP_OK, '今日预约', $list), parent::HTTP_OK);
-
+        $this->response($this->getLayuiList(0,'今日预约',count($list),$list));
     }
 
     public function num(){

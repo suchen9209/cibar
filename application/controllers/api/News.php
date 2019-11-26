@@ -24,7 +24,7 @@ class News extends Admin_Api_Controller {
 
     public function insert(){
         $data_json = $this->input->post_get('data');
-        $data_json = '{"title":"测试12312","pic":"----------------","content":"246546545646546","type":"1"}';
+        //$data_json = '{"title":"测试12312","pic":"----------------","content":"246546545646546","type":"1"}';
         $data = json_decode($data_json,true);
         
         if($data){
@@ -41,7 +41,7 @@ class News extends Admin_Api_Controller {
 
     public function update($id=0){
         $data_json = $this->input->post_get('data');
-        $data_json = '{"title":"测试12312","pic":"----------------","content":"246546545646546","type":"1"}';
+        //$data_json = '{"title":"测试12312","pic":"----------------","content":"246546545646546","type":"1"}';
         $data = json_decode($data_json,true);
         if($data && $id > 0){
             if($this->news->update($id,$data)){

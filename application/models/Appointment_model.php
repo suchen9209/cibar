@@ -98,5 +98,35 @@ class Appointment_model extends CI_Model {
     }
 
 
+    public function get_appoint_after($offset,$num){
+        $this->db->select('appointment.*,user.name,user.phone,user.username');
+        $today = date('Y-m-d 00:00:00');
+        $this->db->where('starttime >',strtotime($today));
+
+        //$this->db->where('state',$this->config->item('appointment_status')['indate']);
+        $this->db->from($this->table_name);
+        $this->db->join('user','appointment.uid = user.id','LEFT');
+        $this->db->order_by('starttime','ASC');
+        $this->db->limit($num,$offset);
+
+        $query = $this->db->get();
+
+        return $query->num_rows() > 0 ? $query->result_array() : false;
+    }
+
+    public function get_appoint_after_num(){
+        $this->db->select('count(*) num');
+        $today = date('Y-m-d 00:00:00');
+        $this->db->where('starttime >',strtotime($today));
+
+        //$this->db->where('state',$this->config->item('appointment_status')['indate']);
+        $this->db->from($this->table_name);
+        $this->db->join('user','appointment.uid = user.id','LEFT');
+
+        $query = $this->db->get();
+
+        return $query->row()->num;
+    }
+
 }
 ?>

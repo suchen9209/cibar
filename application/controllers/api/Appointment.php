@@ -10,8 +10,12 @@ class Appointment extends Admin_Api_Controller {
     }
 
     public function index(){
-        $list = $this->appointment->get_appoint_today();
-        $this->response($this->getLayuiList(0,'今日预约',count($list),$list));
+        $page = $this->input->get_post('page') ? $this->input->get_post('page') : 1;
+        $num = $this->input->get_post('limit') ? $this->input->get_post('limit') : 20;
+        $offset = ($page - 1) * $num;
+        $list = $this->appointment->get_appoint_after($offset,$num);
+        $count = $this->appointment->get_appoint_after_num();
+        $this->response($this->getLayuiList(0,'预约列表',$count,$list));
     }
 
     public function num(){

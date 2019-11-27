@@ -13,6 +13,42 @@ class Appointment extends App_Api_Controller {
 		$this->load->model('machine_model','machine');
 	}
 
+	public function add(){
+		$uid = $this->getUserId();
+		if($uid){
+			$date = intval($this->input->post_get('date'));
+			$type = $this->input->post_get('type');//散座还是包厢
+			$number = $this->input->post_get('number');//人数
+			$time = intval($this->input->post_get('time'));
+			if(is_timestamp($date) && is_numeric($number)){
+				//判断此人是否预约过
+				if($this->appointment->get_apoint_near_date($uid,$date)){
+					$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '已预约过相似时间段'), parent::HTTP_OK);
+				}else{
+					$appoint_parm['uid'] = $uid;
+					$appoint_parm['createtime'] = time();
+					$appoint_parm['state'] = $this->config->item('appointment_status')['init'];
+					$appoint_parm['starttime'] = $date;
+					$appoint_parm['endtime'] = $date + 3600*$time;
+					$appoint_parm['type'] = $type;
+					$appoint_parm['number'] = $number;
+
+					$appointment_id = $this->appointment->insert($appoint_parm);
+
+					if($appointment_id && $appointment_id>0){
+						$this->response($this->getResponseData(parent::HTTP_OK, '预约成功',$appointment_id), parent::HTTP_OK);
+					}else{
+						$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '预约失败，请联系服务员'), parent::HTTP_OK);
+					}	
+				}
+			}else{
+				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', '参数错误'), parent::HTTP_OK);
+			}
+		}else{
+			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '登录信息失效', '登录信息失效'), parent::HTTP_OK);
+		}
+	}
+
 	public function index(){
 
 		$uid = $this->getUserId();
@@ -75,7 +111,16 @@ class Appointment extends App_Api_Controller {
 
 	//查看我未完成的预约
 	public function appoint(){
-
+		$uid = $this->getUserId();
+		if($uid){
+			$appoint_list = $this->appointment->get_appoint_indate($uid);
+			if(!$appoint_list){
+				$appoint_list = [];
+			}
+			$this->response($this->getResponseData(parent::HTTP_OK, '本人预约列表',$appoint_list), parent::HTTP_OK);
+		}else{
+			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, 'error', '登录信息失效'), parent::HTTP_OK);
+		}
 	}
 
 	//取消预约

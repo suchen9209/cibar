@@ -98,12 +98,15 @@ class Appointment_model extends CI_Model {
     }
 
 
-    public function get_appoint_after($offset,$num){
+    public function get_appoint_after($offset,$num,$parm=array()){
         $this->db->select('appointment.*,user.name,user.phone,user.username');
         $today = date('Y-m-d 00:00:00');
         $this->db->where('starttime >',strtotime($today));
 
         //$this->db->where('state',$this->config->item('appointment_status')['indate']);
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
         $this->db->from($this->table_name);
         $this->db->join('user','appointment.uid = user.id','LEFT');
         $this->db->order_by('starttime','ASC');
@@ -114,12 +117,15 @@ class Appointment_model extends CI_Model {
         return $query->num_rows() > 0 ? $query->result_array() : false;
     }
 
-    public function get_appoint_after_num(){
+    public function get_appoint_after_num($parm=array()){
         $this->db->select('count(*) num');
         $today = date('Y-m-d 00:00:00');
         $this->db->where('starttime >',strtotime($today));
 
         //$this->db->where('state',$this->config->item('appointment_status')['indate']);
+        foreach ($parm as $key => $value) {
+            $this->db->where($key,$value);
+        }
         $this->db->from($this->table_name);
         $this->db->join('user','appointment.uid = user.id','LEFT');
 

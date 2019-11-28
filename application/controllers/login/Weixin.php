@@ -27,10 +27,7 @@ class Weixin extends CI_Controller {
 
     }
 
-    public function index(){
-
-        
-
+    public function index(){   
         $this->code = $_GET['code'];
         $http = new URL();
         $parm['appid'] = $this->app_id;
@@ -41,7 +38,6 @@ class Weixin extends CI_Controller {
         $res_arr = json_decode($res,true);
 
         $return = [];
-
 
 /*            $res_arr['errcode'] = 0;
             $res_arr['openid'] = '22223sahfjkasdkjfhsakdhf';
@@ -83,7 +79,36 @@ class Weixin extends CI_Controller {
         $iv = $this->input->get_post('iv');
         $mem_key = $this->input->get_post('3rd_session');
 
+        $this->load->driver('cache');
+        $uid = intval($this->cache->memcached->get($mem_key));
 
+        $pc = new WXBizDataCrypt($this->app_id, $sessionKey);
+        $errCode = $pc->decryptData($encryptedData, $iv, $data );
+
+        if($uid > 0 && $errCode == 0){
+            $data_arr = json_decode($data,true);
+            $phone = $data_arr['phoneNumber'];
+            $fect_num = $this->user->update($user->id,array('phone'=>$phone));
+            if($fect_num >= 0){
+                $return['errcode'] = 0;
+                $return['errmsg'] = 'no error';
+            }else{
+                $return['errcode'] = 500;
+                $return['errmsg'] = 'update error';
+            }
+        }else{
+            $return['errcode'] = 500;
+            $return['errmsg'] = 'no person or Data error';
+        }
+
+        echo json_encode($return);
+    }
+
+    public function bind_phone_old(){//电竞馆之前逻辑，先到前台绑定手机号码之后，再从微信登录，弃用
+        header('Content-Type:application/json');
+        $encryptedData = $this->input->get_post('encryptedData');
+        $iv = $this->input->get_post('iv');
+        $mem_key = $this->input->get_post('3rd_session');
 
         $this->load->driver('cache');
         $tmp_uid = $this->cache->memcached->get($mem_key);

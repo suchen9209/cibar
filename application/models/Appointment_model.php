@@ -99,7 +99,7 @@ class Appointment_model extends CI_Model {
 
 
     public function get_appoint_after($offset,$num,$parm=array()){
-        $this->db->select('appointment.*,user.name,user.phone,user.username');
+        $this->db->select('appointment.*,user.name,user.phone,user.nickname');
         $today = date('Y-m-d 00:00:00');
         $this->db->where('starttime >',strtotime($today));
 

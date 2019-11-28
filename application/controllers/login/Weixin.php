@@ -117,7 +117,6 @@ class Weixin extends CI_Controller {
             if($fect_num >= 0){
                 $return['errcode'] = 0;
                 $return['errmsg'] = 'no error';
-                $return['data'] = $uid.$nickname;
             }else{
                 $return['errcode'] = 500;
                 $return['errmsg'] = 'update error';

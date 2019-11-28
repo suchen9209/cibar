@@ -104,6 +104,31 @@ class Weixin extends CI_Controller {
         echo json_encode($return);
     }
 
+    public function bind_nickname(){
+        header('Content-Type:application/json');
+        $mem_key = $this->input->get_post('3rd_session');
+        $nickname = $this->input->get_post('nickname');
+
+        $this->load->driver('cache');
+        $uid = intval($this->cache->memcached->get($mem_key));
+
+        if($uid > 0){
+            $fect_num = $this->user->update($user->id,array('nickname'=>$nickname));
+            if($fect_num >= 0){
+                $return['errcode'] = 0;
+                $return['errmsg'] = 'no error';
+            }else{
+                $return['errcode'] = 500;
+                $return['errmsg'] = 'update error';
+            }
+        }else{
+            $return['errcode'] = 500;
+            $return['errmsg'] = 'no person';
+        }
+
+        echo json_encode($return);
+    }
+
     public function bind_phone_old(){//电竞馆之前逻辑，先到前台绑定手机号码之后，再从微信登录，弃用
         header('Content-Type:application/json');
         $encryptedData = $this->input->get_post('encryptedData');

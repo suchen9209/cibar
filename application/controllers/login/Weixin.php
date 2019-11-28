@@ -88,7 +88,7 @@ class Weixin extends CI_Controller {
         if($uid > 0 && $errCode == 0){
             $data_arr = json_decode($data,true);
             $phone = $data_arr['phoneNumber'];
-            $fect_num = $this->user->update($user->id,array('phone'=>$phone));
+            $fect_num = $this->user->update($uid,array('phone'=>$phone));
             if($fect_num >= 0){
                 $return['errcode'] = 0;
                 $return['errmsg'] = 'no error';
@@ -113,10 +113,11 @@ class Weixin extends CI_Controller {
         $uid = intval($this->cache->memcached->get($mem_key));
 
         if($uid > 0){
-            $fect_num = $this->user->update($user->id,array('nickname'=>$nickname));
+            $fect_num = $this->user->update($uid,array('nickname'=>$nickname));
             if($fect_num >= 0){
                 $return['errcode'] = 0;
                 $return['errmsg'] = 'no error';
+                $return['data'] = $uid.$nickname;
             }else{
                 $return['errcode'] = 500;
                 $return['errmsg'] = 'update error';

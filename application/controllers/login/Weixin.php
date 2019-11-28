@@ -82,6 +82,7 @@ class Weixin extends CI_Controller {
         $this->load->driver('cache');
         $uid = intval($this->cache->memcached->get($mem_key));
 
+        $sessionKey = $this->user->get_info($uid)->wxsessionkey;
         $pc = new WXBizDataCrypt($this->app_id, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 

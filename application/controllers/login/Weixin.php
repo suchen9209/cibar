@@ -99,6 +99,8 @@ class Weixin extends CI_Controller {
         }else{
             $return['errcode'] = 500;
             $return['errmsg'] = 'no person or Data error';
+            $return['data'] = $data;
+            $return['errcode_crypt'] = $errCode;
         }
 
         echo json_encode($return);

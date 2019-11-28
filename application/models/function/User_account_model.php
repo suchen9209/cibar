@@ -27,7 +27,7 @@ class User_account_model extends CI_Model {
     public function register($type,$parm){
         $time = time();
         if($type == 'wx'){
-/*            $insert_parm = array();
+            $insert_parm = array();
             $insert_parm['regtime'] = $time;
             $insert_parm['lasttime'] = $time;
             $insert_parm['wxid'] = $parm['openid'];
@@ -40,9 +40,9 @@ class User_account_model extends CI_Model {
             $account_pram['uid'] =$user_id;
             $account_pram['regtime'] = $time;
             $account_pram['lasttime'] = $time;
-            $this->account->insert($account_pram);*/
+            $this->account->insert($account_pram);
 
-            $tmp_user = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
+/*            $tmp_user = $this->tmp_user_wx->get_tmp_id_by_unionid($parm['unionid']);
             $tmp_id = intval($tmp_user->id);
             if($tmp_id){
                 $this->tmp_user_wx->update($tmp_id,array('sessionkey'=>$parm['wxsessionkey']));
@@ -53,10 +53,11 @@ class User_account_model extends CI_Model {
                 $insert_parm['sessionkey'] = $parm['wxsessionkey'];
                 $insert_parm['regtime'] = $time;
                 $tmp_id = $this->tmp_user_wx->insert($insert_parm);   
-            }     
+            }     */
 
             $session_name = makeRandomSessionName(16);
-            $this->save_info(array($session_name=>'tmp'.$tmp_id));
+            $this->save_info(array($session_name=>$user_id));
+            //$this->save_info(array($session_name=>'tmp'.$tmp_id));
             return $session_name;
 
         }else if($type == 'pc'){

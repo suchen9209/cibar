@@ -29,7 +29,7 @@ class Appointment_model extends CI_Model {
         $today_0 = strtotime(date('Y-m-d 00:00:00',time()));
         $this->db->select('*');
         $this->db->where('uid',$uid);
-        $this->db->where('state',$this->config->item('appointment_status')['indate']);
+        //$this->db->where('state',$this->config->item('appointment_status')['indate']);
         $this->db->where('starttime >',$today_0);
         $this->db->from($this->table_name);
 

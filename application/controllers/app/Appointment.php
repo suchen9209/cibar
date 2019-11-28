@@ -128,7 +128,7 @@ class Appointment extends App_Api_Controller {
 		$uid = $this->getUserId();
 		if($uid){
 			$appoint_id = $this->input->post_get('appoint_id');
-			if($this->appointment->update($appoint_id,array('state'=>$this->config->item('appointment_status')['cancel']))){
+			if($this->appointment->delete_by_id($appoint_id)){
 				$this->response($this->getResponseData(parent::HTTP_OK, '取消成功'), parent::HTTP_OK);
 			}else{
 				$this->response($this->getResponseData(parent::HTTP_OK, '取消失败'), parent::HTTP_OK);

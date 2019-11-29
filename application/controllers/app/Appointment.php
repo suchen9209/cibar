@@ -42,8 +42,7 @@ class Appointment extends App_Api_Controller {
 					}	
 				}
 			}else{
-				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, $date, $date), parent::HTTP_OK);
-				//$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', '参数错误'), parent::HTTP_OK);
+				$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '参数错误', '参数错误'), parent::HTTP_OK);
 			}
 		}else{
 			$this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '登录信息失效', '登录信息失效'), parent::HTTP_OK);

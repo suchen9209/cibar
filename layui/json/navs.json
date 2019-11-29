@@ -1,0 +1,18 @@
+{
+	"contentManagement": [
+		{
+			"title": "预约查询",
+			"icon": "&#xe630;",
+			"href": "page/main.html",
+            "spread": true
+		},
+		{
+			"title": "活动管理",
+			"icon": "&#xe634;",
+			"href": "page/commodity/commodity.html",
+			"spread": false
+		}
+	]
+}
+
+

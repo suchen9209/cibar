@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="loginHtml">
+
+<head>
+    <meta charset="utf-8">
+    <title>下机--Imba电竞馆管理后台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="Down_machine.css" media="all" />
+</head>
+<style type="text/css">
+.layui-input-block {
+    font-size: 16px;
+    line-height: 36px;
+}
+.item5 .layui-input-block{
+    color: red;
+    font-weight: bold;
+}
+.item6 ul li{
+    /*float: left;*/
+}
+.item6 ul li i{
+    font-style: normal;
+}
+</style>
+
+<body class="rechargeBody">
+    <div class="recharge">
+        <div class="layui-form" action="">
+            <div class="layui-form-item item1">
+                <label class="layui-form-label">姓名:</label>
+                <div class="layui-input-block">
+                </div>
+            </div>
+            <div class="layui-form-item item2">
+                <label class="layui-form-label">余额:</label>
+                <div class="layui-input-block">
+                </div>
+            </div>
+            <div class="layui-form-item item3">
+                <label class="layui-form-label">座位号:</label>
+                <div class="layui-input-block">
+                </div>
+            </div>
+            <div class="layui-form-item item4">
+                <label class="layui-form-label">消费金额:</label>
+                <div class="layui-input-block">
+                </div>
+            </div>
+            <div class="layui-form-item item5">
+                <label class="layui-form-label">折扣金额:</label>
+                <div class="layui-input-block">
+                </div>
+            </div>
+            <div class="layui-form-item item6">
+                <label class="layui-form-label">外设信息:</label>
+                <div class="layui-input-block">
+                    <ul>
+                        <li class="n1">鼠标:<i></i></li>
+                        <li class="n2">键盘:<i></i></li>
+                        <li class="n3">耳机:<i></i> </li>
+                        <li class="n4">鼠标垫:<i></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layui-form-item item6">
+                <label class="layui-form-label">优惠劵类型:</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-filter="type" class='cc' type="select">
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn cz" lay-submit lay-filter="formDemo">确认下机</button>
+                    <button type="reset" class="layui-btn layui-btn-lg layui-btn-primary qx">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+</body>
+<script type="text/javascript">
+layui.use('form', function() {
+    var form = layui.form,
+        layer = parent.layer === undefined ? layui.layer : top.layer,
+        $ = layui.jquery,
+        laydate = layui.laydate,
+        laytpl = layui.laytpl,
+        table = layui.table;
+        Gourl = "";
+        user_id = "";
+    // 获取userid
+    function getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
+    var userid = getQueryString("userid");
+    var machine_id = getQueryString("machine_id");
+    console.log(userid);
+    console.log(machine_id);
+    if (machine_id != "0") {
+        Gourl =  "https://pay.imbatv.cn/api/machine/down_info?machine_id=" + machine_id;
+    }else{
+        Gourl =  "https://pay.imbatv.cn/api/machine/down_info?user_id=" + userid;
+    };
+    $.ajax({
+        type: "GET",
+        catch: true,
+        dataType: "jsonp",
+        url: Gourl,
+        error: function(request) {
+            console.log(request);
+        },
+        success: function(res) {
+            console.log(res);
+            if (res.code == '400') {
+                 $('.recharge').hide();
+                 layer.msg(res.message, { time: 2000, icon: 5 }, function() {
+                        window.location.href = '../../page/home/home.html';
+                 });   
+            }else{
+                user_id = res.data.user_info.uid;
+                var html = '';
+                var data = res.data;
+                // // 判断优惠劵类型
+                var datatype = $(".item7").attr("type");
+                html = '<option value=""></option>';
+                for (var i = 0; i < data.coupon_info.length; i++) {
+                    html += "<option value=" + data.coupon_info[i].user_coupon_id + ">" + data.coupon_info[i].name + "</option>";
+                };
+                var deduct_info = data.deduct_info;
+                if (deduct_info != undefined) {
+                    $(".item4 .layui-input-block").html(deduct_info.money+"元");
+                    $(".item5 .layui-input-block").html(deduct_info.total_money+"元");
+                }else{
+                    $(".item4").hide();
+                    $(".item5").hide();
+                }
+                $(".item1 .layui-input-block").html(data.user_info.name);
+                $(".item2 .layui-input-block").html(data.user_info.balance);
+                $(".item3 .layui-input-block").html(data.machine_info.machine_name);
+                $(".item6 ul li.n1 i").html(data.peripheral_last_data[1].desc);
+                $(".item6 ul li.n2 i").html(data.peripheral_last_data[2].desc);
+                $(".item6 ul li.n3 i").html(data.peripheral_last_data[3].desc);
+                $(".item6 ul li.n4 i").html(data.peripheral_last_data[4].desc);
+                $(".cc").html(html);
+                form.render();
+            }
+        },
+    });
+    //监听提交
+    form.on('submit(formDemo)', function(data) {
+        var index = parent.layer.getFrameIndex(window.name);
+        $.ajax({
+            url: "https://pay.imbatv.cn/api/machine/down",
+            type: "POST",
+            data: {
+                user_id: user_id,
+                op: 'down',
+                user_coupon_id: data.field.type
+            },
+            dataType: 'json',
+            success: function(data) {
+               if (data.code == 200) {
+                        layer.msg(data.message, { time: 2000, icon: 6 }, function() {
+                            window.location.href = '../../page/home/home.html';
+                        });
+                    } else {
+                        layer.msg(data.message, { time: 2000, icon: 5 });
+                    }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    });
+     // 取消
+    $(".qx").click(function() {
+        window.location.href = '../../page/home/home.html';
+    });
+    // 取消
+});
+</script>
+
+</html>

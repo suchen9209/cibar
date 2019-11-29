@@ -3,3 +3,7 @@ application/config/database.php
 index.php
 *.png
 application/controllers/login/1.xml
+application/config/database.php
+application/config/config.php
+application/config/config.php
+application/config/database.php

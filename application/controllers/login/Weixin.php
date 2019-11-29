@@ -96,7 +96,7 @@ class Weixin extends CI_Controller {
                     $return['errcode'] = 0;
                     $return['errmsg'] = 'no error';
                 }else{
-                    $return['errcode'] = 500;
+                    $return['errcode'] = 400;
                     $return['errmsg'] = 'update error';
                 }    
             }else{

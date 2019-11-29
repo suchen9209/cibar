@@ -34,9 +34,9 @@ layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], funct
                         return act_Type(d.type);
                     }
                 },
-                { field: 'createdate', title: '活动时间', align: 'center',
+                { field: 'showdate', title: '活动时间', align: 'center',
                     templet: function(d) {
-                        return createTime(d.createdate);
+                        return createTime(d.showdate);
                     }
                 },
                 { field: 'content', title: '活动内容', align: "center" },
@@ -62,18 +62,17 @@ layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], funct
         var index = layui.layer.open({
             title : "修改活动",
             type : 2,
-            content : "commondityAdd.html?m=" + edit.id,
+            content : "commondityAdd.html?m=" + edit.id+'&type='+edit.type,
             success : function(layero, index){
                 var body = layui.layer.getChildFrame('body', index);
                 console.log(edit);
-                console.log(edit.type_id);
                 if(edit){
                     body.find(".item1 input").val(edit.title);
                     body.find(".item2 input").val(act_Type(edit.type));
                     body.find(".item3 input").val(edit.content);
                     body.find(".item4 input.item_spc").val(edit.pic);
                     body.find(".item5 input.item_spc").val(edit.pic2);
-                    body.find(".item7 input").val(createTime(edit.createdate));
+                    body.find(".item7 input").val(createTime(edit.showdate));
                     body.find(".item6 button.btn1").attr("lay-filter","demo2");
                     body.find(".item6 button.btn2").attr("data-id",edit.id);
                     form.render();
@@ -138,7 +137,7 @@ layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], funct
     });
 })
 
-
+/*时间戳转日期*/
 function createTime(v) {
     var date = new Date(v * 1000);
     var y = date.getFullYear();
@@ -154,6 +153,15 @@ function createTime(v) {
     S = S < 10 ? ("0" + S) : S;
     var str = y + "-" + m + "-" + d + " " + h + ":" + M + ":" + S;
     return str;
+    console.log(str);
+}
+/*日期转时间戳*/
+function creatTimestamp(v) {
+    var thisTime = v;
+    thisTime = thisTime.replace(/-/g, '/');
+    var time = new Date(thisTime);
+    time = time.getTime()/1000;
+    console.log(time);
 }
 function act_Type(t) {
     switch (t){

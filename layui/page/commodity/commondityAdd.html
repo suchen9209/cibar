@@ -21,7 +21,7 @@
         <div class="layui-form-item item2">
             <label class="layui-form-label">显示位置</label>
             <div class="layui-input-block">
-                <select name="type" lay-filter="type">
+                <select name="type" lay-filter="type" class='cc'>
                     <option value=""></option>
                     <option value="1" selected="">预约页</option>
                     <option value="2">活动顶部</option>
@@ -38,7 +38,7 @@
         <div class="layui-form-item item7">
             <label class="layui-form-label">活动时间</label>
             <div class="layui-input-block">
-                <input type="text" class="layui-input" id="test5" name="createdate" lay-verify="createdate" placeholder="yyyy-MM-dd HH:mm:ss">
+                <input type="text" class="layui-input" id="test5" name="showdate" lay-verify="showdate" placeholder="yyyy-MM-dd HH:mm:ss">
             </div>
         </div>
         <div class="layui-form-item item4">
@@ -141,7 +141,14 @@
         laydate.render({
             elem: '#test5'
             ,type: 'datetime'
+            ,format: 'yyyy-MM-dd HH:mm:ss'
         });
+
+        var type = getQueryString("type");
+        console.log(type);
+        var select = 'dd[lay-value="'+type+'"]';
+        console.log(select);   
+        $('.cc').siblings("div.layui-form-select").find('dl').find(select).click();
 
         function getQueryString(name) {
             var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -152,36 +159,6 @@
             return null;
         }
         var m = getQueryString("m");
-
-        /*$.ajax({
-                type: "GET",
-                catch: true,
-                dataType: "jsonp",
-                url: "https://pay.imbatv.cn/tool/goods/config_info",
-                error: function(request) {
-                    console.log(request);
-                },
-                success: function(res) {
-                    console.log(res);
-                    var html = '';
-                    var data = res.data;
-                    html = '<option value=""></option>';
-                    for (var i = 0; i < data.type_list.length; i++) {
-                        if (i == 0) {
-                           html += "<option selected='' value=" + data.type_list[i].id + ">" + data.type_list[i].name + "</option>";
-                        }else{
-                           html += "<option value=" + data.type_list[i].id + ">" + data.type_list[i].name + "</option>";
-                        }
-
-                    };
-                    console.log(html);
-                    $(".cc").html(html);
-                    form.render();
-                    var select = 'dd[lay-value="'+m+'"]';
-                    console.log(select);
-                    $('.cc').siblings("div.layui-form-select").find('dl').find(select).click();
-                },
-            });*/
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
 
@@ -199,7 +176,7 @@
                 if (value.length < 1) {
                     return '活动图片不能为空';
                 }
-            },createdate: function(value) {
+            },showdate: function(value) {
                 if (value.length < 1) {
                     return '活动日期不能为空';
                 }
@@ -242,7 +219,6 @@
         });
 
         form.on('submit(demo2)', function(data) {
-
             var data =  JSON.stringify(data.field);
             console.log(data);
             var index = top.layer.msg('数据提交中，请稍候...',{icon: 16,time:false,shade:0.8});
@@ -257,7 +233,7 @@
                 dataType: "json",
                 url: "https://pay.imbatv.cn/api/news/update/"+id,
                 success: function(res) {
-//                    console.log(res);
+                    console.log(res);
                     setTimeout(function(){
                         top.layer.close(index);
                         top.layer.msg(res.message);

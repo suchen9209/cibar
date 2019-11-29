@@ -89,14 +89,20 @@ class Weixin extends CI_Controller {
         if($uid > 0 && $errCode == 0){
             $data_arr = json_decode($data,true);
             $phone = $data_arr['phoneNumber'];
-            $fect_num = $this->user->update($uid,array('phone'=>$phone));
-            if($fect_num >= 0){
-                $return['errcode'] = 0;
-                $return['errmsg'] = 'no error';
+            if($this->user->get_info($uid)->phone == $phone){
+                $fect_num = $this->user->update($uid,array('phone'=>$phone));
+                if($fect_num >= 0){
+                    $return['errcode'] = 0;
+                    $return['errmsg'] = 'no error';
+                }else{
+                    $return['errcode'] = 500;
+                    $return['errmsg'] = 'update error';
+                }    
             }else{
-                $return['errcode'] = 500;
-                $return['errmsg'] = 'update error';
+                $return['errcode'] = 0;
+                $return['errmsg'] = 'bind already';
             }
+            
         }else{
             $return['errcode'] = 500;
             $return['errmsg'] = 'no person or Data error';

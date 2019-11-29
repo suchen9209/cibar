@@ -100,7 +100,7 @@ class Weixin extends CI_Controller {
                     $return['errmsg'] = 'update error';
                 }    
             }else{
-                $return['errcode'] = 0;
+                $return['errcode'] = 100;
                 $return['errmsg'] = 'bind already';
             }
             

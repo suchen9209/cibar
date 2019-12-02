@@ -28,6 +28,7 @@ class News extends Admin_Api_Controller {
         $data = json_decode($data_json,true);
         
         if($data){
+            unset($data['file']);
             $data['createdate'] = time();
             $data['showdate'] = strtotime($data['showdate']);
             if($this->news->insert($data)){
@@ -45,6 +46,7 @@ class News extends Admin_Api_Controller {
         //$data_json = '{"title":"测试12312","pic":"----------------","content":"246546545646546","type":"1"}';
         $data = json_decode($data_json,true);
         if($data && $id > 0){
+            unset($data['file']);
             $data['showdate'] = strtotime($data['showdate']);
             if($this->news->update($id,$data)){
                 $this->response($this->getResponseData(parent::HTTP_OK, '更改成功'), parent::HTTP_OK);

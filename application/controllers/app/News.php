@@ -23,4 +23,14 @@ class News extends App_Api_Controller {
 		$this->response($this->getResponseData(parent::HTTP_OK, '活动页', $return), parent::HTTP_OK);
 	}
 
+	public function detail($id){
+		$new = $this->news->get_info($id);
+		if($new){
+			$this->response($this->getResponseData(parent::HTTP_OK, '详情', $new), parent::HTTP_OK);
+		}else{
+			$this->response($this->getResponseData(parent::HTTP_NOT_FOUND, '详情', '未查到相关活动'), parent::HTTP_OK);
+		}
+		
+	}
+
 }

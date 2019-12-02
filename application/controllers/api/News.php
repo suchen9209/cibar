@@ -56,5 +56,17 @@ class News extends Admin_Api_Controller {
         }
     }
 
+    public function delete($id=0){
+        if($id > 0){
+            if($this->news->delete($id)){
+                $this->response($this->getResponseData(parent::HTTP_OK, '删除成功'), parent::HTTP_OK);
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_OK, '删除失败'), parent::HTTP_OK);
+            }  
+        }else{
+            $this->response($this->getResponseData(parent::HTTP_BAD_REQUEST, '不能传空值'), parent::HTTP_OK);
+        }
+    }
+
 
 }

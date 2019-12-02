@@ -29,6 +29,11 @@ class News_model extends CI_Model {
         return $query->row()->num;
     }
 
+    public function delete($id){
+        $this->db->where('id', $id);
+        $this->db->delete($this->table_name);
+        return $this->db->affected_rows();
+    }
 
     
 }

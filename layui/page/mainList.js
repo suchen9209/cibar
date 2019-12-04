@@ -17,11 +17,9 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function() {
             [
                 { field: 'id', title: 'ID', align: 'center',sort: true},
                 { field: 'nickname', title: '昵称', align: "center" },
-                // { field: 'name', title: '姓名', align: "center" },
-                // { field: 'state', title: '状态', align: 'center'},
-                { field: 'createtime', title: '预约时间', align: 'center',sort: true,
+                { field: 'starttime', title: '预约时间', align: 'center',sort: true,
                     templet: function(d) {
-                        return createTime(d.createtime);
+                        return createTime(d.starttime);
                     }
                 },
                 { field: 'phone', title: '手机号', align: 'center'},

@@ -1,12 +1,12 @@
-layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], function() {
+layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util','layedit'], function() {
     var form = layui.form;
     var util = layui.util;
     layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
         laydate = layui.laydate,
         laytpl = layui.laytpl,
+        layedit = layui.layedit,
         table = layui.table;
-
 
     var tableIns = table.render({
         elem: '#newsList',
@@ -14,18 +14,17 @@ layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], funct
         limit: 15,
         limits: [15, 30, 45, 60],
         page: true,
-        //,…… //其他参数
         cols: [
             [
                 { field: 'id', title: 'ID', align: 'center', sort: true},
                 { field: 'pic', title: '活动图片', align:"center",
                     templet:function(d){
-                        return '<a href="'+d.pic+'" target="_blank"><img src="'+d.pic+'" height="26" /></a>';
+                        return '<a href="'+ d.pic +'" target="_blank"><img src="'+ d.pic +'" height="26" /></a>';
                     }
                 },
                 { field: 'pic2', title: '备用图片', align:"center",
                     templet:function(d){
-                        return '<a href="'+d.pic2+'" target="_blank"><img src="'+d.pic2+'" height="26" /></a>';
+                        return '<a href="'+ d.pic2 +'" target="_blank"><img src="'+ d.pic2 +'" height="26" /></a>';
                     }
                 },
                 { field: 'title', title: '活动名称', align: 'center'},
@@ -34,7 +33,7 @@ layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], funct
                         return act_Type(d.type);
                     }
                 },
-                { field: 'showdate', title: '活动时间', align: 'center',
+                { field: 'showdate', title: '活动时间', align: 'center', sort: true,
                     templet: function(d) {
                         return createTime(d.showdate);
                     }
@@ -69,13 +68,17 @@ layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], funct
                 if(edit){
                     body.find(".item1 input").val(edit.title);
                     body.find(".item2 input").val(act_Type(edit.type));
-                    body.find(".item3 input").val(edit.content);
+                    body.find(".item3 #layui_textarea").val(edit.content);
                     body.find(".item4 input.item_spc").val(edit.pic);
                     body.find(".item5 input.item_spc").val(edit.pic2);
                     body.find(".item7 input").val(createTime(edit.showdate));
                     body.find(".item6 button.btn1").attr("lay-filter","demo2");
                     body.find(".item6 button.btn2").attr("data-id",edit.id);
                     form.render();
+
+                    var lay_text= layedit.build('layui_textarea',{//渲染时需要重新建立编辑器
+                        height: 400
+                    });
                 }
                 setTimeout(function(){
                     layui.layer.tips('点击此处返回活动列表', '.layui-layer-setwin .layui-layer-close', {
@@ -128,12 +131,40 @@ layui.use(['form', 'util', 'layer', 'laydate', 'table', 'laytpl', 'util'], funct
     table.on('tool(newsList)', function(obj) {
         var layEvent = obj.event,
             data = obj.data;
-            // console.log(data);
+            console.log(data);
         var list = data.detail;
-        var order_id = obj.data.id;
+        var userid = obj.data.id;
         if (layEvent === 'modify') { //修改活动
             modify(data);
-        } 
+        } else if(layEvent === 'del'){
+            layer.confirm('是否删除', {
+                  btn: ['是','否'] //按钮
+                }, function(){
+                    $.ajax({
+                        type: "POST",
+                        catch: true,
+                        dataType: 'json',
+                        url: "https://pay.imbatv.cn/api/news/delete/" + userid,
+                        success: function(data){
+                            console.log(data);
+                            if (data.code == 200) {
+                                 layer.msg(data.message, {
+                                  icon: 1,
+                                  time: 2000 
+                                }, function(){
+                                  tableIns.reload({});
+                                });
+                            }
+                        },
+                        error: function(err) {
+                           layer.msg('删除失败', {icon: 2});
+                        }
+                    });
+                }, function(){
+                  layer.msg('再想想', {icon: 2});
+                });
+        }
+
     });
 })
 

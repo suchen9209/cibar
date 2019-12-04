@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="loginHtml">
+
+<head>
+    <meta charset="utf-8">
+    <title>删除--Imba电竞馆后台</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="del.css" media="all" />
+</head>
+
+<body class="rechargeBody">
+    <div class="recharge">
+        <div class="layui-form" action="">
+            <div class="layui-form-item">
+                <div class="layui-input-block">确定删除此项？</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <!--<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>-->
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">删除</button>
+                    <!--<button type="reset" class="layui-btn layui-btn-primary cz">重置</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+</body>
+<script type="text/javascript">
+    layui.use(['form', 'layedit'], function() {
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : top.layer,
+            $ = layui.jquery,
+            layedit = layui.layedit;
+
+        function getQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+
+        //监听提交
+        form.on('submit(formDemo)', function(data) {
+            //var data =  JSON.stringify(data.field);
+            //var index = parent.layer.getFrameIndex(window.name);
+            var al = top.layer.msg('正在删除，请稍候...',{icon: 16,time: false,shade: 0.8});
+            //console.log(index);   1
+            //console.log(data);    {}
+            var index = top.layer.msg('数据提交中，请稍候...',{icon: 16,time:false,shade:0.8});
+            var lid = getQueryString("userid");// 获取userid
+            console.log(lid);
+            $.ajax({
+                type: "POST",
+                catch: true,
+                data: {
+                    id: lid,
+                },
+                dataType: 'json',
+                url: "https://pay.imbatv.cn/api/news/delete/" + lid,
+                success: function(data){
+                    console.log(data);
+                    setTimeout(function(){
+                        top.layer.close(index);
+                        top.layer.msg(data.message);
+                        layer.closeAll("iframe");
+                        parent.location.reload();//刷新父页面
+                    },500);
+                    return false;
+                },
+                error: function(err) {
+                    alert('删除失败！')
+                }
+            });
+
+
+        });
+    });
+</script>
+
+</html>

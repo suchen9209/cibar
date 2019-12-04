@@ -17,7 +17,6 @@
                 <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="活动名称" class="layui-input">
             </div>
         </div>
-
         <div class="layui-form-item item2">
             <label class="layui-form-label">显示位置</label>
             <div class="layui-input-block">
@@ -32,7 +31,8 @@
         <div class="layui-form-item item3">
             <label class="layui-form-label">活动内容</label>
             <div class="layui-input-block">
-                <input type="text" name="content" lay-verify="required content" autocomplete="off" placeholder="活动内容" class="layui-input">
+                <!--<input type="text" name="content" lay-verify="required content" autocomplete="off" placeholder="活动内容" class="layui-input">-->
+                <textarea placeholder="活动内容" class="layui-textarea" name="content" id="layui_textarea" lay-verify="required content" style="display:none"></textarea>
             </div>
         </div>
         <div class="layui-form-item item7">
@@ -89,6 +89,7 @@
                     processData: false,
                     /*不可缺*/
                     success: function(data) {
+                        console.log(data);
                         if (data != 'error') {
                             $("input[name=pic]").val(data);
                         } else {
@@ -144,10 +145,21 @@
             ,format: 'yyyy-MM-dd HH:mm:ss'
         });
 
+        layedit.set({
+            uploadImage: {
+                url: 'https://pay.imbatv.cn/upload_Layui'//编辑器图片上传地址
+                ,type: 'POST'
+            }
+        });
+
+        var lay_text= layedit.build('layui_textarea',{//建立编辑器
+            height: 400
+        });
+
         var type = getQueryString("type");
-        console.log(type);
+        //console.log(type);
         var select = 'dd[lay-value="'+type+'"]';
-        console.log(select);   
+        //console.log(select);
         $('.cc').siblings("div.layui-form-select").find('dl').find(select).click();
 
         function getQueryString(name) {
@@ -159,8 +171,6 @@
             return null;
         }
         var m = getQueryString("m");
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
 
         //自定义验证规则
         form.verify({
@@ -180,15 +190,15 @@
                 if (value.length < 1) {
                     return '活动日期不能为空';
                 }
-            },
-            content: function(value) {
-                layedit.sync(editIndex);
+            },content: function(value) {
+                layedit.sync(lay_text);
+//                layedit.getContent(lay_text)
             }
         });
 
         //监听提交
         form.on('submit(demo1)', function(data) {
-
+            data.field.content = layui.layedit.getContent(1);
             var data =  JSON.stringify(data.field);
             var index = top.layer.msg('数据提交中，请稍候...',{icon: 16,time:false,shade:0.8});
             console.log(data);
@@ -206,8 +216,7 @@
                         top.layer.close(index);
                         top.layer.msg(res.message);
                         layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
+                        parent.location.reload();//刷新父页面
                         console.log(data);
                     },500);
                     return false;
@@ -219,6 +228,7 @@
         });
 
         form.on('submit(demo2)', function(data) {
+            data.field.content = layui.layedit.getContent(1);
             var data =  JSON.stringify(data.field);
             console.log(data);
             var index = top.layer.msg('数据提交中，请稍候...',{icon: 16,time:false,shade:0.8});
@@ -231,15 +241,14 @@
                     data: data,
                 },
                 dataType: "json",
-                url: "https://pay.imbatv.cn/api/news/update/"+id,
+                url: "https://pay.imbatv.cn/api/news/update/" + id,
                 success: function(res) {
                     console.log(res);
                     setTimeout(function(){
                         top.layer.close(index);
                         top.layer.msg(res.message);
                         layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
+                        parent.location.reload();//刷新父页面
                     },500);
                     return false;
                 },

@@ -44,6 +44,16 @@ class Appointment extends Admin_Api_Controller {
 
     }
 
+    public function cancel($appoint_id){
+        if($appoint_id){
+            if($this->appointment->delete_by_id($appoint_id)){
+                $this->response($this->getResponseData(parent::HTTP_OK, '取消成功'), parent::HTTP_OK);
+            }else{
+                $this->response($this->getResponseData(parent::HTTP_OK, '取消失败'), parent::HTTP_OK);
+            }
+        }
+    }
+
 
 
 

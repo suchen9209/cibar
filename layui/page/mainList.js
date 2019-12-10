@@ -24,7 +24,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function() {
                 },
                 { field: 'phone', title: '手机号', align: 'center'},
                 { field: 'number', title: '预约人数', align: 'center',sort: true },
-                // { title: '操作', width: 400, templet: '#newsListBar', fixed: "right", align: "center" }
+                { title: '操作', templet: '#newsListBar', fixed: "right", align: "center" }
             ]
         ],
         done: function(res, curr, count) {
@@ -85,6 +85,47 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function() {
                 content: 'page/alert_8/recharge.html', //iframe的url
             });
     });
+
+
+    //列表操作
+    table.on('tool(newsList)', function(obj) {
+        var layEvent = obj.event,
+            data = obj.data;
+        // console.log(data);
+        var list = data.detail;
+        var userid = obj.data.id;
+        // console.log(userid);
+        if(layEvent === 'del'){
+            layer.confirm('是否删除', {
+                btn: ['是','否'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "POST",
+                    catch: true,
+                    dataType: 'json',
+                    url: "https://pay.imbatv.cn/api/appointment/cancel/" + userid,
+                    success: function(data){
+                        console.log(data);
+                        if (data.code == 200) {
+                            layer.msg(data.message, {
+                                icon: 1,
+                                time: 2000
+                            }, function(){
+                                tableIns.reload({});
+                            });
+                        }
+                    },
+                    error: function(err) {
+                        layer.msg('删除失败', {icon: 2});
+                    }
+                });
+            }, function(){
+                layer.msg('再想想', {icon: 2});
+            });
+        }
+
+    });
+
     //列表操作
     /*table.on('tool(newsList)', function(obj) {
         var layEvent = obj.event,
